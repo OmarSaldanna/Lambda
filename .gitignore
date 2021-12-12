@@ -1,0 +1,15 @@
+gifs
+bin
+etc
+include
+lib
+share
+__pycache__
+
+database.txt
+# Ignore Mac system files
+.DS_Store
+
+*.json
+.cfg
+*.m4a
