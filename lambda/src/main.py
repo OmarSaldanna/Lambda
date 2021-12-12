@@ -1,9 +1,11 @@
 import discord
 from actions import *
+from modules import database
 from discord.ext import commands
 import youtube_dl
 import os
 # brew install ffmpeg
+# pip install PyNaCl
 
 
 # instance the bot
@@ -47,8 +49,10 @@ async def pon(ctx, url:str):
     
   link = "https://www.youtube.com/watch?v=y2nCXaBhHfs"
   voiceChannel = discord.utils.get(ctx.guild.voice_channels, name="manga")
-  #if voice is None or not voice.is_connected():
-  await voiceChannel.connect()
+  voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+  
+  if voice is None or not voice.is_connected():
+    await voiceChannel.connect()
 
   # voice can only be created when the bot is already in the voice channel
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
@@ -77,7 +81,7 @@ async def algo(ctx):
   # voice can only be created when the bot is already in the voice channel
   await voiceChannel.connect()
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-  voice.play(discord.FFmpegPCMAudio("test.m4a"))
+  voice.play(discord.FFmpegPCMAudio("song.m4a"))
 
 @client.command()
 async def llegale(ctx):
@@ -245,6 +249,6 @@ async def stop(ctx):
     
 
 # load the bot token
-token = "ODk4NjU1Mjg4MDE2NjU0MzU2.YWnX9A.9WZADOisA-Waj7EQVHhYrfaPh3g"
+token = database.give('token')
 # run the bot
 client.run(token)
