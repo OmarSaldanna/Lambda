@@ -1,12 +1,12 @@
 import discord
-from actions import *
-from modules import database
+from modules import database, actions
 from discord.ext import commands
 import youtube_dl
 import os
+
 # brew install ffmpeg
 # pip install PyNaCl
-
+# ctx -> https://discordpy.readthedocs.io/en/stable/ext/commands/api.html#discord.ext.commands.Context
 
 # instance the bot
 client = commands.Bot(command_prefix="-")
@@ -22,41 +22,55 @@ client = commands.Bot(command_prefix="-")
 # when the bot is ready to be used
 async def on_ready():
   # print the username
-  print(f"I'm Lambda :D\tSoy un bot de Omar\tIch heiße Lambda")
+  print(f"\nI'm Lambda :D\tSoy un bot de Omar\tIch heiße Lambda")
 
-# @client.event
-# # if it receives a msg
-# async def on_message(msg):
-#   # if the msg is from the bot
-#   if msg.author == client.user:
-#     return
-  
-#   # a simple hello -hello
-#   elif msg.content.startswith('-hola lambda'):
-#     # it pretty much like js, wait until 
-#     # this line be executed
-#     await msg.channel.send(f"Holaa {msg.author} uwu")
+######################### HELPER COMMAND #######################
 
+@client.command()
+async def test(ctx):
+  msg, msg_channel = ctx.message.content, ctx.message.channel 
+  author, author_id = ctx.message.author, ctx.message.id
+  try:
+    voice_channel = ctx.author.voice.channel
+  except:
+    voice_channel = None
+  print(msg)
+  print(msg_channel)
+  print(author)
+  print(author_id)
+  print(voice_channel)
+
+######################### AUDIO COMMANDS #######################
 
 @client.command()
 async def pon(ctx, url:str):
+  # if there's already a song file, delete it
   song_there = os.path.isfile("song.m4a")
   try:
     if song_there:
       os.remove("song.m4a")
   except PermissionError:
     await ctx("Espera a que lo que se esta repreduciendo termine")
-    
-  link = "https://www.youtube.com/watch?v=y2nCXaBhHfs"
-  voiceChannel = discord.utils.get(ctx.guild.voice_channels, name="manga")
+  
+  # select a voice channel
+  try:
+    channel_name = str(ctx.author.voice.channel)
+  except:
+    channel_name = "Animesito"
+
+  voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel_name)
+  # instance a voice object, voice can only be created when the bot is already in the voice channel
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
   
+  # most of the time voice will be none, always before connect()
   if voice is None or not voice.is_connected():
+    # as the bot is disconnected, connect it
     await voiceChannel.connect()
 
-  # voice can only be created when the bot is already in the voice channel
+  # instance again the voice, once connected the bot, it won't be none
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
 
+  # options to download the video audio
   ydl_opts = {
     'format': 'bestaudio/best',
     'postprocessors': [{
@@ -65,38 +79,32 @@ async def pon(ctx, url:str):
       'preferredquality': '192'
     }],
   }
-
+  # download the audio
   with youtube_dl.YoutubeDL(ydl_opts) as ydl:
     ydl.download([url])
 
+  # once downloaded, rename the file
   for file in os.listdir("./"):
     if file.endswith('.m4a'):
       os.rename(file, "song.m4a")
   
-  voice.play(discord.FFmpegPCMAudio("song.m4a"))
-
-@client.command()
-async def algo(ctx):
-  voiceChannel = discord.utils.get(ctx.guild.voice_channels, name="manga")
-  # voice can only be created when the bot is already in the voice channel
-  await voiceChannel.connect()
-  voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+  # finally put it in the voice
   voice.play(discord.FFmpegPCMAudio("song.m4a"))
 
 @client.command()
 async def llegale(ctx):
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+  # if the bot is connected, then it leaves
   if not voice is None or voice.is_connected():
     await voice.disconnect()
-
 
 @client.command()
 async def pausa(ctx):
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
   if voice.is_playing():
     voice.pause()
-  else:
-    await ctx.send("No hay nada en el reproductor")
+  #else:
+    # await ctx.send("No hay nada en el reproductor")
 
 @client.command()
 async def play(ctx):
@@ -111,62 +119,64 @@ async def stop(ctx):
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
   voice.stop()
 
-  ######################### TESTING NEW THINGS #######################
+######################### STUFF COMMANDS #######################
 
-  # # reproduce sth
-  # elif msg.content.startswith('-pon'):
-  #   link = "https://www.youtube.com/watch?v=y2nCXaBhHfs"
-  #   voiceChannel = discord.utils.get(msg.guild.voice_channels, name="manga")
-  #   voice = discord.utils.get(bot.voice_clients, guild=msg.guild)
-  #   if not voice.is_connected():
-  #     await voiceChannel.connects()
-    
+# save stuff -sostenme
+@client.command()
+async def sostenme(ctx):
+  await actions.sostenme(ctx.message)
 
+# give back stuff -dame
+@client.command()
+async def dame(ctx):
+  await actions.dame(ctx.message)
 
-  ######################### STUFF #######################
+######################### ANIME ############################
 
-  # # save stuff -sostenme
-  # elif msg.content.startswith('-sostenme'):
-  #   await sostenme(msg)
-
-  # # give back stuff -dame
-  # elif msg.content.startswith('-dame'):
-  #   await dame(msg)
-
-#   ######################### ANIME #######################
-#####
-#   # follow an anime -sigue anime [link] como [name]
-#   elif msg.content.startswith('-sigue anime'):
-#     await sigue_anime(msg)
+# follow an anime -sigue anime [link] como [name]
+@client.command()
+async def sigueanime(ctx):
+  await actions.sigue_anime(ctx.message)
   
-#   # show animes in list -animes
-#   elif msg.content == '-animes':
-#     await animes(msg)
+# show animes in list -animes
+@client.command()
+async def animes(ctx):
+  await actions.animes(ctx.message)
 
-#   # show anime chapters
-#   elif msg.content.startswith('-capitulos'):
-#     await capitulos(msg)
+# show anime chapters -capitulos [name]
+@client.command()
+async def capitulos(ctx):
+  await actions.capitulos(ctx.message)
 
-#   ######################### ADMIN FUNCTIONS #######################
+######################### ADMIN FUNCTIONS #######################
+# unique functions for me, db commands
 
-#   ## unique functions for me, db commands $save [key] [value]
-#   elif msg.content.startswith('$save') and str(msg.author) == 'OmarLarasa#8042':
-#     await save(msg)
+# -save [key] [value]
+@client.command()
+async def save(ctx):
+  if str(ctx.message.author) == 'OmarLarasa#8042':
+    await actions.save(ctx.message)
 
-#   # $give [key]
-#   elif msg.content.startswith('$give') and str(msg.author) == 'OmarLarasa#8042':
-#     await give(msg)
+# -give [key]
+@client.command()
+async def give(ctx):
+  if str(ctx.message.author) == 'OmarLarasa#8042':
+    await actions.give(ctx.message)
 
-#   # $delete [key]
-#   elif msg.content.startswith('$delete') and str(msg.author) == 'OmarLarasa#8042':
-#     await delete(msg)
+# -delete [key]
+@client.command()
+async def delete(ctx):
+  if str(ctx.message.author) == 'OmarLarasa#8042':
+    await actions.delete(ctx.message)
 
-#   # sudo shutdown
-#   elif msg.content == '$die' and str(msg.author) == 'OmarLarasa#8042':
-#     await die(msg)
+# -die
+@client.command()
+async def die(ctx):
+  if str(ctx.message.author) == 'OmarLarasa#8042':
+    await actions.die(ctx.message)
 
-#   ######################### VOICE CHANNEL #######################
-  
+######################### VOICE CHANNEL #######################
+
 #   elif msg.content == '-unete':
 #     channel = msg.author.voice.channel
 #     await channel.connect()

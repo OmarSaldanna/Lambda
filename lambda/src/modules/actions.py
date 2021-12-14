@@ -13,6 +13,7 @@ async def sostenme(msg):
   await msg.channel.send(f'Okey {msg.author}, ahí me avisas')
 
 async def dame(msg):
+  print(msg.author, f'busca en stuff')
   key = f'stuff_{msg.author}'
   res = db.give_list(key)
   if res == '':
