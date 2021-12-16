@@ -21,29 +21,36 @@ _Note:_ currently most of the commands are in spanish.
 
 ### save stuff(text) / guardar cosas(texto)
 *-sostenme* <texto>
+  
 *-dame*
   <texto>
 
 ### anime follow / seguimiento de anime
 *-sigueanime <link> como <nombre>*
+
 *-animes*
   Estamos siguiendo estos animes:
   - <nombre> - <link>
   ...
+
 *-capitulos [anime name]*
   - *cap<n>* <anime charper link>
   ...
 
 ### sound play / poner sonido
 *-pon <link>*
+
 *-pausa*
+    
 *-play*
+    
 *-stop*
 
 ### daily subroutines / subrutinas diarias
 _ejecutada una vez al día por el bot_
 *-actualizar*
+    
   Estos son los capitulos nuevos:
-  
+    
   - [animeflv] - *cap [n]* - [link animeflv capitulo]
   ...
