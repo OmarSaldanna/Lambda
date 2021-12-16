@@ -1,8 +1,11 @@
+# folders with libraries and stuff
 gifs
 bin
 etc
 include
 lib
+# this one is for predownloaded music
+music
 share
 __pycache__
 
@@ -10,6 +13,7 @@ database.txt
 # Ignore Mac system files
 .DS_Store
 
+# private important files
 *.json
-.cfg
+*.cfg
 *.m4a
