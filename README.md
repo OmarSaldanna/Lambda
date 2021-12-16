@@ -20,25 +20,25 @@ Actualmente el bot no cuenta con una base de datos "formal", lo que el bot usa p
 _Note:_ currently most of the commands are in spanish.
 
 ### save stuff(text) / guardar cosas(texto)
-*-sostenme* <texto>
+*-sostenme* [texto]
   
 *-dame*
-  <texto>
+  [texto]
 
 ### anime follow / seguimiento de anime
-*-sigueanime <link> como <nombre>*
+*-sigueanime [link] como [nombre]*
 
 *-animes*
   Estamos siguiendo estos animes:
-  - <nombre> - <link>
+  - [nombre] - [link]
   ...
 
 *-capitulos [anime name]*
-  - *cap<n>* <anime charper link>
+  - *cap [n]* [anime charper link]
   ...
 
 ### sound play / poner sonido
-*-pon <link>*
+*-pon [link]*
 
 *-pausa*
     
