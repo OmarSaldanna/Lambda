@@ -12,8 +12,8 @@ __pycache__
 database.txt
 # Ignore Mac system files
 .DS_Store
+.cfg
 
 # private important files
 *.json
-*.cfg
 *.m4a
