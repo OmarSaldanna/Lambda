@@ -87,3 +87,5 @@ async def die(msg):
   db.delete('salasegura')
   # stop the program
   exit()
+
+######################### WHITE LIST #######################

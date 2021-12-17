@@ -29,7 +29,7 @@ async def on_ready():
 @client.command()
 async def test(ctx):
   msg, msg_channel = ctx.message.content, ctx.message.channel 
-  author, author_id = ctx.message.author, ctx.message.id
+  author, author_id = ctx.message.author, ctx.message.author.id
   try:
     voice_channel = ctx.author.voice.channel
   except:
@@ -40,7 +40,7 @@ async def test(ctx):
   print(author_id)
   print(voice_channel)
 
-######################### AUDIO COMMANDS #######################
+######################### VOICE CHANNEL COMMANDS #######################
 
 @client.command()
 async def pon(ctx, url:str):
@@ -175,88 +175,125 @@ async def die(ctx):
   if str(ctx.message.author) == 'OmarLarasa#8042':
     await actions.die(ctx.message)
 
-######################### VOICE CHANNEL #######################
+######################### WHITE LIST #######################
 
-#   elif msg.content == '-unete':
-#     channel = msg.author.voice.channel
-#     await channel.connect()
-#     print(channel)
-#     await msg.channel.send('Ya llegue prros, que quieren?')
+# -salasegura para [@member1] [@member2] ...
+@client.command()
+async def salasegura(ctx):
+  # there's no white list active
+  if database.give('salasegura') == '':
+    msg = ctx.message.content
+    members = msg.split(' ')[2:] # ids mentions are like <@!id>
+    # extract the ids without symbols
+    member_ids = [m[3:len(m)-1] for m in members]
+    # add the bot id
+    member_ids.append(database.give('id'))
+    # save the members in the db
 
-#   elif msg.content.startswith('-sala segura para'):
-#     # if is posible to create a sala segura
-#     if db.give('salasegura') == '':
-#       members = msg.content.split()[3:] # select the members
-#       # convert to ids
-#       ids = []
-#       for m in members:
-#         # <@!id>
-#         ids.append(m[3:len(m)-1])
-#       # append bot id
-#       ids.append(db.give('id'))
-#       #members.append(bot.user) # add the bot
-#       db.save_list('salasegura', ids) # save the members
-#       await msg.channel.send("ya estan listados en la sala segura, avisenme cuando entrar :]")
-#     # if it isn't
-#     else:
-#       await msg.channel.send(f'{msg.author} lo siento, ya hay una sala segura activa')
+    database.save_list('salasegura', member_ids)
+    # then join the bot to the channel voice if it isn't
+    # select a voice channel
+    try:
+      channel_name = str(ctx.author.voice.channel)
+    except:
+      channel_name = "Animesito"
+    voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel_name)
+    # instance a voice object, voice can only be created when the bot is already in the voice channel
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    # most of the time voice will be none, always before connect()
+    if voice is None or not voice.is_connected():
+      # as the bot is disconnected, connect it
+      await voiceChannel.connect()
+    # send a confirmation
+    await ctx.send(f"ya esta lista la sala segura para {' '.join(members)}")
 
-#   elif msg.content.startswith('-agregar a sala'):
-#     registered = db.give_list('salasegura') # read the actual
-#     # if the user isn't able to do that
-#     if str(msg.author.id) not in registered:
-#       await msg.channel.send("Lo siento, no tienes permiso para eso")
-#     # if it is in the list
-#     else:
-#       members = msg.content.split()[3:] # read the new
-#       members = [m[3:len(m)-1] for m in members]# format
-#       for member in members: # append each member
-#         if member not in registered: # if member not in list
-#           db.append_list('salasegura', member) # save the new member
-#       await msg.channel.send(f"Listo {msg.author}, miembros agregados a la lista")
+  # there's a white list active
+  else:
+    await ctx.send('no puedo hacer eso, ya hay una sala segura activa')
 
-#   elif msg.content.startswith('-eliminar de sala'):
-#     registered = db.give_list('salasegura') # read the actual
-#     # if the user isn't able to do that
-#     if str(msg.author.id) not in registered:
-#       await msg.channel.send("Lo siento, no tienes permiso para eso")
-#     # if it is in the list
-#     else:
-#       to_delete = msg.content.split()[3:] # read the new
-#       to_delete = [m[3:len(m)-1] for m in to_delete] # format
-#       new_members = []
-#       for member in registered: # append each member and not the to_del
-#         if member not in to_delete: # if member in list
-#           new_members.append(member) # save the remainning members
-#       db.save_list('salasegura', new_members) # save the changes
-#       await msg.channel.send(f"Listo {msg.author}, miembros eliminados de la lista")
+# -agregarasala [@member1] [@member2] ...
+@client.command()
+async def agregarasala(ctx):
+  actual_members = database.give_list('salasegura') # read the actual members
+  # see if this person is in the members
+  person_id = str(ctx.message.author.id)
+  if person_id in actual_members:
+    # detect the new members
+    msg = ctx.message.content
+    new_members = msg.split(' ')[1:] # ids mentions are like <@!id>
+    # extract the ids without symbols
+    new_member_ids = [m[3:len(m)-1] for m in new_members]
+    # add the new members
+    for i in new_member_ids:
+      database.append_list('salasegura', i)
+    # send a message
+    await ctx.send('Nuevos miembros agregados')
+  else:
+    await ctx.send("lo siento, no tienes permiso para eso")
 
-#   elif msg.content == '-sala libre':
-#     # if there's no sala segura
-#     if db.give('salasegura') == '':
-#       await msg.channel.send(f'{msg.author} lo siento, no hay una sala segura activa')
-#     # if there is
-#     else:
-#       members = db.give_list('salasegura')
-#       # if the user is not in the member list
-#       if str(msg.author.id) not in members:
-#         await msg.channel.send(f'{msg.author} lo siento, no puedes desactivar la sala segura')
-#       # if it is
-#       else:
-#         db.delete('salasegura') # clear the sala segura
-#         await msg.channel.send(f'Okey {msg.author}, ya esta desactivada')
+# -kickeardesala [@member1] [@member2] ...
+@client.command()
+async def eliminardesala(ctx):
+  actual_members = database.give_list('salasegura') # read the actual members
+  # see if this person is in the members
+  person_id = str(ctx.message.author.id)
+  remaining_members = []
+  if person_id in actual_members:
+    # detect the members to delete
+    msg = ctx.message.content
+    kick_members = msg.split(' ')[1:] # ids mentions are like <@!id>
+    # extract the ids without symbols
+    kick_member_ids = [m[3:len(m)-1] for m in kick_members]
+    # add the new members
+    for i in actual_members:
+      # add only the not kicked members
+      if i not in kick_member_ids:
+        remaining_members.append(i)
+    # save the new members
+    database.save_list('salasegura', remaining_members)
+    # send a confirmation
+    await ctx.send('Miembros eliminados')
+  else:
+    await ctx.send("lo siento, no tienes permiso para eso")
 
-# # 
-# @client.event
-# # hear any change in voice channel, someone unmutes or enters the channel
-# async def on_voice_state_update(member : discord.Member, before, after):
-#   members = db.give_list('salasegura') # read the member list
-#   member_id = member.id # select the member id
-#   # the sala segura is active
-#   if str(member_id) not in members and members != [''] and str(member_id) != str(client.user): # check if member is in list
-#     await member.move_to(None) # diconect not in list user
-#     await member.send(f"Lo siento, no puedo dejarte entrar a la *sala segura*")
+# -salalibre
+@client.command()
+async def salalibre(ctx):
+  members = database.give_list('salasegura') # read the actual members
+  # see if this person is in the members
+  person_id = str(ctx.message.author.id)
+  if person_id in members:
+    # delete the white list
+    database.delete('salasegura')
+    # send a confirmation
+    await ctx.send('Listo, todos son libres de entrar')
+  else:
+    await ctx.send("lo siento, no tienes permiso para eso")
+
+# kick members that aren't in white list when they join the channel
+@client.event
+# hear any change in voice channel, someone unmutes or enters the channel
+async def on_voice_state_update(member:discord.Member, before, after):
+  members = database.give_list('salasegura') # read the member list
+  # detect if there's a white list active
+  if members != ['']:
+    # the sala segura is active
+    if str(member.id) not in members: # check if member is in list
+      await member.move_to(None) # diconect not in list user
     
+
+######################### SMART COMMANDS #######################
+# these are general purpose, depending on the sentences (spanish) given with -Lambda,
+# for example: 
+
+# -Lambda falta comprar shampoo
+# -Lambda no hay pasta de dientes
+# -Lambda necesitamos spaguetti
+
+@client.command() # working on the next commit
+async def Lambda(ctx):
+  # lambda_command(ctx.message.content)
+  pass
 
 # load the bot token
 token = database.give('token')
