@@ -4,6 +4,7 @@ bin
 etc
 include
 lib
+
 # this one is for predownloaded music
 music
 share
