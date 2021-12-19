@@ -1,10 +1,12 @@
 ## GENERAL FUNCTIONS
 
 db_route = "./modules/database.txt"
+ans_start = '\n\t > '
+
+# databaset "rules"
 key_separator = ':>:'
 val_separator = ':<:'
 sub_separator = '::'
-ans_start = '\n\t > '
 
 ############################ GENERAL FUNCTIONS ########################
 
@@ -57,12 +59,11 @@ def save_list(key, list, space=val_separator):
   save(key, val)
 
 def give_list(key, space=val_separator):
-
   return give(key).split(space)
 
 def append_list(key, val, space=val_separator):
   if give(key) == '':
-    save(val)
+    save(key, val)
   else:
     prev = give(key)
     new = f'{prev}{space}{val}'

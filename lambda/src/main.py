@@ -43,53 +43,71 @@ async def test(ctx):
 ######################### VOICE CHANNEL COMMANDS #######################
 
 @client.command()
-async def pon(ctx, url:str):
-  # if there's already a song file, delete it
-  song_there = os.path.isfile("song.m4a")
-  try:
-    if song_there:
-      os.remove("song.m4a")
-  except PermissionError:
-    await ctx("Espera a que lo que se esta repreduciendo termine")
-  
-  # select a voice channel
-  try:
-    channel_name = str(ctx.author.voice.channel)
-  except:
-    channel_name = "Animesito"
+async def descarga(ctx):
+  # obtain the message
+  msg = ctx.message.content.split(' ')
+  # verify the format -descarga [link] como [name]
+  if len(msg) >= 4 and msg[2] == 'como': # correct format
+    # then download the requested song
+    ydl_opts = {
+      'format': 'bestaudio/best',
+      'postprocessors': [{
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'm4a',
+        'preferredquality': '192'
+      }],
+    }
+    url, name = msg[1], " ".join(msg[3:])
+    print(f"\n==> descargando {name} de {url}...\n")
+    # download the audio
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+      ydl.download([url])
 
-  voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel_name)
-  # instance a voice object, voice can only be created when the bot is already in the voice channel
-  voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
-  
-  # most of the time voice will be none, always before connect()
-  if voice is None or not voice.is_connected():
-    # as the bot is disconnected, connect it
-    await voiceChannel.connect()
+    # once downloaded, rename the file, to know the file name
+    for file in os.listdir("./"):
+      if file.endswith('.m4a'):
+        os.rename(file, "song.m4a")
+    
+    file_name = name.replace(' ', '_') # for save the file
+    # then targeted the file, rename with the given name
+    os.system(f"mv song.m4a {file_name}.m4a")
+    # move it to music folder
+    os.system(f"mv {file_name}.m4a ../music")
+    # register the new song on the database
+    database.append_list('musica', file_name)
+    await ctx.send(f'exitosamente pirateado ;), guardado como {name}')
 
-  # instance again the voice, once connected the bot, it won't be none
-  voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
 
-  # options to download the video audio
-  ydl_opts = {
-    'format': 'bestaudio/best',
-    'postprocessors': [{
-      'key': 'FFmpegExtractAudio',
-      'preferredcodec': 'm4a',
-      'preferredquality': '192'
-    }],
-  }
-  # download the audio
-  with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    ydl.download([url])
+@client.command()
+async def pon(ctx):
+  msg = ctx.message.content
+  song = " ".join(msg.split(' ')[1:])
+  song = song.replace(' ', '_')
 
-  # once downloaded, rename the file
-  for file in os.listdir("./"):
-    if file.endswith('.m4a'):
-      os.rename(file, "song.m4a")
-  
-  # finally put it in the voice
-  voice.play(discord.FFmpegPCMAudio("song.m4a"))
+  # look for the name on the saved songs
+  if song in database.give('musica'):
+    print(f"\n==> reproduciendo {song.replace('_', ' ')}...\n")
+    # select a voice channel
+    try:
+      channel_name = str(ctx.author.voice.channel)
+    except:
+      channel_name = "Animesito" # a voice channel of my server
+    voiceChannel = discord.utils.get(ctx.guild.voice_channels, name=channel_name)
+    # instance a voice object, voice can only be created when the bot is already in the voice channel
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    # most of the time voice will be none, always before connect()
+    if voice is None or not voice.is_connected():
+      # as the bot is disconnected, connect it
+      await voiceChannel.connect()
+    # instance again the voice, once connected the bot, it won't be none
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    # the route of the song
+    route = f"./../music/{song}.m4a"
+    # finally put it in the voice
+    voice.play(discord.FFmpegPCMAudio(route))
+  # the song wasn't in list
+  else:
+    await ctx.send("Lo siento, {song} no ha sido pirateada aún")
 
 @client.command()
 async def llegale(ctx):
