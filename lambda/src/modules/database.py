@@ -3,7 +3,7 @@
 db_route = "./modules/database.txt"
 ans_start = '\n\t > '
 
-# databaset "rules"
+# database "rules"
 key_separator = ':>:'
 val_separator = ':<:'
 sub_separator = '::'

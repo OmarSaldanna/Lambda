@@ -1,0 +1,3 @@
+# Cerebro 🧠
+
+This external module are the one that is going to make Lambda smart, is the artificial intelligence of Lambda. The function of this is going to be bassicly react correctly to _Lambda commands_ (read _main_ README.md). The thing here is that given a sentence try to undesrtand or detect the *action to do* and seccond the *object* for finally know what action (like a function) do. The sentences doesn't have a pretty strict structure, just are normal sentences.
