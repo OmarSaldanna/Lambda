@@ -1,2 +1,2 @@
 name:>:lambda
-lasts:>:sald
+verbs:>:tenemos:<:tengo:<:hay:<:acabó:<:gastamos:<:queda:<:activa:<:enciende:<:apaga:<:desactiva:<:dime:<:muestrame:<:recomiendame

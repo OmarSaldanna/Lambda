@@ -46,5 +46,5 @@ def word_recocgnizer(given_word, word_list, probs=False):
   # if the probs were requested
   if probs:
     return proximity_list
-  # else return only the index
-  return proximity_list.index(max(proximity_list))
+  # else return only the index amd the probability
+  return proximity_list.index(max(proximity_list)), max(proximity_list)
