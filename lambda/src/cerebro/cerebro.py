@@ -17,7 +17,13 @@ class Model:
       idx, prob = recognizer(word, verbs)
       if prob > self.probability_threshold: # if there was a good coincidence
         break # stop trying more words
-
+    # if there was no strong coincidence
+    if prob < self.probability_threshold:
+      raise ValueError("there's no verb detected")
+    # there was a good coincidence
+    else:
+      return idx
+    
 
   def __split_sentence(self,sentence):
     action_sentence, obj_sentence = 
