@@ -3,10 +3,10 @@
 # model used. This module will be used for recognize and
 # correcta words fo1r each lambda command available.
 
-# from models import lambda_word_recognizer as recognizer
-from model.models.lwr import Lambda_Word_Recognizer
+from ai.models.lwr import Lambda_Word_Recognizer
+from ai.models.gpt3 import GPT3
 
-# the purpose of this subclass is to give the model an
+# the purpose of this class is to give the model an
 # eassier use and then use the model for correct almost
 # every word it can. At this moment it is only for known
 # words saved on the memory of lambda.
@@ -14,32 +14,34 @@ from model.models.lwr import Lambda_Word_Recognizer
 # the funcionality of this module will be reciving words
 # and the sentence or command where the word is, for then
 # return the full command or sentence corrected. This way
-# lambda will be smart and will probably 
+# lambda will be smart and will probably recognize comands
+# for IoT interaction
 
-class Use:
-  def __init__(self, probability_threshold=.85, missing_char_number=-10):
+class AI:
+  def __init__(self, openai_token, probability_threshold=.85, missing_char_number=-10):
+    # lwr instance
     self.probability_threshold = probability_threshold
-    self.recognizer = Lambda_Word_Recognizer(missing_char_number=missing_char_number)
+    self.lwr = Lambda_Word_Recognizer(missing_char_number=missing_char_number)
+
+    # gpt-3 instance
+    self.gpt3 = GPT3(openai_token)
 
   # this is the general purpose function
-  def __call__(self, word, word_list, sentence):
+  def recognize_word(self, word, word_list, sentence):
     # predict with the model
-    print(word, word_list)
-    probs = self.recognizer(word, word_list)
+    probs = self.lwr(word, word_list)
     # if the coincidence was not too strong
     if max(probs) < self.probability_threshold:
-      return "Error, no pude reconocer el mensaje"
+      return "Error, no pude reconocer la palabra"
     # else: continue
     idx = probs.index(max(probs))
     correct_word = word_list[idx]
     corrected_sentence = sentence.replace(word, correct_word)
     return corrected_sentence
   
-  # this will be for the "lambda commands", returns the sentence,
-  # the object and the action
-  def special(self, sentence):
-    pass
+  # this will be for the "lambda commands", like alexa
+  # first working with gpt-3
+  def gpt3(self, sentence):
+    return self.gpt3(sentence)
 
-# sample use()
-
-print('#my brain has been activated...')
+print('[BRAIN] -> IA prepared')

@@ -100,8 +100,9 @@ class Memory:
     try:
       lines.pop(idx)
     except:
-      pass
-      print('>>Error en funcion delete en memory')
+      print('\n[Memory] -> Error')
+      print(f'\tcould not delete {idx} element from')
+      print(f'\t{lines}')
     # and save the changes
     self.__write_lines(lines)
 
@@ -117,5 +118,4 @@ class Memory:
     self.__setitem__(key, actual_value)
 
 
-
-print('#my memory has been activated...')
+print('[MEMORY] -> Memory prepared')
