@@ -1,0 +1,10 @@
+nombre:>:Lambda
+name:>:Lambda#0856
+token:>:ODk4NjU1Mjg4MDE2NjU0MzU2.YWnX9A.DOMBmbJ9D5U-C_oG-dyjmah4CQk
+id:>:898655288016654356
+stuff_OmarLarasa#8042:>:ppp:<:ooo:<:qqq
+stuff_Mizu#6091:>:aqui:<:https://youtu.be/jJ5EhVMmk_E
+animes:>:https://www3.animeflv.net/anime/ganbare-doukichan::doukichan:<:https://www3.animeflv.net/anime/flcl::furikuri:<:https://www3.animeflv.net/anime/takt-op-destiny::destiny
+int:>:1:<:2
+strlist:>:a:<:b:<:c
+intlist:>:

@@ -1,0 +1,24 @@
+# folders with libraries and stuff
+bin
+etc
+include
+lib
+music
+share
+__pycache__
+
+# database private files
+data.txt
+
+# Ignore Mac system files
+*.DS_Store
+*.cfg
+
+# private important files
+*.json
+*.m4a
+*.env
+
+# other files from system
+__init__.py
+__init__.pyc
