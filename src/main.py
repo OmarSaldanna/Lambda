@@ -1,28 +1,31 @@
 # access to lambda memory
 from memory.memory import Memory
 # lambda interfaces to communications
-# Discord, Email, Whatsapp an API
+# Discord, Email, Whatsapp and API
 from interfaces import Discord
-# Lambda module od IA
+# Lambda old module of IA
 from model.brain import Use
 # other things
-import json
+from dotenv import load_dotenv
 import os
 
-
 path = './src/'
+load_dotenv()
+
+# read tokens
+discord_token = os.environ.get("DISCORDO")
+openai_token = os.environ.get("OPENAI")
+
+def main():
+  # 1 - deploy memory
+  memory = Memory(path + 'data/data/memory.txt')
+  vocab = Memory(path + 'data/data/vocab.txt')
+
+  # 2 - deploy ia modules
+  use = Use() # this one is to correct 
+
+  # 3 - deploy comunication interfaces
+  Discord.deploy_discord(discord_token)
 
 
-# bot info to run all the interfaces
-info = json.load(open(path + 'info.json'))
-
-# memory for specific information such as
-# memory = Memory(path + 'data/data/memory.txt') # names, dates, links
-# memory for known words for talking, like
-# vocab = Memory(path + 'data/data/vocab.txt') # verbs, nouns, idioms
-# memory for storaged data like models or numerical stuff
-# data = Memory(path + 'data/data/data.txt') # on development
-
-# all lambda modules to language functions
-# use = Use() # this one is to correct 
-# ...
+main()

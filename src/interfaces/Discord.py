@@ -1,6 +1,6 @@
 import discord
 
-class MyClient(discord.Client):
+class Bot(discord.Client):
   async def on_ready(self):
     print('Logged on as', self.user)
 
@@ -12,13 +12,15 @@ class MyClient(discord.Client):
     if message.content == 'lambda':
       await message.channel.send('Estoy aquí')
 
-# instance the bot
-intents = discord.Intents.default()
-intents.message_content = True
-client = MyClient(intents=intents)
 
-# run the bot
-client.run('MTAyNDA1NjUwNTc4OTU4NzQ4Ng.GzYtmQ.l7Hbwpnk6Fuvx3dlA777fGlVjMWbZJLGilsf70')
+def deploy_discord(token):
+  # instance the bot
+  intents = discord.Intents.default()
+  intents.message_content = True
+  # instance bot
+  bot = Bot(intents=intents)
+  # run bot
+  bot.run(token)
 
 """
 ######################## HELPER COMMAND #######################
