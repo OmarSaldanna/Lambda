@@ -9,14 +9,14 @@ from memory.memory import Memory
 from interfaces import Discord
 # Lambda old module of AI
 from ai.brain import AI
-# other things
-from dotenv import load_dotenv
+# for load the tokens
+import json
 
-load_dotenv() # load the env variables
 
 # read tokens
-discord_token = os.environ.get("DISCORDO")
-openai_token = os.environ.get("OPENAI")
+tokens = json.load(open("./src/info.json"))
+discord_token = tokens['DISCORDO']
+openai_token = tokens['OPENAI']
 
 
 def main():
