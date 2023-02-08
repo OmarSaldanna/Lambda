@@ -1,12 +1,12 @@
 import json
 # the lambda modules: ai and memory
-from brain import AI
-from memory import Memory
+from modules.brain import AI
+from modules.memory import Memory
 
 # the memory files
-data = Memory('./lambda/data/data.txt')
-memory = Memory('./lambda/data/memory.txt')
-vocab = Memory('./lambda/data/vocab.txt')
+data = Memory('./lambda/modules/data/data.txt')
+memory = Memory('./lambda/modules/data/memory.txt')
+vocab = Memory('./lambda/modules/data/vocab.txt')
 
 # and the ai
 tokens = json.load(open('./info.json'))

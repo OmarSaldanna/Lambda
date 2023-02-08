@@ -3,8 +3,8 @@
 # model used. This module will be used for recognize and
 # correcta words fo1r each lambda command available.
 
-from models.lwr import Lambda_Word_Recognizer
-from models.gpt3 import GPT3
+from modules.models.lwr import Lambda_Word_Recognizer
+from modules.models.gpt3 import GPT3
 
 # the purpose of this class is to give the model an
 # eassier use and then use the model for correct almost
