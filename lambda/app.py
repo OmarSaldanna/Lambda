@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from controllers import * # here are all the lambda functions
+from modules.controllers import * # here are all the lambda functions
 
 
 # instance the flask app
