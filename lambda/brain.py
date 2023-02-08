@@ -3,8 +3,8 @@
 # model used. This module will be used for recognize and
 # correcta words fo1r each lambda command available.
 
-from ai.models.lwr import Lambda_Word_Recognizer
-from ai.models.gpt3 import GPT3
+from models.lwr import Lambda_Word_Recognizer
+from models.gpt3 import GPT3
 
 # the purpose of this class is to give the model an
 # eassier use and then use the model for correct almost
@@ -18,7 +18,7 @@ from ai.models.gpt3 import GPT3
 # for IoT interaction
 
 class AI:
-  def __init__(self, openai_token, probability_threshold=.85, missing_char_number=-10):
+  def __init__(self, openai_token, probability_threshold=.95, missing_char_number=-10):
     # lwr instance
     self.probability_threshold = probability_threshold
     self.lwr = Lambda_Word_Recognizer(missing_char_number=missing_char_number)
@@ -27,7 +27,7 @@ class AI:
     self.gpt3 = GPT3(openai_token)
 
   # this is the general purpose function
-  def recognize_word(self, word, word_list, sentence):
+  def check_sentence(self, word, word_list, sentence):
     # predict with the model
     probs = self.lwr(word, word_list)
     # if the coincidence was not too strong
@@ -38,6 +38,21 @@ class AI:
     correct_word = word_list[idx]
     corrected_sentence = sentence.replace(word, correct_word)
     return corrected_sentence
+
+  # useful to detect if a word is in a word_list
+  def recognize_word(self, word, word_list):
+    # predict with the model
+    probs = self.lwr(word, word_list)
+    # if the coincidence was not too strong
+    if max(probs) < self.probability_threshold:
+      return False
+    # else, return the word with more relation
+    else:
+      # index of the max prob
+      word_idx = probs.index(max(probs))
+      # return the word
+      return word_list[word_idx]
+
   
   # this will be for the "lambda commands", like alexa
   # first working with gpt-3
