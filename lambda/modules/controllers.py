@@ -13,6 +13,7 @@ tokens = json.load(open('./info.json'))
 ai = AI(tokens['OPENAI'])
 
 
+# here the general commands come
 # main function to process the messages
 def discord_msg(msg):
 	# determine the command type
@@ -25,9 +26,6 @@ def discord_msg(msg):
 		return ai.gpt3(msg)
 	else:
 		# special funcions
-		return "hola"
-
-
 
 # it can be an order or a question
 def determine_command_type(msg):
@@ -40,3 +38,8 @@ def determine_command_type(msg):
 		return "question", 0
 	else: 
 		return "order", word
+
+
+# a verb was found, so the goal is to search the
+# object of the sentence to use the action
+def determine_service(sentence, verb):

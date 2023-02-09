@@ -6,7 +6,7 @@ from modules.controllers import * # here are all the lambda functions
 app = Flask(__name__)
 
 
-# discord api
+# discord api for general commands
 @app.route('/lambda/discordo', methods=['GET'])
 def discordo():
 	if request.method == 'GET':
@@ -14,6 +14,17 @@ def discordo():
  		msg = request.headers.get('msg')
  		# process the message
  		ans = discord_msg(msg)
+ 		# and send the anser
+ 		return jsonify({'answer': ans})
+ 		# para recibir, solamente es ans.json() y ya
+
+@app.route('/lambda/discordo/commands', methods=['GET'])
+def discordo_commands():
+	if request.method == 'GET':
+  	# extract the message
+ 		msg = request.headers.get('msg')
+ 		# process the message
+ 		ans = discord_cmd(msg)
  		# and send the anser
  		return jsonify({'answer': ans})
  		# para recibir, solamente es ans.json() y ya
