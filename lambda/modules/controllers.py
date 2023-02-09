@@ -57,8 +57,15 @@ def determine_service(sentence, verb):
 def append_player(player):
 	#expected tuple (anme, id)
 	name, _id = player
-	# save in the dic
-	game_db.dic['jugadores'].append(name)
-	game_db.dic['ids'].append(_id)
-	game_db.write()
-	return "ok"
+	# first verify if the player isn't repeat
+	if _id not in game_db['ids']:
+		# add the player
+		game_db['jugadores'].append(name)
+		game_db['ids'].append(_id)
+		# save changes
+		game_db.write()
+		print(f"\n[MEMORY] -> Player {_id} registered")
+		return True
+	else:
+		print(f"\n[MEMORY] -> Player {_id} repeated")
+		return False
