@@ -4,9 +4,10 @@ from modules.brain import AI
 from modules.memory import Memory
 
 # the memory files
-data = Memory('./lambda/modules/data/data.txt')
-memory = Memory('./lambda/modules/data/memory.txt')
-vocab = Memory('./lambda/modules/data/vocab.txt')
+data = Memory('./lambda/modules/data/data.json')
+#memory = Memory('./lambda/modules/data/memory.json')
+vocab = Memory('./lambda/modules/data/vocab.json')
+game_db = Memory('./lambda/modules/data/game.json')
 
 # and the ai
 tokens = json.load(open('./info.json'))
@@ -26,13 +27,14 @@ def discord_msg(msg):
 		return ai.gpt3(msg)
 	else:
 		# special funcions
+		pass
 
 # it can be an order or a question
 def determine_command_type(msg):
 	# the verb will be the word after lambda
 	verb = msg.split(' ')[0]
 	# then compare the verb with the known verbs
-	word = ai.recognize_word(verb, vocab['verbs'])
+	word = ai.recognize_word(verb, vocab['verbos'])
 	# there were no coincidence
 	if not word:
 		return "question", 0
@@ -43,3 +45,20 @@ def determine_command_type(msg):
 # a verb was found, so the goal is to search the
 # object of the sentence to use the action
 def determine_service(sentence, verb):
+	pass
+
+
+###############################################
+###############################################
+#		Game functionality                    #
+###############################################
+###############################################
+
+def append_player(player):
+	#expected tuple (anme, id)
+	name, _id = player
+	# save in the dic
+	game_db.dic['jugadores'].append(name)
+	game_db.dic['ids'].append(_id)
+	game_db.write()
+	return "ok"
