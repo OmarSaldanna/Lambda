@@ -21,3 +21,4 @@ class Memory:
     except:
       raise KeyError(f"[MEMORY] x-> KeyError: {key}")
 
+print("[MEMORY] -> Memory Working")

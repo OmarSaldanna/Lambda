@@ -1,11 +1,12 @@
 import os
 os.system('clear')
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from modules.controllers import * # here are all the lambda functions
 
 # instance the flask app
 app = Flask(__name__)
-
+CORS(app)
 
 # discord api for general commands
 #		   lambda how many chapters has steins;gate?
@@ -48,18 +49,26 @@ def telegram():
 
 
 
+###############################################
+###############################################
+#		Game functionality                    #
+#		all the bellow is for web funcions    #
+###############################################
+###############################################
+
+
+
 # app for the game
-@app.route('/lambda/game', methods=['GET','POST'])
-def game():
-	# to register the players
-	if request.method == 'POST':
-		# extract the message
-		name = request.headers.get('name')
-		_id = request.headers.get('id')
-		# append the player
-		ok = append_player((name,_id))
-		return jsonify({'answer': ok})
+@app.route('/lambda/game/<name>/<_id>', methods=['GET'])
+def game(name, _id):
+	# extract the message
+	print('name', name)
+	# append the player
+	ok = append_player((name,_id))
+	# to solve security problems
+	response = jsonify({'answer': ok})
+	return response
 
 
 # run the app
-app.run(port=8000, host="127.0.0.1", debug=True)
+app.run(port=8000, host="0.0.0.0", debug=True)
