@@ -58,7 +58,7 @@ def telegram():
 
 
 
-# app for the game
+# game: add players
 @app.route('/lambda/game/<name>/<_id>', methods=['GET'])
 def game(name, _id):
 	# extract the message
@@ -70,5 +70,9 @@ def game(name, _id):
 	return response
 
 
+# game: see players
+
+
+
 # run the app
-app.run(port=8000, host="0.0.0.0", debug=True)
+app.run(port=8080, host="0.0.0.0", debug=True)
