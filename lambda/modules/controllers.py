@@ -54,18 +54,30 @@ def determine_service(sentence, verb):
 ###############################################
 ###############################################
 
-def append_player(player):
-	#expected tuple (anme, id)
+def add_player(player):
+	# expected tuple (anme, id)
 	name, _id = player
-	# first verify if the player isn't repeat
-	if _id not in game_db['ids']:
-		# add the player
-		game_db['jugadores'].append(name)
-		game_db['ids'].append(_id)
-		# save changes
-		game_db.write()
-		print(f"\n[MEMORY] -> Player {_id} registered")
-		return True
-	else:
-		print(f"\n[MEMORY] -> Player {_id} repeated")
+	# search the existing players in the db
+	players = game_db['players']
+	# check that the player id does no exist
+	exists = False
+	for player in players:
+		# if the id exists
+		if player['id'] == _id:
+			print(f"[MEMORY] -> repeated player {_id}")
+			exists = True
+			break
+	# the id exists
+	if exists:
 		return False
+	# the id don't exist
+	else:
+		# add the new player
+		new_player = {'id': _id, 'name':name, 'points': '0'}
+		game_db['players'].append(new_player)
+		game_db.write()
+		print(f"[MEMORY] -> added player {_id}")
+
+
+def check_answer(ans):
+	pass

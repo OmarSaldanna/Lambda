@@ -64,6 +64,14 @@ def game(name, _id):
 	# extract the message
 	print('name', name)
 	# append the player
+	ok = add_player((name,_id))
+	# to solve security problems
+	response = jsonify({'answer': ok})
+	return response
+
+# game: send answer to challenge
+@app.route('/lambda/game/challenge/<_id>/<challenge>/<answer>', methods=['GET'])
+def game_answers(_id, challenge, answer):
 	ok = append_player((name,_id))
 	# to solve security problems
 	response = jsonify({'answer': ok})
@@ -71,6 +79,7 @@ def game(name, _id):
 
 
 # game: see players
+
 
 
 

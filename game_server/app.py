@@ -17,7 +17,7 @@ def login():
 # to submit answers to the different tasks
 @app.route('/game/challenge', methods=['GET'])
 def challenge():
-	return render_template("login.html")
+	return render_template("challenge.html")
 
 
 # run the app
