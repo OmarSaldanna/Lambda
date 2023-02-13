@@ -64,18 +64,17 @@ def game(name, _id):
 	# extract the message
 	print('name', name)
 	# append the player
-	ok = add_player((name,_id))
-	# to solve security problems
-	response = jsonify({'answer': ok})
-	return response
+	msg = add_player((name,_id))
+	# send the response
+	return jsonify({'message': msg})
 
 # game: send answer to challenge
 @app.route('/lambda/game/challenge/<_id>/<challenge>/<answer>', methods=['GET'])
 def game_answers(_id, challenge, answer):
-	ok = append_player((name,_id))
-	# to solve security problems
-	response = jsonify({'answer': ok})
-	return response
+	# check the answer
+	msg = check_answer((_id, challenge, answer))
+	# send the response
+	return jsonify({'message': msg})
 
 
 # game: see players

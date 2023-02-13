@@ -54,6 +54,12 @@ def determine_service(sentence, verb):
 ###############################################
 ###############################################
 
+# determins the number of players that are going to
+# recieve points for correct answers. The value will
+# be set in base of the total of players, like 0.5.
+first_ones = int(game_db['state']['first ones'])
+
+
 def add_player(player):
 	# expected tuple (anme, id)
 	name, _id = player
@@ -69,7 +75,7 @@ def add_player(player):
 			break
 	# the id exists
 	if exists:
-		return False
+		return "Player Already Exists"
 	# the id don't exist
 	else:
 		# add the new player
@@ -77,7 +83,70 @@ def add_player(player):
 		game_db['players'].append(new_player)
 		game_db.write()
 		print(f"[MEMORY] -> added player {_id}")
+		return "Player Added Successfully"
 
 
-def check_answer(ans):
-	pass
+def check_answer(ctx):
+	# expected tuple (_id, challenge, answer)
+	_id, challenge, answer = ctx
+	# get the actual state: in case the request was sent
+	# with a unexistant challenge number.
+	actual_challenge = game_db['state']['challenge']
+	if challenge != actual_challenge:
+		return "Error: challenge number isn't the current one"
+	print(ctx)
+	print(actual_challenge)
+	# then the answer was sent for the correct challenge
+	# so it's needed to chech that the challenge is still
+	# recieving answers. corrects counter < first_ones
+	corrects_counter = int(game_db['challenges'][int(challenge)]['corrects'])
+	# if the challenge isn't acepting answers
+	if corrects_counter > first_ones:
+		return "Error: challenge isn't acepting answers any more"
+	# so, here the answer cmoes in time and to the correct challenge number. Then:
+	# add the answer sent to the answers list
+	game_db['challenges'][int(challenge)]['answers'].append(
+		{'id': _id, 'answer': answer}
+	)
+	# get the correct answer
+	correct_answer = game_db['challenges'][int(challenge)]['answer']
+	# check the answer
+	if answer == correct_answer:
+		print(f"[MEMOR][GAME] -> Detected correct answer from {_id} to challenge {challenge}")
+		# since the answer was correct, add the points
+		player_idx = find_player_idx(_id)
+		points = calculate_score(corrects_counter)
+		actual_points = int(game_db['players'][player_idx]['points'])
+		game_db['players'][player_idx]['points'] = str(actual_points+points)
+		# and add 1 to the corrects counter
+		game_db['challenges'][int(challenge)]['corrects'] = str(corrects_counter + 1)
+		game_db
+		# save all the changes
+		game_db.write()
+		return "correct"
+	else:
+		print(f"[MEMOR][GAME] -> incorrect answer from {_id} to challenge {challenge}")
+		# save all the changes
+		game_db.write()
+		return "incorrect"
+
+# depends on the actual corrects counter 
+def calculate_score(place):
+	# the points are based on the game rules
+	# place will be the actual counter, the last will be 19
+	if place == 0: # the first place
+		return 4
+	elif place < 6:
+		return 3
+	elif place < 12:
+		return 2
+	elif place < 19:
+		return 1
+
+
+# returns the player id
+def find_player_idx(_id):
+	for i,player in enumerate(game_db['players']):
+		if _id == player['id']:
+			return i
+	return False

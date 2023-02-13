@@ -171,11 +171,11 @@
       <div class="sa col">
             <!-- input -->
           <div class="inputBox">
-            <input type="text" name="id" required="required">
+            <input type="text" name="answer" required="required">
             <span class="text">Your Answer</span>
             <span class="line"></span>
           </div>
-          <div class="button" onclick="add_player()">Try</div> 
+          <div class="button" onclick="send_answer()">Try</div> 
     </div>
   </div>
 
@@ -196,17 +196,16 @@
 
 <script type="text/javascript">
   // funciton to regist player
-  function add_player() {
+  function send_answer() {
     // url for lambda game api
-    url = "http://192.168.1.85:8080/lambda/game"
+    url = "http://192.168.1.85:8080/lambda/game/challenge"
     // extract the values
-    let name = document.getElementsByName("name")[0].value;
-    let id = document.getElementsByName("id")[0].value;
-    // save the values in the local storage
-    localStorage.setItem("lambda_game_id", id);
-    localStorage.setItem("lambda_game_name", name);
-    // make the request to add the user
-    axios.get(url + "/" + name + "/" + id)
+    let answer = document.getElementsByName("answer")[0].value;
+    let challenge = 0;
+    let id = localStorage.getItem("lambda_game_id");
+    // make the request to send the answer
+    console.log(url + "/" + id + "/" + challenge + "/" + answer);
+    axios.get(url + "/" + id + "/" + challenge + "/" + answer)
     .then(function (response) {
       console.log(response);
   })
