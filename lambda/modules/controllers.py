@@ -4,6 +4,16 @@ from modules.brain import AI
 from modules.memory import Memory
 
 # the memory files
+def get_memory(mem):
+	memory_files = {
+		'game': './lambda/modules/data/game.json',
+		'data': './lambda/modules/data/data.json',
+		'vocab': './lambda/modules/data/vocab.json',
+		'memory': './lambda/modules/data/memory.json',
+	}
+	# returns a memory instance, this way the controlers
+	# will read the brand new changes made for themselves
+	return Memory(memory_files[mem])
 data = Memory('./lambda/modules/data/data.json')
 #memory = Memory('./lambda/modules/data/memory.json')
 vocab = Memory('./lambda/modules/data/vocab.json')
@@ -103,7 +113,13 @@ def check_answer(ctx):
 	# if the challenge isn't acepting answers
 	if corrects_counter > first_ones:
 		return "Error: challenge isn't acepting answers any more"
-	# so, here the answer cmoes in time and to the correct challenge number. Then:
+	# so, here the answer comes in time and to the correct 
+	# challenge number. Finally it's needed to check if the
+	# plater isn't in the winners list yet
+	if _id in game_db['challenges'][int(challenge)]['winners']:
+		return "Error: player is in the winners list"
+
+	# Here, it was a new winner: then
 	# add the answer sent to the answers list
 	game_db['challenges'][int(challenge)]['answers'].append(
 		{'id': _id, 'answer': answer}
@@ -121,6 +137,8 @@ def check_answer(ctx):
 		# and add 1 to the corrects counter
 		game_db['challenges'][int(challenge)]['corrects'] = str(corrects_counter + 1)
 		game_db
+		# add the player id to the winners
+		game_db['challenges'][int(challenge)]['winners'].append(_id)
 		# save all the changes
 		game_db.write()
 		return "correct"
