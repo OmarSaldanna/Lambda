@@ -143,10 +143,24 @@ def calculate_score(place):
 	elif place < 19:
 		return 1
 
-
 # returns the player id
 def find_player_idx(_id):
 	for i,player in enumerate(game_db['players']):
 		if _id == player['id']:
 			return i
 	return False
+
+# this is for the challenge web settings
+def generate_settings():
+	settings = {}
+	settings['host'] = game_db['settings']['lambda api']
+	# if the sets are going for the login	
+	settings['title'] = game_db['settings']['title']
+	# now the ch
+	current_challenge = int(game_db['state']['challenge'])
+	for i in range(4):
+		display = 'block' if i<=current_challenge else 'none'
+		settings[f'ch{i+1}'] = display
+		# and the links for each challenge
+		settings[f'link{i}'] = f"http://127.0.0.1:8000/game/challenge/{i}"
+	return settings

@@ -76,6 +76,14 @@ def game_answers(_id, challenge, answer):
 	# send the response
 	return jsonify({'message': msg})
 
+# game: get settings for the page
+@app.route('/lambda/game/challenge/settings', methods=['GET'])
+def game_settings():
+	# get the settings
+	settings = generate_settings()
+	# send the response
+	return jsonify({'settings': settings})
+
 
 # game: see players
 

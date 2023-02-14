@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Registro</title>
+  <title>Lambdas Game</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js" integrity="sha512-NCiXRSV460cHD9ClGDrTbTaw0muWUBf/zB/yLzJavRsPNUl9ODkUVmUHsZtKu17XknhsGlmyVoJxLg/ZQQEeGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dddfztayk/image/upload/v1676177461/assets/icon_ibf6gz.png">
 </head>
@@ -150,15 +150,15 @@
     bottom: 10px;
     transition: .5s;
   }
-  .ch1 {right: 10px;top: 10px;}
-  .ch2 {right: 10px;bottom: 10px;display: block;}
-  .ch3 {left: 10px;bottom: 10px;display: block;}
-  .ch4 {left: 10px;top: 10px;display: block;}
+  .ch1 {right: 10px;top: 10px;display: {{ sets.ch1 }};}
+  .ch2 {right: 10px;bottom: 10px;display: {{ sets.ch2 }};}
+  .ch3 {left: 10px;bottom: 10px;display: {{ sets.ch3 }};}
+  .ch4 {left: 10px;top: 10px;display: {{ sets.ch4 }};}
 </style>
 <body>
   <div class="container">
     <!-- title -->
-    <h2>$lambdas_game = x;</h2>
+    <h2>{{ sets.title }}</h2>
     <div class="space"></div>
 
     <!-- section -->
@@ -179,16 +179,16 @@
     </div>
   </div>
 
-  <button class="floating ch1">
+  <button onclick="redirect('{{ sets.link1 }}')" class="floating ch1">
     0
   </button>
-  <button class="floating ch2">
+  <button onclick="redirect('{{ sets.link2 }}')" class="floating ch2">
     1
   </button>
-  <button class="floating ch3">
+  <button onclick="redirect('{{ sets.link3 }}')" class="floating ch3">
     2
   </button>
-  <button class="floating ch4">
+  <button onclick="redirect('{{ sets.link4 }}')" class="floating ch4">
     3
   </button>
 
@@ -198,7 +198,7 @@
   // funciton to regist player
   function send_answer() {
     // url for lambda game api
-    url = "http://192.168.1.85:8080/lambda/game/challenge"
+    url = "http://{{ sets.host }}/lambda/game/challenge"
     // extract the values
     let answer = document.getElementsByName("answer")[0].value;
     let challenge = 0;
@@ -209,7 +209,11 @@
     .then(function (response) {
       console.log(response);
   })
+  }
 
+  // function to redirect, for the buttons
+  function redirect(url) {
+    window.location.replace(url);  
   }
 </script>
 </body>

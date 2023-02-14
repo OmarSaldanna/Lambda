@@ -191,7 +191,7 @@
   // funciton to regist player
   function add_player() {
     // url for lambda game api
-    url = "http://192.168.1.85:8080/lambda/game"
+    url = "http://{{ sets.host }}/lambda/game"
     // extract the values
     let name = document.getElementsByName("name")[0].value;
     let id = document.getElementsByName("id")[0].value;
