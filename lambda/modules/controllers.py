@@ -2,6 +2,7 @@ import json
 # the lambda modules: ai and memory
 from modules.brain import AI
 from modules.memory import Memory
+from modules.telegram import Bot
 
 # the memory files
 def get_memory(mem):
@@ -14,14 +15,12 @@ def get_memory(mem):
 	# returns a memory instance, this way the controlers
 	# will read the brand new changes made for themselves
 	return Memory(memory_files[mem])
-data = Memory('./lambda/modules/data/data.json')
-#memory = Memory('./lambda/modules/data/memory.json')
-vocab = Memory('./lambda/modules/data/vocab.json')
-game_db = Memory('./lambda/modules/data/game.json')
 
-# and the ai
+# and the ai and telegram
 tokens = json.load(open('./info.json'))
 ai = AI(tokens['OPENAI'])
+telegram = Bot(tokens['TELEGRAM'],"-846300715")
+
 
 
 # here the general commands come
@@ -43,6 +42,8 @@ def discord_msg(msg):
 def determine_command_type(msg):
 	# the verb will be the word after lambda
 	verb = msg.split(' ')[0]
+	# read db
+	vocab = get_memory['vocab']
 	# then compare the verb with the known verbs
 	word = ai.recognize_word(verb, vocab['verbos'])
 	# there were no coincidence
@@ -64,15 +65,12 @@ def determine_service(sentence, verb):
 ###############################################
 ###############################################
 
-# determins the number of players that are going to
-# recieve points for correct answers. The value will
-# be set in base of the total of players, like 0.5.
-first_ones = int(game_db['state']['first ones'])
-
 
 def add_player(player):
 	# expected tuple (anme, id)
 	name, _id = player
+	# rad the db
+	game_db = get_memory('game')
 	# search the existing players in the db
 	players = game_db['players']
 	# check that the player id does no exist
@@ -99,13 +97,18 @@ def add_player(player):
 def check_answer(ctx):
 	# expected tuple (_id, challenge, answer)
 	_id, challenge, answer = ctx
+	print(f"\nRecieved answer {answer} from {_id} for {challenge} challenge")
+	# read db
+	game_db = get_memory('game')
 	# get the actual state: in case the request was sent
 	# with a unexistant challenge number.
 	actual_challenge = game_db['state']['challenge']
 	if challenge != actual_challenge:
 		return "Error: challenge number isn't the current one"
-	print(ctx)
-	print(actual_challenge)
+	# determins the number of players that are going to
+	# recieve points for correct answers. The value will
+	# be set in base of the total of players, like 0.5.
+	first_ones = int(game_db['state']['first ones'])
 	# then the answer was sent for the correct challenge
 	# so it's needed to chech that the challenge is still
 	# recieving answers. corrects counter < first_ones
@@ -133,9 +136,15 @@ def check_answer(ctx):
 		player_idx = find_player_idx(_id)
 		points = calculate_score(corrects_counter)
 		actual_points = int(game_db['players'][player_idx]['points'])
+		print(points)
+		print()
 		game_db['players'][player_idx]['points'] = str(actual_points+points)
 		# and add 1 to the corrects counter
 		game_db['challenges'][int(challenge)]['corrects'] = str(corrects_counter + 1)
+		# and if the counter reaches the first_ones value
+		# ten send a telegram advice that the new challende 
+		# is opened
+		new_challenge_advice(game_db, corrects_counter + 1, first_ones)
 		game_db
 		# add the player id to the winners
 		game_db['challenges'][int(challenge)]['winners'].append(_id)
@@ -152,17 +161,19 @@ def check_answer(ctx):
 def calculate_score(place):
 	# the points are based on the game rules
 	# place will be the actual counter, the last will be 19
+
 	if place == 0: # the first place
 		return 4
 	elif place < 6:
 		return 3
 	elif place < 12:
 		return 2
-	elif place < 19:
+	elif place < 20:
 		return 1
 
 # returns the player id
 def find_player_idx(_id):
+	game_db = get_memory('game')
 	for i,player in enumerate(game_db['players']):
 		if _id == player['id']:
 			return i
@@ -171,6 +182,7 @@ def find_player_idx(_id):
 # this is for the challenge web settings
 def generate_settings():
 	settings = {}
+	game_db = get_memory('game')
 	settings['host'] = game_db['settings']['lambda api']
 	# if the sets are going for the login	
 	settings['title'] = game_db['settings']['title']
@@ -182,3 +194,23 @@ def generate_settings():
 		# and the links for each challenge
 		settings[f'link{i}'] = f"http://127.0.0.1:8000/game/challenge/{i}"
 	return settings
+
+# this see if a new advice is needed, send it
+def new_challenge_advice(db, corrects_counter, first_ones):
+	# if the winners list is full, there are certain
+	print(corrects_counter)
+	print(first_ones)
+	if corrects_counter == first_ones:
+		# update the challenge number
+		challenge = int(db['state']['challenge'])
+		db['state']['challenge'] = str(challenge + 1)
+		db.write()
+		# 
+		print("[TELEGRAM] -> Making new challenge anounce")
+		# make the anounce
+		telegram("""
+			Hola Jugadores,
+
+			Se ha abierto un nuevo reto, Suerte
+
+			""")
