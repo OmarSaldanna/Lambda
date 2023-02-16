@@ -84,6 +84,14 @@ def game_settings():
 	# send the response
 	return jsonify({'settings': settings})
 
+# game: get the descritpion for the challenges
+@app.route('/lambda/game/challenge/info/<idx>', methods=['GET'])
+def challenge_descroption(idx):
+	# get the description
+	descritpion = get_challenge_description(int(idx))
+	# return it
+	return descritpion
+
 
 # game: see players
 

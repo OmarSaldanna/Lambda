@@ -65,6 +65,13 @@ def determine_service(sentence, verb):
 ###############################################
 ###############################################
 
+def get_challenge_description(idx):
+	# read the db
+	game_db = get_memory('game')
+	print(game_db['challenges'][idx]['description'])
+	# return the description of the i challenge
+	return game_db['challenges'][idx]['description']
+
 
 def add_player(player):
 	# expected tuple (anme, id)
@@ -192,14 +199,13 @@ def generate_settings():
 		display = 'block' if i<=current_challenge else 'none'
 		settings[f'ch{i+1}'] = display
 		# and the links for each challenge
-		settings[f'link{i}'] = f"http://127.0.0.1:8000/game/challenge/{i}"
+		settings[f'link{i+1}'] = f"http://127.0.0.1:8080/lambda/game/challenge/info/{i}"
+	print(settings)
 	return settings
 
 # this see if a new advice is needed, send it
 def new_challenge_advice(db, corrects_counter, first_ones):
 	# if the winners list is full, there are certain
-	print(corrects_counter)
-	print(first_ones)
 	if corrects_counter == first_ones:
 		# update the challenge number
 		challenge = int(db['state']['challenge'])
