@@ -93,7 +93,7 @@ def challenge_descroption(idx):
 	return descritpion
 
 
-# game: see players
+# game: see leaderboard
 
 
 

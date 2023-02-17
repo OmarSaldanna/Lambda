@@ -90,7 +90,7 @@ def add_player(player):
 			break
 	# the id exists
 	if exists:
-		return "Player Already Exists"
+		return "-> Repeated Player ID"
 	# the id don't exist
 	else:
 		# add the new player
@@ -98,7 +98,7 @@ def add_player(player):
 		game_db['players'].append(new_player)
 		game_db.write()
 		print(f"[MEMORY] -> added player {_id}")
-		return "Player Added Successfully"
+		return "-> Successfully Login"
 
 
 def check_answer(ctx):

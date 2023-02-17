@@ -4,6 +4,7 @@
   <title>Registro</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js" integrity="sha512-NCiXRSV460cHD9ClGDrTbTaw0muWUBf/zB/yLzJavRsPNUl9ODkUVmUHsZtKu17XknhsGlmyVoJxLg/ZQQEeGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dddfztayk/image/upload/v1676177461/assets/icon_ibf6gz.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <style type="text/css">
   @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800&display=swap');
@@ -143,6 +144,19 @@
     height: 650px; width: 650px;
   }
   .space {height: 2rem;}
+  .toast {
+    position: fixed;
+    background-color: var(--color);
+    color: black;
+    padding: 15px;
+    width: 600px;
+    top: 30px;
+    right: -600px;
+    border-radius: 10px;
+    font-size: 46px;
+    text-align: center;
+    transition: right 1s;
+  }
 </style>
 <body>
   <div class="container">
@@ -187,6 +201,11 @@
     </div>
   </div>
 
+  <div class="toast">
+    <p class="toast-text" id="toast">
+      -> Login Successfull
+    </p>
+  </div>
 <script type="text/javascript">
   // funciton to regist player
   function add_player() {
@@ -201,9 +220,22 @@
     // make the request to add the user
     axios.get(url + "/" + name + "/" + id)
     .then(function (response) {
-      console.log(response);
+      if (response.data.message) {
+        toast(response.data.message);
+      } else {
+        toast("Error");
+      }
   })
 
+  }
+
+  function toast(msg) {
+    document.getElementById("toast").innerHTML = msg
+    anime({
+      targets: '.toast',
+      translateX: '-630',
+      duration: 1000
+    });
   }
 </script>
 </body>

@@ -4,6 +4,8 @@ from flask import Flask, render_template
 from flask_cors import CORS
 import requests
 
+lambda_api = "10.101.24.255:8080"
+
 # instance the flask app
 app = Flask(__name__, template_folder='templates')
 CORS(app)
@@ -14,7 +16,7 @@ CORS(app)
 @app.route('/game/login', methods=['GET'])
 def login():
 	# host is where the lambda api is
-	settings = {'host': '127.0.0.1:8080'}
+	settings = requests.get(f"http://{lambda_api}/lambda/game/challenge/settings").json()['settings']
 	return render_template("login.html", sets=settings)
 
 # to submit answers to the different tasks
@@ -25,7 +27,7 @@ def challenge():
 	# title is the title for the page, it depends on the week
 	# links are where are the chalenges' descriptions
 	# then, generate the parameters based on the db
-	settings = requests.get("http://127.0.0.1:8080/lambda/game/challenge/settings").json()['settings']
+	settings = requests.get(f"http://{lambda_api}/lambda/game/challenge/settings").json()['settings']
 	# send the page with the settings based on the db
 	return render_template("challenge.html", sets=settings)
 
