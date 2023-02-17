@@ -217,8 +217,8 @@ def new_challenge_advice(db, corrects_counter, first_ones):
 		print("[TELEGRAM] -> Making new challenge anounce")
 		# make the anounce
 		telegram("""
-			Hola Jugadores,
+			Hi my players.
 
-			Se ha abierto un nuevo reto, Suerte
+			A new challenge has been opened, good luck.
 
 			""")
