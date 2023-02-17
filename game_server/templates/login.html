@@ -19,7 +19,7 @@
   body{
     display: flex;
     justify-content: center;
-    align-items: center;
+    padding-top: 5rem;
     min-height: 100vh;
     background-color: var(--bg);
   }
@@ -141,9 +141,9 @@
     background-color: var(--color);
   }
   img {
-    height: 650px; width: 650px;
+    height: 500px; width: 500px;
   }
-  .space {height: 2rem;}
+  .space {height: 0rem;}
   .toast {
     position: fixed;
     background-color: var(--color);
@@ -222,6 +222,9 @@
     .then(function (response) {
       if (response.data.message) {
         toast(response.data.message);
+        setTimeout(() => {
+        window.open("http://{{ sets.gamehost }}/game/challenge");
+        }, "1000")
       } else {
         toast("Error");
       }

@@ -4,7 +4,9 @@ from flask import Flask, render_template
 from flask_cors import CORS
 import requests
 
-lambda_api = "10.101.24.255:8080"
+# here are defined the hosts
+lambda_api = "127.0.0.1:8080"
+game_server = "127.0.0.1:8000"
 
 # instance the flask app
 app = Flask(__name__, template_folder='templates')
@@ -17,6 +19,7 @@ CORS(app)
 def login():
 	# host is where the lambda api is
 	settings = requests.get(f"http://{lambda_api}/lambda/game/challenge/settings").json()['settings']
+	settings['gamehost'] = game_server
 	return render_template("login.html", sets=settings)
 
 # to submit answers to the different tasks
@@ -33,9 +36,11 @@ def challenge():
 
 # to see the descrption of the challenge
 @app.route('/game/challenge/<_id>', methods=['GET'])
-def challenge_description():
-	return "desafio 1"
+def challenge_description(_id):
+	description = requests.get(f"http://{lambda_api}/lambda/game/challenge/info/{_id}").json()['description']
+	print(description)
+	return description
 
 # run the app
-print("[SERVER] -> game server running in 127.0.0.1:8000/game")
+print("[SERVER] -> game server running in {game_server}/game")
 app.run(port=8000, host="0.0.0.0", debug=True)

@@ -4,6 +4,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from modules.controllers import * # here are all the lambda functions
 
+lambda_api = "127.0.0.1:8080"
+
 # instance the flask app
 app = Flask(__name__)
 CORS(app)
@@ -90,7 +92,7 @@ def challenge_descroption(idx):
 	# get the description
 	descritpion = get_challenge_description(int(idx))
 	# return it
-	return descritpion
+	return jsonify({'description': descritpion})
 
 
 # game: see leaderboard

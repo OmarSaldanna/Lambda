@@ -4,6 +4,8 @@ from modules.brain import AI
 from modules.memory import Memory
 from modules.telegram import Bot
 
+game_server = "127.0.0.1:8000"
+
 # the memory files
 def get_memory(mem):
 	memory_files = {
@@ -199,7 +201,7 @@ def generate_settings():
 		display = 'block' if i<=current_challenge else 'none'
 		settings[f'ch{i+1}'] = display
 		# and the links for each challenge
-		settings[f'link{i+1}'] = f"http://127.0.0.1:8080/lambda/game/challenge/info/{i}"
+		settings[f'link{i+1}'] = f"http://{game_server}/game/challenge/{i}"
 	print(settings)
 	return settings
 
