@@ -1,12 +1,18 @@
 import os
 os.system('clear')
+
+import json
 from flask import Flask, render_template
 from flask_cors import CORS
 import requests
 
+# open all the server settings and tokens 
+info = tokens = json.load(open('./info.json'))
+
 # here are defined the hosts
-lambda_api = "127.0.0.1:8080"
-game_server = "127.0.0.1:8000"
+lambda_api = info['HOSTS']['lambda']
+game_server = info['HOSTS']['game_server']
+game_server_port = info['HOSTS']['game_server_port']
 
 # instance the flask app
 app = Flask(__name__, template_folder='templates')
@@ -42,5 +48,5 @@ def challenge_description(_id):
 	return description
 
 # run the app
-print("[SERVER] -> game server running in {game_server}/game")
-app.run(port=8000, host="0.0.0.0", debug=True)
+print(f"[SERVER] -> game server running in {game_server}/game")
+app.run(port=game_server_port, host="0.0.0.0", debug=True)

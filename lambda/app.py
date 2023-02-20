@@ -1,10 +1,17 @@
 import os
 os.system('clear')
+import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from modules.controllers import * # here are all the lambda functions
 
-lambda_api = "127.0.0.1:8080"
+
+# load the keys, ports and tokens
+info = json.load(open('./info.json'))
+lambda_api_port = info['HOSTS']['lambda_port']
+lambda_api = info['HOSTS']['lambda']
+print(f"[SERVER] -> lambda server running in {lambda_api}/game")
+
 
 # instance the flask app
 app = Flask(__name__)
@@ -37,8 +44,6 @@ def discordo_commands():
  		ans = discord_cmd(msg)
  		# and send the anser
  		return jsonify({'answer': ans})
- 		# para recibir, solamente es ans.json() y ya
-
 
 
 # telegram api
@@ -63,8 +68,6 @@ def telegram():
 # game: add players
 @app.route('/lambda/game/<name>/<_id>', methods=['GET'])
 def game(name, _id):
-	# extract the message
-	print('name', name)
 	# append the player
 	msg = add_player((name,_id))
 	# send the response
@@ -101,4 +104,4 @@ def challenge_descroption(idx):
 
 
 # run the app
-app.run(port=8080, host="0.0.0.0", debug=True)
+app.run(port=lambda_api_port, host="0.0.0.0", debug=True)

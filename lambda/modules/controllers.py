@@ -4,7 +4,13 @@ from modules.brain import AI
 from modules.memory import Memory
 from modules.telegram import Bot
 
-game_server = "127.0.0.1:8000"
+
+# load the keys, ports and tokens
+info = json.load(open('./info.json'))
+
+# load the server info: keys and hosts
+game_server = info['HOSTS']['game_server']
+lambda_api = info['HOSTS']['lambda']
 
 # the memory files
 def get_memory(mem):
@@ -18,10 +24,9 @@ def get_memory(mem):
 	# will read the brand new changes made for themselves
 	return Memory(memory_files[mem])
 
-# and the ai and telegram
-tokens = json.load(open('./info.json'))
-ai = AI(tokens['OPENAI'])
-telegram = Bot(tokens['TELEGRAM'],"-846300715")
+# set the ai and telegram
+ai = AI(info['OPENAI'])
+telegram = Bot(info['TELEGRAM'],info['TELEGRAM_GROUP'])
 
 
 
@@ -145,8 +150,6 @@ def check_answer(ctx):
 		player_idx = find_player_idx(_id)
 		points = calculate_score(corrects_counter)
 		actual_points = int(game_db['players'][player_idx]['points'])
-		print(points)
-		print()
 		game_db['players'][player_idx]['points'] = str(actual_points+points)
 		# and add 1 to the corrects counter
 		game_db['challenges'][int(challenge)]['corrects'] = str(corrects_counter + 1)
@@ -191,8 +194,10 @@ def find_player_idx(_id):
 # this is for the challenge web settings
 def generate_settings():
 	settings = {}
+	# read the game db
 	game_db = get_memory('game')
-	settings['host'] = game_db['settings']['lambda api']
+	# 
+	settings['host'] = lambda_api
 	# if the sets are going for the login	
 	settings['title'] = game_db['settings']['title']
 	# now the ch
@@ -202,7 +207,6 @@ def generate_settings():
 		settings[f'ch{i+1}'] = display
 		# and the links for each challenge
 		settings[f'link{i+1}'] = f"http://{game_server}/game/challenge/{i}"
-	print(settings)
 	return settings
 
 # this see if a new advice is needed, send it
