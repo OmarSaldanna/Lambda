@@ -1,0 +1,6 @@
+#! /bin/bash
+
+echo Killing Lambda λ
+
+tmux kill-session -t lambda
+tmux kill-session -t discordo
