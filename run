@@ -1,0 +1,3 @@
+echo "Deploying Lambda λ"
+tmux new-session -s lambda python3 lambda/app.py
+tmux new-session -s discordo python3 discordo/app.py
