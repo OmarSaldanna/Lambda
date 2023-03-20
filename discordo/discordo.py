@@ -1,27 +1,3 @@
-import discord
-
-class Bot(discord.Client):
-  async def on_ready(self):
-    print('Logged on as', self.user)
-
-  async def on_message(self, message):
-    # don't respond to ourselves
-    if message.author == self.user:
-      return
-
-    if message.content == 'lambda':
-      await message.channel.send('Estoy aquí')
-
-
-def deploy_discord(token):
-  # instance the bot
-  intents = discord.Intents.default()
-  intents.message_content = True
-  # instance bot
-  bot = Bot(intents=intents)
-  # run bot
-  bot.run(token)
-
 """
 ######################## HELPER COMMAND #######################
 

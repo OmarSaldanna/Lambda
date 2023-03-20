@@ -8,9 +8,9 @@ from modules.controllers import * # here are all the lambda functions
 
 # load the keys, ports and tokens
 info = json.load(open('./info.json'))
-lambda_api_port = info['HOSTS']['lambda_port']
-lambda_api = info['HOSTS']['lambda']
-print(f"[SERVER] -> lambda server running in {lambda_api}/game")
+lambda_api_port = info['HOST']['lambda_port']
+lambda_api = info['HOST']['lambda_ip']
+print(f"[SERVER] -> lambda server running in {lambda_api}:{lambda_api_port}/lambda")
 
 
 # instance the flask app
@@ -18,19 +18,22 @@ app = Flask(__name__)
 CORS(app)
 
 # discord api for general commands
-#		   lambda how many chapters has steins;gate?
-#      lambda turn on the light 1
-# 		 lambda pon hikaru-nara
+# lambda how many chapters has steins;gate?
+# lambda turn on the light 1
+# lambda pon hikaru-nara
 @app.route('/lambda/discordo', methods=['GET'])
 def discordo():
 	if request.method == 'GET':
-  	# extract the message
- 		msg = request.headers.get('msg')
- 		# process the message
- 		ans = discord_msg(msg)
- 		# and send the anser
- 		return jsonify({'answer': ans})
- 		# para recibir, solamente es ans.json() y ya
+		# extract the message
+		msg = request.headers.get('msg')
+		print(f'\n[SERVER] -> /lambda/discordo: \n {msg}')
+		# process the message
+		ans = discord_msg(msg)
+		# and send the anser
+		print(f'[SERVER] -> Sending Answer: \n ans')
+		return jsonify({'answer': ans})
+		# para recibir, solamente es ans.json() y ya
+
 
 # discord api for specific commands:
 #     l turn on the light 1
@@ -44,61 +47,6 @@ def discordo_commands():
  		ans = discord_cmd(msg)
  		# and send the anser
  		return jsonify({'answer': ans})
-
-
-# telegram api
-@app.route('/lambda/telegram', methods=['GET'])
-def telegram():
-	if request.method == 'GET':
-  		# extract the message
- 		msg = request.headers.get('msg')
- 		return 'this is a get request'
-
-
-
-###############################################
-###############################################
-#		Game functionality                    #
-#		all the bellow is for web funcions    #
-###############################################
-###############################################
-
-
-
-# game: add players
-@app.route('/lambda/game/<name>/<_id>', methods=['GET'])
-def game(name, _id):
-	# append the player
-	msg = add_player((name,_id))
-	# send the response
-	return jsonify({'message': msg})
-
-# game: send answer to challenge
-@app.route('/lambda/game/challenge/<_id>/<challenge>/<answer>', methods=['GET'])
-def game_answers(_id, challenge, answer):
-	# check the answer
-	msg = check_answer((_id, challenge, answer))
-	# send the response
-	return jsonify({'message': msg})
-
-# game: get settings for the page
-@app.route('/lambda/game/challenge/settings', methods=['GET'])
-def game_settings():
-	# get the settings
-	settings = generate_settings()
-	# send the response
-	return jsonify({'settings': settings})
-
-# game: get the descritpion for the challenges
-@app.route('/lambda/game/challenge/info/<idx>', methods=['GET'])
-def challenge_descroption(idx):
-	# get the description
-	descritpion = get_challenge_description(int(idx))
-	# return it
-	return jsonify({'description': descritpion})
-
-
-# game: see leaderboard
 
 
 
