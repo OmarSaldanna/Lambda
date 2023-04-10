@@ -25,39 +25,12 @@ ai = AI(info['OPENAI'])
 telegram = Bot(info['TELEGRAM'],info['TELEGRAM_CHATS']['group'])
 
 
-# here the general commands come
-# main function to process the messages
-def discord_msg(msg):
-	# determine the command type
-	command_type, word = determine_command_type(msg)
-	print("")
-	# if it's a question, let gpt3 answer
-	if command_type == "question":
-		# use gpt3
-		print("[BRAIN] -> Using gpt3:")
-		return ai.gpt3(msg)
-	else:
-		# special funcions
-		print("using special function")
-		pass
 
-# it can be an order or a question
-def determine_command_type(msg):
-	# the verb will be the word after lambda
-	# and the server recieves the words after lambda
-	verb = msg.split(' ')[0]
-	# read db
-	vocab = get_memory('vocab')
-	# then compare the verb with the known verbs
-	word = ai.recognize_word(verb, vocab['verbos'])
-	# there were no coincidence
-	if not word:
-		return "question", 0
-	else: 
-		return "order", word
+# here is where the gpt call comes
+def discord_gpt(msg):
+	print("[BRAIN] -> Using gpt3:")
+	# return the answer from gpt3
+	return ai.gpt3(msg)
 
-
-# a verb was found, so the goal is to search the
-# object of the sentence to use the action
-def determine_service(sentence, verb):
-	pass
+def discord_comm(msg):
+	print("jaja")

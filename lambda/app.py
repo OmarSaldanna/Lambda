@@ -17,34 +17,28 @@ print(f"[SERVER] -> lambda server running in {lambda_api}:{lambda_api_port}/lamb
 app = Flask(__name__)
 CORS(app)
 
-# discord api for general commands
-# lambda how many chapters has steins;gate?
-# lambda turn on the light 1
-# lambda pon hikaru-nara
-@app.route('/lambda/discordo', methods=['GET'])
+# to use gpt3
+@app.route('/lambda/discordo/gpt', methods=['GET'])
 def discordo():
 	if request.method == 'GET':
 		# extract the message
 		msg = request.headers.get('msg')
-		print(f'\n[SERVER] -> /lambda/discordo: \n {msg}')
+		print(f'\n[SERVER] -> /lambda/discordo/gpt: \n {msg}')
 		# process the message
-		ans = discord_msg(msg)
+		ans = discord_gpt(msg)
 		# and send the anser
-		print(f'[SERVER] -> Sending Answer: \n ans')
+		print(f'[SERVER] -> Sending Answer: \n {ans}')
 		return jsonify({'answer': ans})
-		# para recibir, solamente es ans.json() y ya
 
 
-# discord api for specific commands:
-#     l turn on the light 1
-#     l request
+# discord api for specific commands
 @app.route('/lambda/discordo/commands', methods=['GET'])
 def discordo_commands():
 	if request.method == 'GET':
   	# extract the message
  		msg = request.headers.get('msg')
  		# process the message
- 		ans = discord_cmd(msg)
+ 		ans = discord_comm(msg)
  		# and send the anser
  		return jsonify({'answer': ans})
 
