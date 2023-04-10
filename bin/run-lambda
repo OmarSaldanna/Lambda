@@ -1,0 +1,6 @@
+#! /bin/bash
+
+echo "Deploying Lambda λ"
+route=/home/ubuntu/Lambda
+tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
+tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
