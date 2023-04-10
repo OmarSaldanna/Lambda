@@ -1,4 +1,4 @@
-# Lambda
+# Lambda <3
 
 [https://github.com/OmarSaldanna/Lambda](https://github.com/OmarSaldanna/Lambda)
 
