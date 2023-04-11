@@ -25,7 +25,6 @@ bot = commands.Bot(command_prefix='-', intents=intents)
 vips = info['VIPS']
 
 
-
 # when the bot starts running
 @bot.event
 async def on_ready():
@@ -39,11 +38,12 @@ async def on_message(message):
 
   # to verify that lambda is alive
   if message.content in ['tas', 'estas']:
-    print(message.author)
+    #print(message.author)
+    #print(str(message.author) in vips)
     await message.channel.send('of cors pa')
 
   # to use gpt3, restricted use to my close friends
-  if message.content.split(' ')[0] in ['lambda', 'Lambda'] and message.author in vips:
+  if message.content.split(' ')[0] in ['lambda', 'Lambda'] and str(message.author) in vips:
     # then consult to lambda
     print(f'[DISCORD] -> Using GPT3 -> {message.content}')
     # select the message content after the "lambda"
