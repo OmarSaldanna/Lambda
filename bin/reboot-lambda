@@ -1,8 +1,0 @@
-#! /bin/bash
-
-
-echo rebooting lambda λ
-
-kill-lambda
-sleep 5
-run-lambda
