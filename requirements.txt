@@ -1,0 +1,7 @@
+numpy
+flask
+flask_cors
+openai
+discord
+telebot
+
