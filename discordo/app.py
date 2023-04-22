@@ -50,7 +50,7 @@ async def on_message(message):
     # if the admin run an update
     if commands == 'lambda rupdate':
       print(f'[DISCORD] -> running lambda rupdate')
-      await message.channel.send("awantame mano me ando updateando")
+      await message.channel.send("actualizando windows...")
       # open a new session in tmux with the script to rupdate and kill the session
       command = 'tmux new-session -d -s rupdate "cd $HOME/Lambda && lambda rupdate && tmux kill-session -t rupdate"'
 
