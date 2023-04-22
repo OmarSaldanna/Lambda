@@ -48,7 +48,7 @@ async def on_message(message):
     commands = message.content[1:]
     print(f'[DISCORD] -> access lambda-cli {commands}')
     # then send the comands to the terminal
-    res = os.system(commands)
+    res = os.popen(commands).read()
     await message.channel.send(str(res))
 
 
