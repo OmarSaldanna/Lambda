@@ -45,7 +45,7 @@ async def on_message(message):
   # admin functions for the lambda cli
   # send commands via discord and print the output in discord
   if message.content[0] == '$' and str(message.author) == admin:
-    commands = message.content[1:]
+    commands = message.content[2:]
 
     # if the admin run an update
     if commands == 'lambda rupdate':
