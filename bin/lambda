@@ -79,6 +79,7 @@ case $1 in
 		if [ "$(pwd)" != "$HOME/Lambda" ]; then
 			echo -> You have to be in $HOME/Lambda
 			exit
+		fi
 		# if it is on the correct place
 		echo Let me install me in your machine
 		# lambda must be in $HOME/Lambda
