@@ -46,10 +46,20 @@ async def on_message(message):
   # send commands via discord and print the output in discord
   if message.content[0] == '$' and str(message.author) == admin:
     commands = message.content[1:]
-    print(f'[DISCORD] -> access lambda-cli {commands}')
-    # then send the comands to the terminal
-    res = os.popen(commands).read()
-    await message.channel.send(str(res))
+
+    # if the admin run an update
+    if commands == 'lambda rupdate':
+      print(f'[DISCORD] -> running lambda rupdate')
+      # open a new session in tmux with the script to rupdate and kill the session
+      command = 'tmux new-session -d -s rupdate "cd $HOME/Lambda && lambda rupdate &&  tmux kill-session -t rupdate"'
+      os.system()
+
+    else: 
+      print(f'[DISCORD] -> access lambda-cli {commands}')
+
+      # then send the comands to the terminal
+      res = os.popen(commands).read()
+      await message.channel.send(str(res))
 
 
   # to use gpt3, restricted use to my close friends
