@@ -53,18 +53,18 @@ async def on_message(message):
       await message.channel.send("actualizando mi windows...")
       # open a new session in tmux with the script to rupdate and kill the session
       command = 'tmux new-session -d -s rupdate "cd $HOME/Lambda && lambda rupdate && tmux kill-session -t rupdate"'
-
-      res = os.popen(command).read()
+      # run the command
+      os.popen(command).read()
 
 
     else: 
       print(f'[DISCORD] -> access lambda-cli {commands}')
-
       # then send the comands to the terminal
-      try:
-        res = os.popen(commands).read()
-      except:
+      res = os.popen(commands).read()
+      # if the command is not correct, res will be ''
+      if res == '':
         res = "Tu comando todo ñengo no jaló mano"
+      # and discord throws error sending empty messages
       await message.channel.send(str(res))
 
 
@@ -93,8 +93,6 @@ async def on_message(message):
     ans = requests.get(lambda_api + '/commands', headers={'msg':msg}).json()
     print(ans['answer'])
     await message.channel.send(ans['answer'])
-
-
 
 
 # run the bot
