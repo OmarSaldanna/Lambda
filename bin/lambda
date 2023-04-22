@@ -73,9 +73,34 @@ case $1 in
 		rm -rf lbackup$date
 	;;
 
+	# when lambda is new on the server, run all the configurations
+	install)
+		# the command must be ran in $HOME/Lambda
+		if [ "$(pwd)" != "$HOME/Lambda" ]; then
+			echo -> You have to be in $HOME/Lambda
+			exit
+		# if it is on the correct place
+		echo Let me install me in your machine
+		# lambda must be in $HOME/Lambda
+		echo -> I will be in $HOME/Lambda
+		# create the backup folder
+		echo -> creating backup folder...
+		mkdir backups
+		# give permisions to the bin files
+		echo -> setting permissions to the bin files...
+		chmod 700 bin/lambda
+		# install the python libraries to work
+		echo -> installing python dependencies...
+		pip3 install -r requirements.txt
+		# the final settings
+		echo -e "\n\n->We're almost there..."
+		echo -> add $HOME/Lambda/bin to $PATH
+		echo -> add "14 15 * * 0 lambda rupdate && lambda backup" to the cron
+		echo -> and the info.json and the data/ from the backups
+	;;
 
 	*)
 		echo Unknown Command:
-		echo lambda "[run|kill|update|reboot|rupdate|backups]"
+		echo lambda "[run|kill|update|reboot|rupdate|backups|install]"
 	;;
 esac
