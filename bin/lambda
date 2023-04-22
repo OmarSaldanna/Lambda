@@ -56,9 +56,26 @@ case $1 in
 		tmux ls
 	;;
 
+	# backup from all the memory files
+	backup)
+		cd $route
+		echo Making Lambda Backup λ
+		# date label to name the file
+		date=$(date +%d-%m-%Y)
+		# create the folder for the files
+		mkdir lbackup$date
+		# copy the important files to the folder
+		cp info.json lbackup$date/info.json
+		cp -r lambda/modules/data lbackup$date/data
+		# make the backup from data and add info.json
+		tar cvzf backups/lbackup$date.tar.gz lbackup$date/
+		# remove the backup file
+		rm -rf lbackup$date
+	;;
+
 
 	*)
 		echo Unknown Command:
-		echo lambda "[run|kill|update|reboot|rupdate]"
+		echo lambda "[run|kill|update|reboot|rupdate|backups]"
 	;;
 esac

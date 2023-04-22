@@ -6,6 +6,9 @@ music
 share
 __pycache__
 
+# folder with the lambda backups
+backups
+
 
 # Ignore Mac system files
 *.DS_Store
