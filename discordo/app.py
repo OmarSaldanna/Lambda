@@ -3,7 +3,6 @@ import json
 import discord
 import requests
 from discord.ext import commands
-os.system('clear')
 
 # load the token
 info = json.load(open('./info.json'))
@@ -23,7 +22,8 @@ bot = commands.Bot(command_prefix='-', intents=intents)
 
 # vip list: close friends that are allowed to use GPT
 vips = info['VIPS']
-
+# admin: me, for lambda backups and lambda-cli
+admin = info['ADMIN']
 
 # when the bot starts running
 @bot.event
@@ -37,10 +37,20 @@ async def on_message(message):
     return
 
   # to verify that lambda is alive
-  if message.content in ['tas', 'estas']:
-    #print(message.author)
-    #print(str(message.author) in vips)
-    await message.channel.send('of cors pa')
+  if message.content in ['tas']:
+    print(f'[DISCORD] -> Ping from {message.author}')
+    await message.channel.send('chi :3')
+
+  
+  # admin functions for the lambda cli
+  # send commands via discord and print the output in discord
+  if message.content[0] == '$' and message.author == admin:
+    commands = message.content
+    print(f'[DISCORD] -> access lambda-cli {commands}')
+    # then send the comands to the terminal
+    res = os.system(commands)
+    await message.channel.send(str(res))
+
 
   # to use gpt3, restricted use to my close friends
   if message.content.split(' ')[0] in ['lambda', 'Lambda'] and str(message.author) in vips:
@@ -55,6 +65,7 @@ async def on_message(message):
     # send the answer to discord
     await message.channel.send(ans['answer'])
 
+  
   # to use an specific command that requires memory or sth
   elif message.content.split(' ')[0] in ['l', 'L']:
     # then consult to lambda
@@ -66,6 +77,9 @@ async def on_message(message):
     ans = requests.get(lambda_api + '/commands', headers={'msg':msg}).json()
     print(ans['answer'])
     await message.channel.send(ans['answer'])
+
+
+
 
 # run the bot
 bot.run(token)
