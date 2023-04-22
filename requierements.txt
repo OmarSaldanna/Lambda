@@ -1,6 +1,0 @@
-numpy
-openai
-flask
-flask_cors
-discord
-telebot
