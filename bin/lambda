@@ -27,7 +27,6 @@ case $1 in
 		echo Rebooting Lambda λ
 		tmux kill-session -t lambda
         tmux kill-session -t discordo
-		sleep 15
 		echo Restarting Lambda λ
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
         tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
@@ -46,12 +45,10 @@ case $1 in
 		echo Killing Lambda λ
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
-		sleep 5
 		# update lambda
 		echo Updating Lambda λ
 		cd $route
 		git fetch && git merge origin/main
-		sleep 5
 		# and run lambda again
 		echo Running Lambda λ
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
