@@ -4,7 +4,7 @@
 # correcta words fo1r each lambda command available.
 
 from modules.models.lwr import Lambda_Word_Recognizer
-from modules.models.gpt3 import GPT3
+from modules.models.gpt import GPT
 
 # the purpose of this class is to give the model an
 # eassier use and then use the model for correct almost
@@ -24,7 +24,7 @@ class AI:
     self.lwr = Lambda_Word_Recognizer(missing_char_number=missing_char_number)
 
     # gpt-3 instance
-    self.gpt3 = GPT3(openai_token)
+    self.gpt = GPT(openai_token)
 
   # this is the general purpose function
   def check_sentence(self, word, word_list, sentence):
@@ -57,6 +57,6 @@ class AI:
   # this will be for the "lambda commands", like alexa
   # first working with gpt-3
   def gpt3(self, sentence):
-    return self.gpt3(sentence)
+    return self.gpt(sentence)
 
 print('[BRAIN] -> IA prepared')
