@@ -9,6 +9,8 @@ __pycache__
 # folder with the lambda backups
 backups
 
+# the log file
+log.txt
 
 # Ignore Mac system files
 *.DS_Store
