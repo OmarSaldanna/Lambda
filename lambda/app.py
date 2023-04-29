@@ -43,7 +43,5 @@ def discordo_commands():
  		return jsonify({'answer': ans})
 
 
-
-
-# run the app
-app.run(port=lambda_api_port, host="0.0.0.0", debug=True)
+# run the app, on localhost only
+app.run(port=lambda_api_port, host="127.0.0.1", debug=True)
