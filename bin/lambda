@@ -61,16 +61,18 @@ case $1 in
 		cd $route
 		echo Making Lambda Backup λ
 		# date label to name the file
-		date=$(date +%d-%m-%Y)
+		date=$(date +%m-%d-%Y)
 		# create the folder for the files
-		mkdir lbackup$date
+		mkdir $date-backup
 		# copy the important files to the folder
-		cp info.json lbackup$date/info.json
-		cp -r lambda/modules/data lbackup$date/data
+		cp log.txt $date-backup/log.txt
+		cp info.json $date-backup/info.json
+		cp services.json $date-backup/services.json
+		cp -r lambda/modules/data $date-backup/data
 		# make the backup from data and add info.json
-		tar cvzf backups/lbackup$date.tar.gz lbackup$date/
+		tar cvzf backups/$date-backup.tar.gz $date-backup/
 		# remove the backup file
-		rm -rf lbackup$date
+		rm -rf $date-backup
 	;;
 
 	# when lambda is new on the server, run all the configurations
