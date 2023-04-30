@@ -5,7 +5,7 @@ import requests
 from discord.ext import commands
 
 # load the token
-info = json.load(open('./info.json'))
+info = json.load(open('./ram/info.json'))
 token = info['DISCORDO']
 lambda_ip = info['HOST']['lambda_ip']
 lambda_port = info['HOST']['lambda_port']
