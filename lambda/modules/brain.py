@@ -5,6 +5,7 @@
 
 from modules.models.lwr import Lambda_Word_Recognizer
 from modules.models.gpt import GPT
+from modules.memory import app_to_log
 
 # the purpose of this class is to give the model an
 # eassier use and then use the model for correct almost
@@ -59,4 +60,5 @@ class AI:
   def gpt3(self, sentence):
     return self.gpt(sentence)
 
-print('[BRAIN] -> IA prepared')
+# send the initial message to the log file
+app_to_log('[BRAIN] -> IA prepared\n')

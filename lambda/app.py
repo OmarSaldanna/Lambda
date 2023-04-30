@@ -1,16 +1,15 @@
-import os
-os.system('clear')
-import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from modules.controllers import * # here are all the lambda functions
+from modules.memory import get_memory, app_to_log
 
 
-# load the keys, ports and tokens
-info = json.load(open('./info.json'))
-lambda_api_port = info['HOST']['lambda_port']
-lambda_api = info['HOST']['lambda_ip']
-print(f"[SERVER] -> lambda server running in {lambda_api}:{lambda_api_port}/lambda")
+# load the port and the host
+info = get_memory('info')
+port = info['HOST']['lambda_port']
+host = info['HOST']['lambda_ip']
+# add the initial message to the logs
+app_to_log(f"[LAMBDA] -> lambda server running in {host}:{port}/lambda\n")
 
 
 # instance the flask app
@@ -21,13 +20,15 @@ CORS(app)
 @app.route('/lambda/discordo/gpt', methods=['GET'])
 def discordo():
 	if request.method == 'GET':
-		# extract the message
+		# extract the message from the request
 		msg = request.headers.get('msg')
-		print(f'\n[SERVER] -> /lambda/discordo/gpt: \n {msg}')
 		# process the message
-		ans = discord_gpt(msg)
+		ans, log = discord_gpt(msg)
+		# add the usage to the log file
+		message = f'[LAMBDA] -> /lambda/discordo/gpt:\n{msg}\n{log}'
+		answer = f'\n[LAMBDA] -> Sending Answer:\n{ans}\n\n'
+		app_to_log(f'{message}{answer}')
 		# and send the anser
-		print(f'[SERVER] -> Sending Answer: \n {ans}')
 		return jsonify({'answer': ans})
 
 
@@ -44,4 +45,4 @@ def discordo_commands():
 
 
 # run the app, on localhost only
-app.run(port=lambda_api_port, host="127.0.0.1", debug=True)
+app.run(port=port, host=host, debug=True)

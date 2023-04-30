@@ -39,7 +39,7 @@ async def on_message(message):
   # to verify that lambda is alive
   if message.content in ['tas']:
     print(f'[DISCORD] -> Ping from {message.author}')
-    await message.channel.send('chi :3')
+    await message.channel.send('of cors')
 
   
   # admin functions for the lambda cli

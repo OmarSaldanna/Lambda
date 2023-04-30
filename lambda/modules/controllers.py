@@ -1,12 +1,11 @@
-import json
-# the lambda modules: ai and memory
+# the lambda modules: ai, memory and telegram interface
 from modules.brain import AI
-from modules.memory import get_memory
+from modules.memory import get_memory, app_to_log
 from modules.telegram import Bot
 
 
 # load the keys, ports and tokens
-info = json.load(open('./info.json'))
+info = get_memory('info')
 
 # set the ai and telegram
 ai = AI(info['OPENAI'])
@@ -15,9 +14,9 @@ ai = AI(info['OPENAI'])
 
 # here is where the gpt call comes
 def discord_gpt(msg):
-	print("[BRAIN] -> Using gpt3:")
+	log = "[BRAIN] -> Using gpt3:"
 	# return the answer from gpt3
-	return ai.gpt3(msg)
+	return ai.gpt3(msg), log
 
 def discord_comm(msg):
 	print("jaja")
