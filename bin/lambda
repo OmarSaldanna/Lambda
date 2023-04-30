@@ -71,6 +71,8 @@ case $1 in
 		tar cvzf backups/$date-backup.tar.gz $date-backup/
 		# remove the backup file
 		rm -rf $date-backup
+		# and clear the log file
+		echo "" > ram/log.txt
 	;;
 
 	# when lambda is new on the server, run all the configurations
