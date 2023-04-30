@@ -56,7 +56,7 @@ case $1 in
 		tmux ls
 	;;
 
-	# backup from all the memory files
+	# backup from all the memory files. located in ram and data
 	backup)
 		cd $route
 		echo Making Lambda Backup λ
@@ -65,10 +65,8 @@ case $1 in
 		# create the folder for the files
 		mkdir $date-backup
 		# copy the important files to the folder
-		cp log.txt $date-backup/log.txt
-		cp info.json $date-backup/info.json
-		cp services.json $date-backup/services.json
 		cp -r lambda/modules/data $date-backup/data
+		cp -r ram $date-backup/ram
 		# make the backup from data and add info.json
 		tar cvzf backups/$date-backup.tar.gz $date-backup/
 		# remove the backup file
