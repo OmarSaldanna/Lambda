@@ -3,6 +3,7 @@ import json
 import discord
 import requests
 from discord.ext import commands
+from utils import send_message
 
 # load the token
 info = json.load(open('./ram/info.json'))
@@ -39,14 +40,13 @@ async def on_message(message):
   # to verify that lambda is alive
   if message.content in ['tas']:
     print(f'[DISCORD] -> Ping from {message.author}')
-    await message.channel.send('of cors')
+    await message.channel.send('of cors pa')
 
   
   # admin functions for the lambda cli
   # send commands via discord and print the output in discord
   if message.content[0] == '$' and str(message.author) == admin:
     commands = message.content[2:]
-
     # if the admin run an update
     if commands == 'lambda rupdate':
       print(f'[DISCORD] -> running lambda rupdate')
@@ -65,7 +65,8 @@ async def on_message(message):
       if res == '':
         res = "Tu comando todo ñengo no jaló mano"
       # and discord throws error sending empty messages
-      await message.channel.send(str(res))
+      send_message(str(res), message)
+      # await message.channel.send(str(res))
 
 
   # to use gpt3, restricted use to my close friends
@@ -79,7 +80,8 @@ async def on_message(message):
     ans = requests.get(lambda_api + '/gpt', headers={'msg':msg}).json()
     print(ans['answer'])
     # send the answer to discord
-    await message.channel.send(ans['answer'])
+    send_message(ans['answer'], message)
+    # await message.channel.send(ans['answer'])
 
   
   # to use an specific command that requires memory or sth
