@@ -43,7 +43,7 @@ async def on_message(message):
     # lambda-cli, starts with a $
     if message.content[0] == '$' and str(message.author) == admin:
         # this is for the log
-        app_to_log(f'\n[DISCORD] -> Admin on lambda-cli -> {message.content[2:]}\n')
+        app_to_log(f'[DISCORD] -> Admin on lambda-cli -> {message.content[2:]}\n')
         # use the lambda_cli controller
         pieces = controllers.lambda_cli(message)
         # send the message or messages
