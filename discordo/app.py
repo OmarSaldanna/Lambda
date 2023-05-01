@@ -1,9 +1,8 @@
-import os
 import json
 import discord
-import requests
+import controllers
 from discord.ext import commands
-from utils import split_text
+
 
 # load the token
 info = json.load(open('./ram/info.json'))
@@ -29,79 +28,49 @@ admin = info['ADMIN']
 # when the bot starts running
 @bot.event
 async def on_ready():
-  print(f'im alive perros')
+    print(f'im alive perros')
 
 # when a message came
 @bot.event
 async def on_message(message):
-  if message.author == bot.user:
-    return
+    if message.author == bot.user:
+        return
 
-  # to verify that lambda is alive
-  if message.content in ['tas']:
-    print(f'[DISCORD] -> Ping from {message.author}')
-    await message.channel.send('of cors pa')
-
-  
-  # lambda cli
-  # send commands via discord and print the output in discord
-  if message.content[0] == '$' and str(message.author) == admin:
-    commands = message.content[2:]
-    # if the admin run an update
-    if commands == 'lambda rupdate':
-      print(f'[DISCORD] -> running lambda rupdate')
-      await message.channel.send("actualizando mi windows...")
-      # open a new session in tmux with the script to rupdate and kill the session
-      command = 'tmux new-session -d -s rupdate "cd $HOME/Lambda && lambda rupdate && tmux kill-session -t rupdate"'
-      # run the command
-      os.popen(command).read()
-
-    # if it was a simple command      
-    else: 
-      print(f'[DISCORD] -> access lambda-cli {commands}')
-      # then send the comands to the terminal
-      res = os.popen(commands).read()
-      # if the command is not correct, res will be ''
-      if res == '':
-        # and discord throws error sending empty messages
-        res = "Tu comando todo ñengo no jaló mano"
-      # if the result it's larger than discord's limit
-      if len(res) > 2000:
-        # split the text in pieces
-        pieces = split_text(res, 2000)
-        # send piece by piece
+    # Admin level
+    # lambda-cli, starts with a $
+    if message.content[0] == '$' and str(message.author) == admin:
+        print(f'[DISCORD] -> Admin on lambda-cli -> ')
+        # use the lambda_cli controller
+        pieces = controllers.lambda_cli(message)
+        # send the message or messages
         for p in pieces:
-          await message.channel.send(p)
-        # send a final confirmation
-        await message.channel.send("mames, it's so fucking big")
-      else:
-        await message.channel.send(msg)
+            await message.channel.send(p)
 
-  # gpt3 usage
-  # to use gpt3, restricted use to my close friends
-  if message.content.split(' ')[0] in ['lambda', 'Lambda'] and str(message.author) in vips:
-    # then consult to lambda
-    print(f'[DISCORD] -> Using GPT3 -> {message.content}')
-    # select the message content after the "lambda"
-    msg = message.content.split(' ')[1:]
-    msg = ' '.join(msg)
-    # consult to lambda
-    ans = requests.get(lambda_api + '/gpt', headers={'msg':msg}).json()
-    print(ans['answer'])
-    # send the answer to discord
-    # if the result it's larger than discord's limit
-    if len(ans['answer']) > 2000:
-      # split the text in pieces
-      pieces = split_text(ans['answer'], 2000)
-      # send piece by piece
-      for p in pieces:
-        await message.channel.send(p)
-      # send a final confirmation
-      await message.channel.send("mames, it's so fucking big")
-    else:
-      await message.channel.send(msg)
+    # VIP Level:
+    # status #
+    # chat gpt #
+    # some services
+    # fast research
+    # save stuf
+    elif str(message.author) in vips:
 
-  
+        # status
+        if message.content in ['tas', 'tas?', 'Tas?']:
+          print(f'[DISCORD] -> Ping from {message.author}')
+          # confirmation messgae
+          await message.channel.send('of cors pa')
+
+        # gpt3 usage
+        elif message.content[:7] in ['lambda ', 'Lambda ']:
+            print(f'[DISCORD] -> Admin on lambda-cli -> ')
+            # use the chat_gpt controller
+            pieces = controllers.chat_gpt(message, lambda_api)
+            # send the message or messages
+            for p in pieces:
+                await message.channel.send(p)
+
+
+"""  
   # to use an specific command that requires memory or sth
   elif message.content.split(' ')[0] in ['l', 'L']:
     # then consult to lambda
@@ -113,7 +82,7 @@ async def on_message(message):
     ans = requests.get(lambda_api + '/commands', headers={'msg':msg}).json()
     print(ans['answer'])
     await message.channel.send(ans['answer'])
-
+"""
 
 # run the bot
 bot.run(token)
