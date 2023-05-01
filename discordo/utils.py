@@ -7,7 +7,7 @@ def split_text(text, n):
 # greater than 2K characters that discord don't acept. So
 # send multiple messages if the msg is too large
 # msg is the text, and message is the discord instance
-def send_message(msg, message):
+async def send_message(msg, message):
 	if len(msg) > 2000:
 		# split the text in pieces
 		pieces = split_text(msg, 2000)
