@@ -16,4 +16,3 @@ async def send_message(msg, message):
 			await message.channel.send(p)
 	else:
 		await message.channel.send(msg)
-

@@ -3,7 +3,7 @@ import json
 import discord
 import requests
 from discord.ext import commands
-from utils import send_message
+from utils import split_text
 
 # load the token
 info = json.load(open('./ram/info.json'))
@@ -43,7 +43,7 @@ async def on_message(message):
     await message.channel.send('of cors pa')
 
   
-  # admin functions for the lambda cli
+  # lambda cli
   # send commands via discord and print the output in discord
   if message.content[0] == '$' and str(message.author) == admin:
     commands = message.content[2:]
@@ -56,19 +56,28 @@ async def on_message(message):
       # run the command
       os.popen(command).read()
 
-
+    # if it was a simple command      
     else: 
       print(f'[DISCORD] -> access lambda-cli {commands}')
       # then send the comands to the terminal
       res = os.popen(commands).read()
       # if the command is not correct, res will be ''
       if res == '':
+        # and discord throws error sending empty messages
         res = "Tu comando todo ñengo no jaló mano"
-      # and discord throws error sending empty messages
-      send_message(str(res), message)
+      # if the result it's larger than discord's limit
+      if len(res) > 2000:
+        # split the text in pieces
+        pieces = split_text(res, 2000)
+        # send piece by piece
+        for p in pieces:
+          await message.channel.send(p)
+      else:
+        await message.channel.send(msg)
       # await message.channel.send(str(res))
 
 
+  # gpt3 usage
   # to use gpt3, restricted use to my close friends
   if message.content.split(' ')[0] in ['lambda', 'Lambda'] and str(message.author) in vips:
     # then consult to lambda
