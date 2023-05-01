@@ -72,10 +72,10 @@ async def on_message(message):
         # send piece by piece
         for p in pieces:
           await message.channel.send(p)
+        # send a final confirmation
+        await message.channel.send("mames, it's so fucking big")
       else:
         await message.channel.send(msg)
-      # await message.channel.send(str(res))
-
 
   # gpt3 usage
   # to use gpt3, restricted use to my close friends
@@ -89,8 +89,17 @@ async def on_message(message):
     ans = requests.get(lambda_api + '/gpt', headers={'msg':msg}).json()
     print(ans['answer'])
     # send the answer to discord
-    send_message(ans['answer'], message)
-    # await message.channel.send(ans['answer'])
+    # if the result it's larger than discord's limit
+    if len(ans['answer']) > 2000:
+      # split the text in pieces
+      pieces = split_text(ans['answer'], 2000)
+      # send piece by piece
+      for p in pieces:
+        await message.channel.send(p)
+      # send a final confirmation
+      await message.channel.send("mames, it's so fucking big")
+    else:
+      await message.channel.send(msg)
 
   
   # to use an specific command that requires memory or sth
