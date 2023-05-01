@@ -1,7 +1,8 @@
 import json
 import discord
-import controllers
+from modules import controllers
 from discord.ext import commands
+from modules.memory import app_to_log
 
 
 # load the token
@@ -28,7 +29,9 @@ admin = info['ADMIN']
 # when the bot starts running
 @bot.event
 async def on_ready():
-    print(f'im alive perros')
+    print('[DISCORDO] -> Lambda -> im alive')
+    app_to_log('[DISCORDO] -> Lambda -> im alive\n')
+
 
 # when a message came
 @bot.event
@@ -39,7 +42,8 @@ async def on_message(message):
     # Admin level
     # lambda-cli, starts with a $
     if message.content[0] == '$' and str(message.author) == admin:
-        print(f'[DISCORD] -> Admin on lambda-cli -> ')
+        # this is for the log
+        app_to_log(f'\n[DISCORD] -> Admin on lambda-cli -> {message.content[2:]}\n')
         # use the lambda_cli controller
         pieces = controllers.lambda_cli(message)
         # send the message or messages
@@ -56,15 +60,17 @@ async def on_message(message):
 
         # status
         if message.content in ['tas', 'tas?', 'Tas?']:
-          print(f'[DISCORD] -> Ping from {message.author}')
+          app_to_log(f'[DISCORD] -> Ping from {message.author}\n')
           # confirmation messgae
           await message.channel.send('of cors pa')
 
         # gpt3 usage
         elif message.content[:7] in ['lambda ', 'Lambda ']:
-            print(f'[DISCORD] -> Admin on lambda-cli -> ')
+            app_to_log(f'\n[DISCORD] -> {message.author} on chat gpt -> {message.content}\n')
             # use the chat_gpt controller
             pieces = controllers.chat_gpt(message, lambda_api)
+            # add to log the answer
+            app_to_log(f"{''.join(pieces)}\n")
             # send the message or messages
             for p in pieces:
                 await message.channel.send(p)

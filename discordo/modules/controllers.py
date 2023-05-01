@@ -47,12 +47,12 @@ def lambda_cli(message):
 
 def chat_gpt(message, lambda_api):
     # then consult to lambda
-	print(f'[DISCORD] -> Using GPT3 -> {message.content}')
+	# print(f'[DISCORD] -> Using GPT3 -> {message.content}')
     # select the message content after the "lambda "
 	msg = str(message.content)[7:]
     # consult to lambda
 	ans = requests.get(lambda_api + '/gpt', headers={'msg':msg}).json()
-	print(ans['answer'])
+	# print(ans['answer'])
     # if the result it's larger than discord's limit
 	if len(ans['answer']) > 2000:
 		# split the text in pieces
