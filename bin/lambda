@@ -96,7 +96,7 @@ case $1 in
 		# remove the unziped folder
 		echo removing the checkpoint folder
 		rmdir $folder
-		rmdir checkpoint.tar.gz
+		rm checkpoint.tar.gz
 		echo Lambda Checpoint Saved λ
 	;;
 
