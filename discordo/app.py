@@ -59,7 +59,11 @@ async def on_message(message):
         # the admin manual
         if message.content == 'aman':
             app_to_log(f'[DISCORD] -> {message.author} admin manual\n')
-            await message.channel.send(controllers.get_admin_manual())
+            # get the message by pieces
+            pieces = controllers.get_admin_manual()
+            # send the pieces
+            for p in pieces:
+                await message.channel.send(p)
 
         # member admin
         if message.content[:7] == 'member ':
@@ -101,9 +105,8 @@ async def on_message(message):
     # VIP Level:
     # status #
     # chat gpt #
-    # save stuff 
-    # give stuff 
-    # fast research 
+    # save stuff #
+    # give stuff #
     # some services
     if str(message.author) in vips:
 
@@ -116,8 +119,11 @@ async def on_message(message):
         # to see the manual of available functions
         if message.content in ['man', 'manual', 'Manual']:
             app_to_log(f'[DISCORD] -> {message.author} manual\n')
-            # return the lambda manual
-            await message.channel.send(controllers.get_manual())
+            # get the message by pieces
+            pieces = controllers.get_manual()
+            # send the pieces
+            for p in pieces:
+                await message.channel.send(p)
 
         # gpt3 usage
         elif message.content[:7] in ['lambda ', 'Lambda ']:

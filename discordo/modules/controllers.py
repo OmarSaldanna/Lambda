@@ -47,7 +47,7 @@ def lambda_cli(message):
 
 
 def get_admin_manual():
-	return """
+	return split_text("""
             **Manual de Admin**
 
             ** Lambda CLI **
@@ -71,7 +71,7 @@ def get_admin_manual():
             > **Ejemplo**
             *aman*
             > **Descripción:** es en escencia el mensaje que despliega el manual del adninistrador, que `explica a detalle las funciones propias del administrador de lambda.`
-        	"""
+        	""", 2000)
 
 
 # simplificar a controllers las funciones de members
@@ -140,7 +140,7 @@ def chat_gpt(message, lambda_api):
 
 
 def get_manual():
-	return """
+	return split_text("""
                 **Manual de Usuario**
 
                 ** Chat GPT **
@@ -179,7 +179,7 @@ def get_manual():
                 *Tas*
                 *tas*
                 > **Descripción:** `Básicamente es un mensaje que informa si lambda se encuentra activo y operando correctamente` Responderá de la manera más rápida posible.
-                """
+                """, 2000)
 
 def save_stuff(message):
     # get the memory
