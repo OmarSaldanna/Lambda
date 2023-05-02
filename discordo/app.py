@@ -6,14 +6,14 @@ from modules.memory import *
 
 # load the token
 info = get_memory('info')
+# requirements to run discord app
 token = info['DISCORDO']
 lambda_ip = info['HOST']['lambda_ip']
 lambda_port = info['HOST']['lambda_port']
 # the lambda api url
 lambda_api = f'http://{lambda_ip}:{lambda_port}/lambda/discordo'
-
-# vip list: close friends that are allowed to use GPT
-# admin: me, for lambda backups and lambda-cli
+# vip list: close friends that are allowed to use Lambda
+# admin: me, for lambda-cli, members and other functions
 admin = info['ADMIN']
 vips = info['VIPS']
 
@@ -56,32 +56,27 @@ async def on_message(message):
             for p in pieces:
                 await message.channel.send(p)
 
+        # the admin manual
+        if message.content == 'aman':
+            app_to_log(f'[DISCORD] -> {message.author} admin manual\n')
+            await message.channel.send(controllers.get_admin_manual())
+
         # member admin
         if message.content[:7] == 'member ':
-            print(message.content[7:])
             # add user
             if message.content[7:10] == 'add':
-                # user will be the third argument
-                user = message.content.split(' ')[2]
-                # if the user is already in vips
-                if user in vips:
-                    app_to_log(f'[DISCORD] -> Admin on members -> tried to add {user}\n')
-                    await message.channel.send(f"> {user} ya está con dios")
-                # if the user is not in vips yet
-                else:
-                    app_to_log(f'[DISCORD] -> Admin on members -> added {user}\n')    
-                    # append the user
-                    info['VIPS'].append(user)
-                    # write changes
-                    info.write()
-                    # and refresh
-                    refresh_users(vips)
-                    # send confirmation
-                    await message.channel.send(f"> Bienvenido {user} a la buena vida pa")
+                # use the controller
+                msg, log = controllers.add_member(message, vips, info)
+                # make the log
+                app_to_log(log)
+                # and send the message
+                await message.channel.send(msg)
 
             # see users
             elif message.content[7:] == 'see':
+                # make the log
                 app_to_log(f'[DISCORD] -> Admin on members -> seen members\n')
+                # and send the result
                 await message.channel.send("**Lista de VIPs**")
                 # show all the vip users
                 for user in vips:
@@ -89,28 +84,14 @@ async def on_message(message):
             
             # delete user
             elif message.content[7:10] == 'del':
-                # user will be the third argument
-                user = message.content.split(' ')[2]
-                # try to delete the user
-                try:
-                    # find the idx
-                    idx = vips.index(user)
-                    # delete it from vips
-                    info['VIPS'].pop(idx)
-                    # save changes
-                    info.write()
-                    # and refresh
-                    refresh_users(vips)
-                    msg = f"> {user} exitosamente bajado del cielo"
-                    app_to_log(f'[DISCORD] -> Admin on members -> deleted {user}\n')
-                # if there's no user in vips
-                except:
-                    app_to_log(f'[DISCORD] -> Admin on members -> tried to delete {user}\n')
-                    msg = "> No apareció el wey"
-                # finally send the mesage
+                # use the controller
+                msg, log = controllers.delete_member(message, vips, info)
+                # make the log
+                app_to_log(log)
+                # and send the message
                 await message.channel.send(msg)
-                
 
+            # command not understood                
             else:
                 app_to_log(f'[DISCORD] -> Admin on members -> bad command\n')
                 await message.channel.send("> Escribe bien wey [add|see|del]")
