@@ -87,6 +87,7 @@ case $1 in
 		tar -xvf $2
 		# select the unziped folder name
 		unziped=$(echo $2 | cut -d '.' -f 1)
+		echo unziped == $unziped
 		# now move the folders to their places
 		mv $unziped/data lambda/modules/data
 		mv $unziped/ram ram
