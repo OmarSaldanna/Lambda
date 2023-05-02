@@ -105,7 +105,7 @@ async def on_message(message):
     # give stuff 
     # fast research 
     # some services
-    elif str(message.author) in vips:
+    if str(message.author) in vips:
 
         # status
         if message.content in ['tas', 'tas?', 'Tas?']:
