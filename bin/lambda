@@ -82,17 +82,16 @@ case $1 in
 		# then delete all the files and put the checkpoint
 		rm -rf ram
 		rm -rf lambda/modules/data
-		# now, unzip the checkpoint file that will be in $HOME/Lambda
-		# the parameter 2 must be the tar file
-		tar -xvf $2
-		# select the unziped folder name
-		unziped=$(echo $2 | cut -d '.' -f 1)
-		echo unziped == $unziped
+		# unzip the file
+		tar -xvf checkpoint.tar.gz
+		# then get the name of the folder
+		plus_folder=$(echo $2 | cut -d '.' -f 1)
+		folder=$(echo $plus_folder | cut -d '/' -f 3)
 		# now move the folders to their places
-		mv $unziped/data lambda/modules/data
-		mv $unziped/ram ram
+		mv $folder/data lambda/modules/data
+		mv $folder/ram ram
 		# remove the unziped folder
-		rmdir $unziped
+		rmdir $folder
 		# and move the checkpoint to the backups as checkpoint
 		mv $2 backups/checkpoint.tar.gz
 		echo Lambda Checpoint Saved λ
