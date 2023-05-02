@@ -1,5 +1,6 @@
 import os
 import requests
+from modules.memory import get_memory
 
 # split a text in pieces of n length
 # this was implemented cause of there's messages with len
@@ -64,3 +65,49 @@ def chat_gpt(message, lambda_api):
 	# if the message is inside the limit
 	else:
 		return [ans['answer']]
+
+
+def get_manual():
+	return """
+                > **Funciones Disponibles**
+
+                **Chat GPT**
+                > **Uso:** [Lambda|lambda] pregunta
+                > **Ejemlos:**
+                *Lambda cúal es la capital de Rusia?*
+                *Lambda como hago un hello world en javascript?*
+                > **Detalles:** no guarda contexto como el chat gpt, además usa el modelo de gpt3.5-turbo
+
+                ** Guardar Cosas **
+                > **Uso:** [Sostenme|sostenme] texto
+                > **Ejemplos:**
+                *Sostenme http://endless.horse/*
+                *sostenme 1234567890abcd1029*
+                > **Detalles:** guarda en memoria algo una string.
+
+                ** Buscar Cosas **
+                > **Uso:** [Dame|dame] texto
+                > **Ejemplos:**
+                *Dame*
+                *dame*
+                > **Detalles:** muestra el guardado den memoria del usuario, si se da el caso que el usuario no tiene nada guardado, simplemente lambda dirá que no encontró nada.
+
+                """
+
+def save_stuff(message):
+    # get the memory
+    mem = get_memory('memory')
+    # and save the stuff
+    mem['stuff'][str(message.author)] = str(message.content[9:])
+    mem.write()
+
+
+def get_stuff(message):
+	# get the memory
+    mem = get_memory('memory')
+    # try to read the memory
+    try:
+        stuff = mem['stuff'][str(message.author)]
+    except:
+        stuff = "Lo siento no encontré nada"
+    return stuff

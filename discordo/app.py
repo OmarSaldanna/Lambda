@@ -1,12 +1,11 @@
-import json
 import discord
 from modules import controllers
 from discord.ext import commands
-from modules.memory import app_to_log
+from modules.memory import app_to_log, get_memory
 
 
 # load the token
-info = json.load(open('./ram/info.json'))
+info = get_memory('info')
 token = info['DISCORDO']
 lambda_ip = info['HOST']['lambda_ip']
 lambda_port = info['HOST']['lambda_port']
@@ -30,7 +29,7 @@ admin = info['ADMIN']
 @bot.event
 async def on_ready():
     print('[DISCORDO] -> Lambda -> im alive')
-    app_to_log('[DISCORDO] -> Lambda -> im alive\n')
+    # app_to_log('[DISCORDO] -> Lambda -> im alive\n')
 
 
 # when a message came
@@ -53,16 +52,23 @@ async def on_message(message):
     # VIP Level:
     # status #
     # chat gpt #
+    # save stuff 
+    # give stuff 
+    # fast research 
     # some services
-    # fast research
-    # save stuf
     elif str(message.author) in vips:
 
         # status
         if message.content in ['tas', 'tas?', 'Tas?']:
-          app_to_log(f'[DISCORD] -> Ping from {message.author}\n')
-          # confirmation messgae
-          await message.channel.send('of cors pa')
+            app_to_log(f'[DISCORD] -> {message.author} ping\n')
+            # confirmation messgae
+            await message.channel.send('> of cors')
+
+        # to see the manual of available functions
+        if message.content in ['man', 'manual', 'Manual']:
+            app_to_log(f'[DISCORD] -> {message.author} manual\n')
+            # return the lambda manual
+            await message.channel.send(controllers.get_manual())
 
         # gpt3 usage
         elif message.content[:7] in ['lambda ', 'Lambda ']:
@@ -75,6 +81,27 @@ async def on_message(message):
             for p in pieces:
                 await message.channel.send(p)
 
+        # save stuff
+        elif message.content[:9] in ['sostenme ', 'Sostenme ']:
+            app_to_log(f'\n[DISCORD] -> {message.author} saved stuff -> {message.content[9:]}\n')
+            # save the stuff
+            controllers.save_stuff(message)
+            # send the confirmation
+            await message.channel.send(f"> Listo @{str(message.author)}")
+
+        # save stuff
+        elif message.content[:5] in ['dame', 'Dame']:
+            app_to_log(f'\n[DISCORD] -> {message.author} read stuff\n')
+            # read the stuff
+            stuff = controllers.get_stuff(message)
+            # send the confirmation
+            await message.channel.send(f"> {stuff}")
+
+
+    # not registered users
+    elif message.content[:6] in ['lambda', 'Lambda']:
+        await message.channel.send(f"> Lo siento @{str(message.author)} no tienes acceso a mi")
+        await message.channel.send(f"> Si lo deseas pídele a @{admin} que te de acceso")
 
 """  
   # to use an specific command that requires memory or sth
