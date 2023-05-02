@@ -1,7 +1,7 @@
 import discord
 from modules import controllers
 from discord.ext import commands
-from modules.memory import app_to_log, get_memory
+from modules.memory import *
 
 
 # load the token
@@ -19,11 +19,12 @@ intents.members = True
 # instance the discord app
 bot = commands.Bot(command_prefix='-', intents=intents)
 
-
 # vip list: close friends that are allowed to use GPT
-vips = info['VIPS']
 # admin: me, for lambda backups and lambda-cli
-admin = info['ADMIN']
+admin, vips = refresh_users()
+
+
+
 
 # when the bot starts running
 @bot.event
@@ -39,15 +40,68 @@ async def on_message(message):
         return
 
     # Admin level
-    # lambda-cli, starts with a $
-    if message.content[0] == '$' and str(message.author) == admin:
-        # this is for the log
-        app_to_log(f'[DISCORD] -> Admin on lambda-cli -> {message.content[2:]}\n')
-        # use the lambda_cli controller
-        pieces = controllers.lambda_cli(message)
-        # send the message or messages
-        for p in pieces:
-            await message.channel.send(p)
+    # lambda cli #
+    # add members 
+    # see members 
+    # del members 
+    if str(message.author) == admin:
+
+        # lambda cli
+        if message.content[0] == '$':
+            # this is for the log
+            app_to_log(f'[DISCORD] -> Admin on lambda-cli -> {message.content[2:]}\n')
+            # use the lambda_cli controller
+            pieces = controllers.lambda_cli(message)
+            # send the message or messages
+            for p in pieces:
+                await message.channel.send(p)
+
+        # member admin
+        if message.content[:7] == 'member ':
+            # user will be the third argument
+            user = message.content.split(' ')[3]
+            # add user
+            if message.content[7:] == 'add':
+                # append the user
+                info['VIPS'].append(user)
+                # write changes
+                info.write()
+                # and refresh
+                admin, vips = refresh_users()
+                # send confirmation
+                await message.channel.send(f"> Bienvenido {user} a la buena vida pa")
+
+            # see users
+            elif message.content[7:] == 'see':
+                await message.channel.send("*Lista de VIPs*")
+                # show all the vip users
+                for user in vips:
+                    await message.channel.send(f"> {user}")
+            
+            # delete user
+            elif message.content[7:] == 'del':
+                # try to delete the user
+                try:
+                    # find the idx
+                    idx = vips.index(user)
+                    # delete it from vips
+                    info['VIPS'].pop(idx)
+                    # save changes
+                    info.write()
+                    # and refresh
+                    admin, vips = refresh_users()
+                    msg = f"> {user}exitosamente bajado del cielo"
+                # if there's no user in vips
+                except:
+                    msg = "> No apareció el wey"
+                # finally send the mesage
+                await message.channel.send(msg)
+                
+
+            else:
+                await message.channel.send("> Escribe bien wey [add|see|del]")
+
+
 
     # VIP Level:
     # status #

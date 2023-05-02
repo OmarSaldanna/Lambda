@@ -72,3 +72,13 @@ def app_to_log(msg, initial=False):
       file.write(f'{time} {msg}')
     else:
       file.write(f'\n\n[LAMBDA] -> starting\n\n{time} {msg}')
+
+
+# a specific function that helps refresh memory variables
+def refresh_users():
+  # read the memory
+  mem = get_memory('info')
+  # and return the variabes
+  vips = info['VIPS']
+  admin = info['ADMIN']
+  return admin, vips
