@@ -70,4 +70,4 @@ def app_to_log(msg, initial=False):
       file.write(f'\n\n[LAMBDA] -> starting\n\n{time} {msg}')
 
 # send the initial message to the log file
-app_to_log("[MEMORY] -> Memory Working\n", initial=True)
+# app_to_log("[MEMORY] -> Memory Working\n", initial=True)

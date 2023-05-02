@@ -61,4 +61,4 @@ class AI:
     return self.gpt(sentence)
 
 # send the initial message to the log file
-app_to_log('[BRAIN] -> IA prepared\n')
+# app_to_log('[BRAIN] -> IA prepared\n')

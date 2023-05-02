@@ -9,7 +9,7 @@ info = get_memory('info')
 port = info['HOST']['lambda_port']
 host = info['HOST']['lambda_ip']
 # add the initial message to the logs
-app_to_log(f"[LAMBDA] -> lambda server running in {host}:{port}/lambda\n")
+# app_to_log(f"[LAMBDA] -> lambda server running in {host}:{port}/lambda\n")
 
 
 # instance the flask app
