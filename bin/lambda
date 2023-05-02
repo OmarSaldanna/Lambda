@@ -80,19 +80,24 @@ case $1 in
 		# first make a backup from the actual info
 		lambda backup
 		# then delete all the files and put the checkpoint
+		echo deleting present state
 		rm -rf ram
 		rm -rf lambda/modules/data
 		# unzip the file
+		echo unziping checkpoint ...
 		tar -xvf checkpoint.tar.gz
 		# then get the name of the folder
 		plus_folder=$(echo $2 | cut -d '.' -f 1)
 		folder=$(echo $plus_folder | cut -d '/' -f 3)
 		# now move the folders to their places
+		echo moving the folders to their places
 		mv $folder/data lambda/modules/data
 		mv $folder/ram ram
 		# remove the unziped folder
+		echo removing the checkpoint folder
 		rmdir $folder
 		# and move the checkpoint to the backups as checkpoint
+		echo moving the checkpoint ziped to backups
 		mv $2 backups/checkpoint.tar.gz
 		echo Lambda Checpoint Saved λ
 	;;
