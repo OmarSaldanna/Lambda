@@ -12,17 +12,17 @@ lambda_port = info['HOST']['lambda_port']
 # the lambda api url
 lambda_api = f'http://{lambda_ip}:{lambda_port}/lambda/discordo'
 
+# vip list: close friends that are allowed to use GPT
+# admin: me, for lambda backups and lambda-cli
+admin = info['ADMIN']
+vips = info['VIPS']
+
 
 # define the intents
 intents = discord.Intents.all()
 intents.members = True
 # instance the discord app
 bot = commands.Bot(command_prefix='-', intents=intents)
-
-# vip list: close friends that are allowed to use GPT
-# admin: me, for lambda backups and lambda-cli
-admin, vips = refresh_users()
-
 
 
 
@@ -41,9 +41,9 @@ async def on_message(message):
 
     # Admin level
     # lambda cli #
-    # add members 
-    # see members 
-    # del members 
+    # add members #
+    # see members #
+    # del members #
     if str(message.author) == admin:
 
         # lambda cli
@@ -58,28 +58,39 @@ async def on_message(message):
 
         # member admin
         if message.content[:7] == 'member ':
-            # user will be the third argument
-            user = message.content.split(' ')[3]
+            print(message.content[7:])
             # add user
-            if message.content[7:] == 'add':
-                # append the user
-                info['VIPS'].append(user)
-                # write changes
-                info.write()
-                # and refresh
-                admin, vips = refresh_users()
-                # send confirmation
-                await message.channel.send(f"> Bienvenido {user} a la buena vida pa")
+            if message.content[7:10] == 'add':
+                # user will be the third argument
+                user = message.content.split(' ')[2]
+                # if the user is already in vips
+                if user in vips:
+                    app_to_log(f'[DISCORD] -> Admin on members -> tried to add {user}\n')
+                    await message.channel.send(f"> {user} ya está con dios")
+                # if the user is not in vips yet
+                else:
+                    app_to_log(f'[DISCORD] -> Admin on members -> added {user}\n')    
+                    # append the user
+                    info['VIPS'].append(user)
+                    # write changes
+                    info.write()
+                    # and refresh
+                    refresh_users(vips)
+                    # send confirmation
+                    await message.channel.send(f"> Bienvenido {user} a la buena vida pa")
 
             # see users
             elif message.content[7:] == 'see':
-                await message.channel.send("*Lista de VIPs*")
+                app_to_log(f'[DISCORD] -> Admin on members -> seen members\n')
+                await message.channel.send("**Lista de VIPs**")
                 # show all the vip users
                 for user in vips:
                     await message.channel.send(f"> {user}")
             
             # delete user
-            elif message.content[7:] == 'del':
+            elif message.content[7:10] == 'del':
+                # user will be the third argument
+                user = message.content.split(' ')[2]
                 # try to delete the user
                 try:
                     # find the idx
@@ -89,16 +100,19 @@ async def on_message(message):
                     # save changes
                     info.write()
                     # and refresh
-                    admin, vips = refresh_users()
-                    msg = f"> {user}exitosamente bajado del cielo"
+                    refresh_users(vips)
+                    msg = f"> {user} exitosamente bajado del cielo"
+                    app_to_log(f'[DISCORD] -> Admin on members -> deleted {user}\n')
                 # if there's no user in vips
                 except:
+                    app_to_log(f'[DISCORD] -> Admin on members -> tried to delete {user}\n')
                     msg = "> No apareció el wey"
                 # finally send the mesage
                 await message.channel.send(msg)
                 
 
             else:
+                app_to_log(f'[DISCORD] -> Admin on members -> bad command\n')
                 await message.channel.send("> Escribe bien wey [add|see|del]")
 
 

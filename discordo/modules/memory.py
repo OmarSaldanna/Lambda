@@ -75,10 +75,8 @@ def app_to_log(msg, initial=False):
 
 
 # a specific function that helps refresh memory variables
-def refresh_users():
+def refresh_users(var):
   # read the memory
   mem = get_memory('info')
   # and return the variabes
-  vips = info['VIPS']
-  admin = info['ADMIN']
-  return admin, vips
+  var = mem['VIPS']
