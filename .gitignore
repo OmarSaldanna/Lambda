@@ -10,6 +10,9 @@ __pycache__
 backups
 ram
 
+# lambda drive service
+lambdrive
+
 # Ignore Mac system files
 *.DS_Store
 *.cfg

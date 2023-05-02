@@ -75,35 +75,23 @@ case $1 in
 		echo "" > ram/log.txt
 	;;
 
-	# when lambda is new on the server, run all the configurations
-	install)
-		# the command must be ran in $HOME/Lambda
-		if [ "$(pwd)" != "$HOME/Lambda" ]; then
-			echo -> You have to be in $HOME/Lambda
-			exit
-		fi
-		# if it is on the correct place
-		echo Let me install me in your machine
-		# lambda must be in $HOME/Lambda
-		echo -> I will be in $HOME/Lambda
-		# create the backup folder
-		echo -> creating backup folder...
-		mkdir backups
-		# give permisions to the bin files
-		echo -> setting permissions to the bin files...
-		chmod 700 bin/lambda
-		# install the python libraries to work
-		echo -> installing python dependencies...
-		pip3 install -r requirements.txt
-		# the final settings
-		echo -e "\n\n->We're almost there..."
-		echo -> add $HOME/Lambda/bin to $PATH
-		echo -> add "14 15 * * 0 lambda rupdate && lambda backup" to the cron
-		echo -> and the info.json and the data/ from the backups
+	# load a backup from a certain file
+	checkpoint)
+		# first make a backup from the actual info
+		lambda backup
+		# then delete all the files and put the checkpoint
+		rm -rf ram
+		rm -rf lambda/modules/data
+		# now, unzip the checkpoint file that will be in $HOME/Lambda
+		# the parameter 2 must be the tar file
+		tar -xvf $2
+		# now move the ram will stay in there and move the data dir
+		mv data lambda/modules/data
+		echo Lambda Checpoint Saved λ
 	;;
 
 	*)
-		echo Unknown Command:
-		echo lambda "[run|kill|update|reboot|rupdate|backups|install]"
+		echo Unknown Command λ
+		echo lambda "[run|kill|update|reboot|rupdate|backups|checkpoint]"
 	;;
 esac
