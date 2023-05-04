@@ -154,10 +154,11 @@ async def on_message(message):
 
         # QR generator
         elif message.content[:2] in ['QR', 'qr']:
-            app_to_log(f'\n[DISCORD] -> {message.author} QR Generated stuff\n')
+            app_to_log(f'\n[DISCORD] -> {message.author} QR Generatedf\n')
             # get the link of the image
-            link = controllers.generate_qr(message)
-            await message.channel.send(link)
+            image_url = controllers.generate_qr(message)
+            # send the image
+            await message.channel.send(file=discord.File(image_url))
 
 
     # not registered users
