@@ -183,6 +183,13 @@ def get_manual():
                 *Tas*
                 *tas*
                 > **Descripción:** `Básicamente es un mensaje que informa si lambda se encuentra activo y operando correctamente` Responderá de la manera más rápida posible.
+
+                ** Generador de QRs **
+                > **Uso:** [QR|qr] link
+                > **Ejemplos:**
+                *QR www.google.com*
+                *qr http://endless.horse/* 
+                > **Descripción:** Es un generador de códigos QR a partir de un link o mensaje, así es, los QR pueden simplemente contener un "hola". Podrías comprobarlo si le pidieras un `qr hola` y lo escanearas con el celular.
                 """, 2000)
 
 def save_stuff(message):
