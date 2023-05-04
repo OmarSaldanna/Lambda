@@ -156,7 +156,7 @@ async def on_message(message):
         elif message.content[:2] in ['QR', 'qr']:
             app_to_log(f'\n[DISCORD] -> {message.author} QR Generated stuff\n')
             # get the link of the image
-            link = generate_qr(message)
+            link = controllers.generate_qr(message)
             await message.channel.send(link)
 
 
