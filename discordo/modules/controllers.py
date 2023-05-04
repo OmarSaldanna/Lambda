@@ -1,9 +1,7 @@
 import os
+import qrcode
 import requests
 from modules.memory import *
-
-# for QR
-import qrcode
 
 
 # split a text in pieces of n length
@@ -26,7 +24,7 @@ def lambda_cli(message):
       	# doesn't return nothing
 		os.popen(command).read()
       	# lambda will be restarted...
-		return ['0']
+		return ['reiniciando windows']
 
     # if it was a simple command      
 	else:
@@ -212,16 +210,19 @@ def get_stuff(message):
 
 # function for time
 def get_time_for_file():
-  # Get the current date and time in UTC
-  utc_now = datetime.datetime.utcnow()
-  # Create a timezone object for CDMX (UTC-5)
-  cdmx_tz = pytz.timezone('America/Mexico_City')
-  # Convert the UTC time to CDMX time
-  cdmx_now = utc_now.replace(tzinfo=pytz.utc).astimezone(cdmx_tz)
-  # Print the current date and time in CDMX time
-  return str(cdmx_now.strftime('[%Y-%m-%d--%H:%M:%S]'))
+	# Get the current date and time in UTC
+	utc_now = datetime.datetime.utcnow()
+	# Create a timezone object for CDMX (UTC-5)
+	cdmx_tz = pytz.timezone('America/Mexico_City')
+	# Convert the UTC time to CDMX time
+	cdmx_now = utc_now.replace(tzinfo=pytz.utc).astimezone(cdmx_tz)
+	# Print the current date and time in CDMX time
+	return str(cdmx_now.strftime('[%Y-%m-%d--%H:%M:%S]'))
 
 def generate_qr(message):
+	# in case there's not enough content for QR
+	if len(message.content) <= 3:
+		raise ValueError("Error: not enough content for QR")
 	# QR object
 	qr = qrcode.QRCode(version=1, box_size=10, border=5)
 	# recieve the data for the qr
