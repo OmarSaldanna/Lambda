@@ -5,3 +5,5 @@ openai
 discord
 telebot
 pytz
+qrcode
+cloudinary

@@ -107,7 +107,7 @@ async def on_message(message):
     # chat gpt #
     # save stuff #
     # give stuff #
-    # some services
+    # generate qr codes
     if str(message.author) in vips:
 
         # status
@@ -144,7 +144,7 @@ async def on_message(message):
             # send the confirmation
             await message.channel.send(f"> Listo @{str(message.author)}")
 
-        # save stuff
+        # return stuff
         elif message.content[:5] in ['dame', 'Dame']:
             app_to_log(f'\n[DISCORD] -> {message.author} read stuff\n')
             # read the stuff
@@ -152,25 +152,19 @@ async def on_message(message):
             # send the confirmation
             await message.channel.send(f"> {stuff}")
 
+        # QR generator
+        elif message.content[:2] in ['QR', 'qr']:
+            app_to_log(f'\n[DISCORD] -> {message.author} QR Generated stuff\n')
+            # get the link of the image
+            link = generate_qr(message)
+            await message.channel.send(link)
+
 
     # not registered users
     elif message.content[:6] in ['lambda', 'Lambda']:
         await message.channel.send(f"> Lo siento @{str(message.author)} no tienes acceso a mi")
         await message.channel.send(f"> Si lo deseas pídele a @{admin} que te de acceso")
 
-"""  
-  # to use an specific command that requires memory or sth
-  elif message.content.split(' ')[0] in ['l', 'L']:
-    # then consult to lambda
-    print(f'[DISCORD] -> Using Command -> {message.content}')
-    # send all the mesage without the l or the lambda part
-    msg = message.content.split(' ')[1:]
-    msg = ' '.join(msg)
-    # consult to lambda
-    ans = requests.get(lambda_api + '/commands', headers={'msg':msg}).json()
-    print(ans['answer'])
-    await message.channel.send(ans['answer'])
-"""
 
 # run the bot
 bot.run(token)

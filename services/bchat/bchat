@@ -1,6 +1,6 @@
-#! /bin/bash
+#!/bin/bash
 
 echo "Deploying bchat"
-route=/home/omarsaldanna/bchat
+route=$HOME/Lambda/services/bchat
 tmux new-session -d -s bchat "cd $route && python3 server.py"
 tmux ls

@@ -2,6 +2,11 @@ import os
 import requests
 from modules.memory import *
 
+# for QR
+import qrcode
+from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
+
 # split a text in pieces of n length
 # this was implemented cause of there's messages with len
 # greater than 2K characters that discord don't acept. So
@@ -198,3 +203,30 @@ def get_stuff(message):
     except:
         stuff = "Lo siento no encontré nada"
     return stuff
+
+# function for time
+def get_time():
+  # Get the current date and time in UTC
+  utc_now = datetime.datetime.utcnow()
+  # Create a timezone object for CDMX (UTC-5)
+  cdmx_tz = pytz.timezone('America/Mexico_City')
+  # Convert the UTC time to CDMX time
+  cdmx_now = utc_now.replace(tzinfo=pytz.utc).astimezone(cdmx_tz)
+  # Print the current date and time in CDMX time
+  return str(cdmx_now.strftime('[%Y-%m-%d--%H:%M:%S]'))
+
+
+def generate_qr(message):
+	# QR object
+	qr = qrcode.QRCode(version=1, box_size=10, border=5)
+	# recieve the data for the qr
+	data = message.content[3:]
+	qr.add_data(data)
+	qr.make(fit=True)
+	# create QR
+	img = qr.make_image(fill_color="black", back_color="white")
+	# generate the filename with user and time
+	file_name = f"$HOME/Lambda/services/lambdrive/qr/qr-{str(message.author)}-{get_time}.png"
+	# save the qr image
+	img.save(file_name)
+	return file_name
