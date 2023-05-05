@@ -25,9 +25,9 @@ def discordo():
 		# process the message
 		ans, log = discord_gpt(msg)
 		# add the usage to the log file
-		message = f'[LAMBDA] -> /lambda/discordo/gpt:\n{msg}\n{log}'
-		answer = f'\n[LAMBDA] -> Sending Answer:\n{ans}\n\n'
-		app_to_log(f'{message}{answer}')
+		message = f'[LAMBDA] -> request on /lambda/discordo/gpt'
+		# answer = f'\n[LAMBDA] -> Sending Answer:\n{ans}\n\n'
+		app_to_log(f'{message}')
 		# and send the anser
 		return jsonify({'answer': ans})
 
