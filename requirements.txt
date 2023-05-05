@@ -6,4 +6,3 @@ discord
 telebot
 pytz
 qrcode
-cloudinary

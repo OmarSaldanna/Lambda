@@ -3,6 +3,7 @@ import qrcode
 import requests
 from modules.memory import *
 
+lambdrive_path = "services/lambdrive/"
 
 # split a text in pieces of n length
 # this was implemented cause of there's messages with len
@@ -73,6 +74,15 @@ def get_admin_manual():
             > **Ejemplo**
             *aman*
             > **Descripción:** es en escencia el mensaje que despliega el manual del adninistrador, que `explica a detalle las funciones propias del administrador de lambda.`
+
+            ** Lambdrive CLI **
+            > **Uso:** lambdrive [ls|rm|mv|cp] argumentos
+            > **Ejemlos:**
+            > *lambdrive ls*
+            > *lambdrive rm borrame.txt*
+            > *lambdrive mv nombre1.txt nombre2.txt*
+            > *lambdrive cp archivo.txt copia.txt*
+            > **Descripción:** es un gestor rápido para los archivos almacenados en el servicio de lambdrive. Permite listar los archivos con **ls**, eliminar archivos con **rm**, renombrar archivos con **mv** y copiar archivos con **cp**.
         	""", 2000)
 
 
@@ -118,6 +128,40 @@ def delete_member(message, vips, info):
 		msg = "> No apareció el wey"
 		# finally send the mesage
 	return msg, log
+
+
+def lambdrive_cli(message, command):
+	# list files
+	if command == 'ls':
+		res = os.popen(f"ls {lambdrive_path}").read()
+		return split_text(res,2000)
+	# remove a file
+	elif command == 'rm':
+		file = message.content[13:]
+		os.popen(f"rm {lambdrive_path}{file}")
+		return [f"> {lambdrive_path}{file} deleted"]
+	# move or rename a file
+	elif command == 'mv':
+		text = message.content[13:]
+		# since there are two arguments
+		args = text.split(' ')
+		os.popen(f"mv {lambdrive_path}{args[0]} {lambdrive_path}{args[1]}")
+		return [f"> {args[0]} moved to {args[1]}"]
+	# move or rename a file
+	elif command == 'cp':
+		text = message.content[13:]
+		# since there are two arguments
+		args = text.split(' ')
+		os.popen(f"cp {lambdrive_path}{args[0]} {lambdrive_path}{args[1]}")
+		return [f"> {args[0]} copied to {args[1]}"]
+	
+	# if the command is unknown
+	else:
+		return ["> Escribe bien wey [ls|rm|mv|cp]"]
+
+##########################################################################################
+#################################### VIP Functions #######################################
+##########################################################################################
 
 
 def chat_gpt(message, lambda_api):

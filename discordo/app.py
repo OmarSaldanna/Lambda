@@ -17,7 +17,6 @@ lambda_api = f'http://{lambda_ip}:{lambda_port}/lambda/discordo'
 admin = info['ADMIN']
 vips = info['VIPS']
 
-
 # define the intents
 intents = discord.Intents.all()
 intents.members = True
@@ -41,9 +40,8 @@ async def on_message(message):
 
     # Admin level
     # lambda cli #
-    # add members #
-    # see members #
-    # del members #
+    # add members: add, see, del #
+    # lambdrive files: ls, rm, mv #
     if str(message.author) == admin:
         # amdmin try: this is an attempt to stop errors caused by syntax
         try:
@@ -103,10 +101,25 @@ async def on_message(message):
 ############# echo funcion
             elif message.content[:5] == 'echo ':
                 await message.channel.send(f"```{message.content[5:]}```")
+
+
+############# lambdrive files
+            elif message.content[:10] == 'lambdrive ':
+                # get the command
+                command = message.content[10:12]
+                # excecute the command
+                pieces = controllers.lambdrive_cli(message, command)
+                # app to log
+                app_to_log(f'[DISCORD] -> Admin on lambdrive -> {message.content[10:]}\n')
+                # send the message
+                for p in pieces:
+                    await message.channel.send(p)
+
+
+############# End of Admin functions
         except:
             app_to_log(f'[DISCORD] -> Admin command -> error\n')
             await message.channel.send("> Error comando no válido\n> Puedes consultar el manual con _aman_")
-
 
 
 
