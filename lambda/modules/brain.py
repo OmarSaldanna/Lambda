@@ -5,7 +5,7 @@
 
 from modules.models.lwr import Lambda_Word_Recognizer
 from modules.models.gpt import GPT
-from modules.memory import app_to_log
+from modules.models.dalle import DALLE
 
 # the purpose of this class is to give the model an
 # eassier use and then use the model for correct almost
@@ -26,6 +26,7 @@ class AI:
 
     # gpt-3 instance
     self.gpt = GPT(openai_token)
+    self.dalle = DALLE(openai_token)
 
   # this is the general purpose function
   def check_sentence(self, word, word_list, sentence):
@@ -41,6 +42,8 @@ class AI:
     return corrected_sentence
 
   # useful to detect if a word is in a word_list
+  # will be use in a function dictionary and for recognized words
+  # like animes, songs, functions, etc.
   def recognize_word(self, word, word_list):
     # predict with the model
     probs = self.lwr(word, word_list)
@@ -53,12 +56,11 @@ class AI:
       word_idx = probs.index(max(probs))
       # return the word
       return word_list[word_idx]
-
   
-  # this will be for the "lambda commands", like alexa
-  # first working with gpt-3
+  # use chat gpt
   def gpt3(self, sentence):
     return self.gpt(sentence)
 
-# send the initial message to the log file
-# app_to_log('[BRAIN] -> IA prepared\n')
+  # generate custom images
+  def dalle(self, sentence):
+    return self.dalle(sentence)

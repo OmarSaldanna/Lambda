@@ -8,10 +8,6 @@ from modules.memory import *
 info = get_memory('info')
 # requirements to run discord app
 token = info['DISCORDO']
-lambda_ip = info['HOST']['lambda_ip']
-lambda_port = info['HOST']['lambda_port']
-# the lambda api url
-lambda_api = f'http://{lambda_ip}:{lambda_port}/lambda/discordo'
 # vip list: close friends that are allowed to use Lambda
 # admin: me, for lambda-cli, members and other functions
 admin = info['ADMIN']
@@ -128,7 +124,8 @@ async def on_message(message):
     # chat gpt #
     # save stuff #
     # give stuff #
-    # generate qr codes # 
+    # generate qr codes #
+    # DALL-E images #
     if str(message.author) in vips:
         # vips try: this is an attempt to stop errors caused by syntax
         try:
@@ -150,9 +147,9 @@ async def on_message(message):
 
 ############# gpt3 usage
             elif message.content[:7] in ['lambda ', 'Lambda ']:
-                app_to_log(f'\n[DISCORD] -> {message.author} on chat gpt -> {message.content}\n')
+                app_to_log(f'\n[DISCORD] -> {message.author} on chat gpt: {message.content}\n')
                 # use the chat_gpt controller
-                pieces = controllers.chat_gpt(message, lambda_api)
+                pieces = controllers.chat_gpt(message)
                 # add to log the answer
                 app_to_log(f"{''.join(pieces)}\n")
                 # send the message or messages
@@ -161,7 +158,7 @@ async def on_message(message):
 
 ############# save stuff
             elif message.content[:9] in ['sostenme ', 'Sostenme ']:
-                app_to_log(f'\n[DISCORD] -> {message.author} saved stuff -> {message.content[9:]}\n')
+                app_to_log(f'\n[DISCORD] -> {message.author} saved stuff: {message.content[9:]}\n')
                 # save the stuff
                 controllers.save_stuff(message)
                 # send the confirmation
@@ -177,11 +174,19 @@ async def on_message(message):
 
 ############# QR generator
             elif message.content[:2] in ['QR', 'qr']:
-                app_to_log(f'\n[DISCORD] -> {message.author} QR Generated with "{message.content[3:]}"\n')
+                app_to_log(f'\n[DISCORD] -> {message.author} QR Generated with: "{message.content[3:]}"\n')
                 # get the link of the image
-                image_url = controllers.generate_qr(message)
+                image_path = controllers.generate_qr(message)
                 # send the image
-                await message.channel.send(file=discord.File(image_url))
+                await message.channel.send(file=discord.File(image_path))
+
+############# DALL-E images
+            elif message.content[:5] in ['Dalle', 'dalle']:
+                app_to_log(f'\n[DISCORD] -> {message.author} image generated with: "{message.content[3:]}"\n')
+                # get the link of the image
+                image_url = controllers.dalle(message)
+                # send the image
+                await message.channel.send(image_url)
 
         except:
             app_to_log(f'[DISCORD] -> Vip command -> error\n')

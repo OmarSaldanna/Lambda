@@ -3,7 +3,14 @@ import qrcode
 import requests
 from modules.memory import *
 
+info = get_memory('info')
+lambda_ip = info['HOST']['lambda_ip']
+lambda_port = info['HOST']['lambda_port']
+# the lambda api url
+lambda_api = f'http://{lambda_ip}:{lambda_port}/lambda/discordo'
+# path on the server where the lambdrive service is
 lambdrive_path = "services/lambdrive/"
+
 
 # split a text in pieces of n length
 # this was implemented cause of there's messages with len
@@ -164,13 +171,12 @@ def lambdrive_cli(message, command):
 ##########################################################################################
 
 
-def chat_gpt(message, lambda_api):
-    # then consult to lambda
-	# print(f'[DISCORD] -> Using GPT3 -> {message.content}')
+def chat_gpt(message):
     # select the message content after the "lambda "
 	msg = str(message.content)[7:]
+	author = str(message.author)
     # consult to lambda
-	ans = requests.get(lambda_api + '/gpt', headers={'msg':msg}).json()
+	ans = requests.get(lambda_api + '/gpt', headers={'msg':msg, 'author':author}).json()
 	# print(ans['answer'])
     # if the result it's larger than discord's limit
 	if len(ans['answer']) > 2000:
@@ -232,7 +238,15 @@ def get_manual():
                 *QR www.google.com*
                 *qr http://endless.horse/* 
                 > **Descripción:** Es un generador de códigos QR a partir de un link o mensaje, así es, los QR pueden simplemente contener un "hola". Podrías comprobarlo si le pidieras un `qr hola` y lo escanearas con el celular.
+
+                ** Imágenes por IA con DALL-E **
+                > **Uso:** [Dalle|dalle] descripción de la imagen...
+                > **Ejemplos:**
+                *Dalle the Tokyo tower in Paris instead the Eiffel tower*
+                *dalle a cool backpack with wings* 
+                > **Descripción:** es un `generador de imágenes en base a texto`, empleando el modelo de DALL-E de OpenAI. Básicamente en base a un texto genera una imágen. `Hasta donde internet dice, no funciona muy bien en español.`
                 """, 2000)
+
 
 def save_stuff(message):
     # get the memory
@@ -252,6 +266,7 @@ def get_stuff(message):
         stuff = "Lo siento no encontré nada"
     return stuff
 
+
 # function for time
 def get_time_for_file():
 	# Get the current date and time in UTC
@@ -262,6 +277,7 @@ def get_time_for_file():
 	cdmx_now = utc_now.replace(tzinfo=pytz.utc).astimezone(cdmx_tz)
 	# Print the current date and time in CDMX time
 	return str(cdmx_now.strftime('[%Y-%m-%d--%H:%M:%S]'))
+
 
 def generate_qr(message):
 	# in case there's not enough content for QR
@@ -281,3 +297,18 @@ def generate_qr(message):
 	# save the qr image
 	img.save(file_path)
 	return file_path
+
+
+def dalle(message):
+	# first check that everything is ok
+	if len(str(message.content)) < 7:
+		return "> Error comando no válido\n> `dalle [descripción de la imagen]`"
+
+    # select the message content after the "dalle "
+	msg = str(message.content)[6:]
+	# and the author
+	author = str(message.author)
+    # consult to lambda
+	ans = requests.get(lambda_api + '/dalle', headers={'msg':msg,'author':author}).json()
+	# return the url of the image
+	return [ans['answer']][0]

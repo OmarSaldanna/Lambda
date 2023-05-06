@@ -1,5 +1,5 @@
-from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask import Flask, request, jsonify
 from modules.controllers import * # here are all the lambda functions
 from modules.memory import get_memory, app_to_log
 
@@ -8,8 +8,6 @@ from modules.memory import get_memory, app_to_log
 info = get_memory('info')
 port = info['HOST']['lambda_port']
 host = info['HOST']['lambda_ip']
-# add the initial message to the logs
-# app_to_log(f"[LAMBDA] -> lambda server running in {host}:{port}/lambda\n")
 
 
 # instance the flask app
@@ -22,26 +20,29 @@ def discordo():
 	if request.method == 'GET':
 		# extract the message from the request
 		msg = request.headers.get('msg')
+		author = request.headers.get('author')
 		# process the message
-		ans, log = discord_gpt(msg)
-		# add the usage to the log file
-		message = f'[LAMBDA] -> request on /lambda/discordo/gpt'
-		# answer = f'\n[LAMBDA] -> Sending Answer:\n{ans}\n\n'
-		app_to_log(f'{message}')
+		ans = discord_gpt(msg)
+		# add a log
+		app_to_log(f'[LAMBDA] -> request on /lambda/discordo/gpt by: {author}')
 		# and send the anser
 		return jsonify({'answer': ans})
 
 
-# discord api for specific commands
-@app.route('/lambda/discordo/commands', methods=['GET'])
+# to use DALL-E
+@app.route('/lambda/discordo/dalle', methods=['GET'])
 def discordo_commands():
 	if request.method == 'GET':
-  	# extract the message
- 		msg = request.headers.get('msg')
- 		# process the message
- 		ans = discord_comm(msg)
- 		# and send the anser
- 		return jsonify({'answer': ans})
+  		# extract the message from the request
+		msg = request.headers.get('msg')
+		author = request.headers.get('author')
+		# process the message
+		ans = discord_dalle(msg)
+		# add a log
+		app_to_log(f'[LAMBDA] -> request on /lambda/discordo/dalle by: {author}')
+		# and send the anser
+		return jsonify({'answer': ans})
+
 
 
 # run the app, on localhost only
