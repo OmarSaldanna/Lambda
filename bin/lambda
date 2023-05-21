@@ -28,7 +28,7 @@ case $1 in
 		tmux kill-session -t lambda
 	        tmux kill-session -t discordo
 		echo Restarting Lambda λ
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> rebooting lambda" >> ram/log.txt
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> rebooting lambda" >> $HOME/Lambda/ram/log.txt
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
         	tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
         tmux ls
