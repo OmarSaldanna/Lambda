@@ -6,6 +6,7 @@ case $1 in
 
 	run)
 		echo Running Lambda λ
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> running lambda" >> $HOME/Lambda/ram/log.txt
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
 		tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
 		tmux ls
@@ -13,12 +14,14 @@ case $1 in
 
 	kill)
 		echo Killing Lambda λ
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> killing lambda" >> $HOME/Lambda/ram/log.txt
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
 	;;
 
 	update)
 		echo Updating Lambda λ
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> updating lambda" >> $HOME/Lambda/ram/log.txt
 		cd $route
 		git fetch && git merge origin/main
 	;;
@@ -34,13 +37,6 @@ case $1 in
         tmux ls
 	;;
 
-	update)
-		echo Updating Lambda λ
-		cd $route
-		git fetch && git merge origin/main
-	;;
-
-
 	rupdate)
 		# kill lambda
 		echo Killing Lambda λ
@@ -52,6 +48,7 @@ case $1 in
 		git fetch && git merge origin/main
 		# and run lambda again
 		echo Running Lambda λ
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> rupdating lambda" >> $HOME/Lambda/ram/log.txt
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
 		tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
 		tmux ls
