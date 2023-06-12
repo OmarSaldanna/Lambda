@@ -75,9 +75,6 @@ case $1 in
 
 	# load a backup from a certain file
 	checkpoint)
-		cd $route
-		# make the dirs of memory if they don't exist
-		mkdir -p ram lambda/modules/data
 		# first make a backup from the actual info
 		lambda backup
 		# make a copy from the file
@@ -96,7 +93,7 @@ case $1 in
 		mv $folder/ram ram
 		# remove the unziped folder
 		echo removing the checkpoint folder
-		rm -rf $folder
+		rmdir $folder
 		rm checkpoint.tar.gz
 		echo Lambda Checpoint Saved λ
 	;;
