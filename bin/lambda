@@ -75,6 +75,9 @@ case $1 in
 
 	# load a backup from a certain file
 	checkpoint)
+		cd $route
+		# make the dirs of memory if they don't exists
+		mkdir -o ram lambda/modules/data
 		# first make a backup from the actual info
 		lambda backup
 		# make a copy from the file

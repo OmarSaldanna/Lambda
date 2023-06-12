@@ -1,0 +1,28 @@
+#!/bin/bash
+# install all the stuff to run lambda
+
+BLUE='\033[0;34m'
+NC='\033[0m' # No color
+
+
+# update the packages
+sudo apt update
+# install the needed aplications
+sudo apt install -y python3-pip tmux aria2
+
+# download the python libraries
+pip3 install -r requirements.txt
+
+# append Lambda/bin to path
+echo "export PATH=/home/omarsaldanna/Lambda/bin:$PATH" >> ~/.bashrc
+
+# send the final messages
+echo ""
+echo -e "${BLUE}Lambda λ Basic Configuration Made${NC}"
+echo "All your custom settings are up to you"
+echo "And you need to set a lambda checkpoint with"
+echo -e "${BLUE}lambda checkpoint checkpoint.tar.gz ${NC}"
+
+
+
+# .sh bin/install-lambda
