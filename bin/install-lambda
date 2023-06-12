@@ -21,8 +21,6 @@ echo ""
 echo -e "${BLUE}Lambda λ Basic Configuration Made${NC}"
 echo "All your custom settings are up to you"
 echo "And you need to set a lambda checkpoint with"
-echo -e "${BLUE}lambda checkpoint checkpoint.tar.gz ${NC}"
-
-
+echo -e "${BLUE}lambda checkpoint backup.tar.gz ${NC}"
 
 # .sh bin/install-lambda

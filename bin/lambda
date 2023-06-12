@@ -96,6 +96,9 @@ case $1 in
 		rmdir $folder
 		rm checkpoint.tar.gz
 		echo Lambda Checpoint Saved λ
+		# finally move the checkpoint to backups
+		mkdir -p backups
+		mv $2 backups
 	;;
 
 	*)
