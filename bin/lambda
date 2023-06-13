@@ -1,63 +1,88 @@
 #!/bin/bash
 
+# lambda path
 route=$HOME/Lambda
+
+# colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No color
 
 case $1 in
 
 	run)
-		echo Running Lambda λ
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> running lambda" >> $HOME/Lambda/ram/log.txt
+		echo -e "${GREEN}Running Lambda λ${NC}"
+		# append to log
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> running lambda" >> $route/ram/log.txt
+		# run lambda appas
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
 		tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
-		tmux ls
+		# sleep and wait to errors
+        sleep 3
+        # see tmux active sessions
+        tmux ls
 	;;
 
 	kill)
-		echo Killing Lambda λ
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> killing lambda" >> $HOME/Lambda/ram/log.txt
+		echo -e "${RED}Killing Lambda λ${NC}"
+		# append to log
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> killing lambda" >> $route/ram/log.txt
+		# kill lambda
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
 	;;
 
 	update)
-		echo Updating Lambda λ
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> updating lambda" >> $HOME/Lambda/ram/log.txt
 		cd $route
+		echo -e "${BLUE}Updating Lambda λ${NC}"
+		# append to log
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> updating lambda" >> $route/ram/log.txt
+		# update lambda
 		git fetch && git merge origin/main
 	;;
 
 	reboot)
-		echo Rebooting Lambda λ
-		tmux kill-session -t lambda
-	        tmux kill-session -t discordo
-		echo Restarting Lambda λ
+		echo -e "${GREEN}Rebooting Lambda λ${NC}"
+		# append to log
 		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> rebooting lambda" >> $HOME/Lambda/ram/log.txt
+		# kill lambda
+		tmux kill-session -t lambda
+	    tmux kill-session -t discordo
+	    # and run lambda again
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
-        	tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
+        tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
+        # sleep and wait to errors
+        sleep 3
+        # see tmux active sessions
         tmux ls
 	;;
 
 	rupdate)
+		cd $route
+		echo -e "${GREEN}Rupdating Lambda λ${NC}"
+		# append to log
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> rupdating lambda" >> $route/ram/log.txt
 		# kill lambda
-		echo Killing Lambda λ
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
 		# update lambda
-		echo Updating Lambda λ
-		cd $route
 		git fetch && git merge origin/main
-		# and run lambda again
-		echo Running Lambda λ
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> rupdating lambda" >> $HOME/Lambda/ram/log.txt
+		# run lambda again
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
 		tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
-		tmux ls
+		# sleep and wait to errors
+        sleep 3
+        # see tmux active sessions
+        tmux ls
 	;;
 
 	# backup from all the memory files. located in ram and data
 	backup)
 		cd $route
-		echo Making Lambda Backup λ
+		echo -e "${BLUE}Making Lambda Backup λ${NC}"
+		# append to log
+		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> rupdating lambda" >> $route/ram/log.txt
 		# date label to name the file
 		date=$(date +%m-%d-%Y)
 		# create the folder for the files
@@ -66,11 +91,11 @@ case $1 in
 		cp -r lambda/modules/data $date-backup/data
 		cp -r ram $date-backup/ram
 		# make the backup from data and add info.json
-		tar cvzf backups/$date-backup.tar.gz $date-backup/
+		tar cvzf $route/backups/$date-backup.tar.gz $date-backup/
 		# remove the backup file
 		rm -rf $date-backup
 		# and clear the log file
-		echo "" > ram/log.txt
+		echo "" > $route/ram/log.txt
 	;;
 
 	# load a backup from a certain file
@@ -78,31 +103,35 @@ case $1 in
 		# first make a backup from the actual info
 		lambda backup
 		# make a copy from the file
-		cp $2 checkpoint.tar.gz
+		cp $2 $route/checkpoint.tar.gz
 		# get the name of the unziped folder
 		plus_folder=$(echo $2 | cut -d '.' -f 1)
 		folder=$(echo $plus_folder | cut -d '/' -f 3)
 		# then delete all the files and put the checkpoint
-		rm -rf ram
-		rm -rf lambda/modules/data
+		rm -rf $route/ram
+		rm -rf $route/lambda/modules/data
 		# unzip the copy of the file
-		tar -xvf checkpoint.tar.gz
+		tar -xvf $route/checkpoint.tar.gz
 		# now move the folders to their places
-		echo moving the folders to their places
-		mv $folder/data lambda/modules/data
-		mv $folder/ram ram
+		echo moving the folders to their places...
+		mv $route/$folder/data $route/lambda/modules/data
+		mv $route/$folder/ram $route/ram
 		# remove the unziped folder
-		echo removing the checkpoint folder
-		rmdir $folder
-		rm checkpoint.tar.gz
-		echo Lambda Checpoint Saved λ
+		echo removing the checkpoint folder...
+		rmdir $route/$folder
+		rm $route/checkpoint.tar.gz
+		echo -e "${BLUE}Lambda Checpoint Saved λ${NC}"
 		# finally move the checkpoint to backups
-		mkdir -p backups
-		mv $2 backups
+		mkdir -p $route/backups
+		mv $2 $route/backups
 	;;
 
 	*)
 		echo Unknown Command λ
-		echo lambda "[run|kill|update|reboot|rupdate|backups|checkpoint]"
+		echo lambda "[run|kill|update|reboot|rupdate|backup|checkpoint]"
 	;;
 esac
+
+
+# notes: if lambda is run in cron, use tmux, or tmuxer from bin, 
+# this is because the echoes in cron are sent to the mail service
