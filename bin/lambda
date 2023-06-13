@@ -19,7 +19,7 @@ case $1 in
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
 		tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
 		# sleep and wait to errors
-        sleep 3
+        sleep 2
         # see tmux active sessions
         tmux ls
 	;;
@@ -53,7 +53,7 @@ case $1 in
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
         tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
         # sleep and wait to errors
-        sleep 3
+        sleep 2
         # see tmux active sessions
         tmux ls
 	;;
@@ -72,7 +72,7 @@ case $1 in
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
 		tmux new-session -d -s discordo "cd $route && python3 discordo/app.py"
 		# sleep and wait to errors
-        sleep 3
+        sleep 2
         # see tmux active sessions
         tmux ls
 	;;
