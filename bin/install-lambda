@@ -18,19 +18,17 @@ echo "export PATH=/home/omarsaldanna/Lambda/bin:$PATH" >> ~/.bashrc
 # and make executable the files
 chmod 700 bin/*
 
-# write the cron script: rupdate and backups
-echo "0 5 * * * tmuxer 'lambda-reboot' 'lambda reboot'"
-echo "50 4 * * 0 tmuxer 'lambda-backup' 'lambda backup'"
-
 # send the final messages
 echo ""
 echo -e "${BLUE}Lambda λ Basic Configuration Made${NC}"
 echo "All your custom settings are up to you"
+echo ""
 echo "You need to set a lambda checkpoint with"
 echo -e "${BLUE}lambda checkpoint backup.tar.gz ${NC}"
+echo ""
 echo "Add this settins to your cron"
 echo "0 5 * * * tmuxer 'lambda-reboot' 'lambda reboot'"
 echo "50 4 * * 0 tmuxer 'lambda-backup' 'lambda backup'"
-
+echo "and remember to change the PATH in cron"
 # .sh bin/install-lambda
 # run from $HOME/Lambda
