@@ -14,7 +14,7 @@ class DALLE:
     )
     if n == 1:
       # return one url
-      return response['data'][0]['url']
+      return [response['data'][0]['url']]
     else:
       # return all urls
       urls = []
