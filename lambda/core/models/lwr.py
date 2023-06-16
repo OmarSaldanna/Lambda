@@ -11,11 +11,16 @@ class Lambda_Word_Recognizer:
     # replace char
     self.starting_ord = ord('a')
 
+  def __pre_process_word(self, word):
+    # unidecode
+    word = unidecode(word)
+    # and lower case
+    word = word.lower()
+    return word
+
   def __process_words(self, words):
-    # first unidecode
-    words = [unidecode(w) for w in words]
-    # then lowercase
-    words = [w.lower() for w in words]
+    # first pre process
+    words = [self.__pre_process_word(w) for w in words]
     # then turn the word into a vector
     vectors = []
     for word in words:
@@ -76,5 +81,5 @@ word_list = ["apple", "orange", "banana", "grape", "mango", "strawberry", "water
 # train and predict
 word_recognizer.train(word_list)
 result = word_recognizer(given_word)
-print(result)
 '''
+print(result)
