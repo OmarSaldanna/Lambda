@@ -53,13 +53,15 @@ class Lambda_Word_Recognizer:
 
   # convert the word_list to vectors and store that vectors
   # into the model to then make predictions
-  def train(self, word_list):
+  def train(self, word_list: list):
     # get the vectors from all the words
     self.weights, self.labels = self.__process_words(word_list)
 
 
-  def __call__(self, word):
+  def __call__(self, word: str):
     try:
+      # pre process the word
+      word = self.__pre_process_word(word)
       # get the vector of the word
       word_vector = self.word_to_vector(word)
       # calculate the distances between the word vector and weights
@@ -81,5 +83,5 @@ word_list = ["apple", "orange", "banana", "grape", "mango", "strawberry", "water
 # train and predict
 word_recognizer.train(word_list)
 result = word_recognizer(given_word)
-'''
 print(result)
+'''
