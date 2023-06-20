@@ -7,15 +7,16 @@
 # import all the models
 # from core.models import lmm, lwr
 
-from models.lmm import Lambda_Mindful_Messenger
-from models.lwr import Lambda_Word_Recognizer
+from core.models.lmm import Lambda_Mindful_Messenger
+from core.models.lwr import Lambda_Word_Recognizer
 
 # import the functions dic, and inside are the verbs
 # and questions list, used on lambda word recognizer
-from body import function_dic
+# from body import function_dic
+
 # this will module will be useful to determine easily
 # if a word is a verb or a question
-from extensions import list_dic
+from core.extensions import list_dic
 
 
 class AI:
