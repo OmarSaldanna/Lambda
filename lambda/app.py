@@ -1,48 +1,38 @@
+# libraries
 from flask_cors import CORS
 from flask import Flask, request, jsonify
-from modules.controllers import * # here are all the lambda functions
-from modules.memory import get_memory, app_to_log
-
+# functions from files
+from core.memory import get_memory, app_to_log
+# the lambda brain
+from core.brain import AI
+# the function dic to instance lambda AI
+from core.body import function_dic
 
 # load the port and the host
 info = get_memory('info')
-port = info['HOST']['lambda_port']
-host = info['HOST']['lambda_ip']
-
+port = info['host']['lambda_port']
+host = info['host']['lambda_ip']
 
 # instance the flask app
 app = Flask(__name__)
 CORS(app)
 
-# to use gpt3
-@app.route('/lambda/discordo/gpt', methods=['GET'])
+# and the lambda AI
+ai = AI(function_dic)
+
+# lambda requests
+@app.route('/lambda', methods=['GET'])
 def discordo():
 	if request.method == 'GET':
 		# extract the message from the request
-		msg = request.headers.get('msg')
+		message = request.headers.get('message')
 		author = request.headers.get('author')
 		# process the message
-		ans = discord_gpt(msg)
+		answer = ai(message, author)
 		# add a log
-		app_to_log(f'[LAMBDA] -> request on /lambda/discordo/gpt by: {author}')
+		app_to_log(f'[LAMBDA] -> request from: {author}')
 		# and send the anser
-		return jsonify({'answer': ans})
-
-
-# to use DALL-E
-@app.route('/lambda/discordo/dalle', methods=['GET'])
-def discordo_commands():
-	if request.method == 'GET':
-  		# extract the message from the request
-		msg = request.headers.get('msg')
-		author = request.headers.get('author')
-		# process the message
-		ans = discord_dalle(msg)
-		# add a log
-		app_to_log(f'[LAMBDA] -> request on /lambda/discordo/dalle by: {author}')
-		# and send the anser
-		return jsonify({'answer': ans})
-
+		return jsonify({'content': [answer]})
 
 
 # run the app, on localhost only
