@@ -20,7 +20,7 @@ class list_dic:
 		# word in the list. This way the search will be
 		# faster than going looking for words
 		self.word_dic = {}
-		self.keys = []
+		self.all_keys = []
 		# fill the word_dic
 		for i,key in enumerate(keys):
 			# if the key is a list
@@ -28,14 +28,15 @@ class list_dic:
 				# assing the i per word in key list
 				for word in key:
 					self.word_dic[word] = i
-					self.keys.append(word)
+					self.all_keys.append(word)
 			# is just a word
 			else: 
 				self.word_dic[key] = i
-				self.keys.append(key)
+				self.all_keys.append(key)
 		# and the other params
 		self.values = values
 		self.default = default
+		self.keys = keys
 
 	def __getitem__ (self, key):
 		try:
@@ -47,11 +48,14 @@ class list_dic:
 			# return the default function
 			return self.default
 
+	def get_all_keys(self):
+		return self.all_keys
+
 	def get_keys(self):
 		return self.keys
 
 	def get_values(self):
-		return self.keys
+		return self.values
 
 
 '''
