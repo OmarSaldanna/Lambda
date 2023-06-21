@@ -6,9 +6,9 @@ music
 share
 __pycache__
 
-# folder with the lambda backups and ram
+# folder with the lambda backups and memory
 backups
-ram
+memory
 
 # lambda drive service
 lambdrive
@@ -19,9 +19,7 @@ lambdrive
 
 # private important files
 *.json
-*.m4a
-*.env
-*.profile
+*.txt
 
 # other files from system
 __init__.py

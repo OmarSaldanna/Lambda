@@ -6,3 +6,6 @@ discord
 telebot
 pytz
 qrcode
+requests
+tqdm
+hashlib

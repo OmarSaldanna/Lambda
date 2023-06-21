@@ -13,8 +13,11 @@ class Memory:
   # open the json
   def __init__ (self, file_path: str):
     # open the dic
-    self.file_path = file_path
-    self.dic = json.load(open(file_path))
+    try:
+      self.file_path = file_path
+      self.dic = json.load(open(file_path))
+    except:
+      raise ValueError(f"bad json file {file_path}")
 
   # save changes
   def write (self):
