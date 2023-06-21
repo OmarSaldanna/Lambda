@@ -3,6 +3,8 @@
 # modules
 from core.memory import get_memory, log_file
 
+import os
+
 # cloduinary
 import cloudinary
 import cloudinary.uploader
@@ -14,9 +16,6 @@ config = cloudinary.config(
 	api_key=info['api_key'], api_secret=info['api_secret']
 	)
 
-# get the api key for the weather app
-open_weather = get_memory('info')['open_weather']
-
 
 # cloudinary function
 def upload_image(img_path: str):
@@ -27,7 +26,7 @@ def upload_image(img_path: str):
 # download images, linux only
 def download_image(img_link: str, name: str, extension='.png'):
 	# Create the wget command
-	wget_command = f'wget "{image_link}" -O "{output_file}{extension}"'
+	wget_command = f'wget "{img_link}" -O "{name}{extension}"'
 	# Execute the wget command using os.popen
 	os.popen(wget_command)
 

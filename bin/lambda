@@ -5,7 +5,7 @@ route=$HOME/Lambda
 # memory path
 memory=$route/memory
 # log file
-log_file=$route/memory/log.txt
+log_file=$memory/log.txt
 
 # colors
 RED='\033[0;31m'
@@ -18,7 +18,7 @@ case $1 in
 	run)
 		echo -e "${GREEN}Running Lambda λ${NC}"
 		# append to log
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> running lambda" >> $log_file
+		echo "[BIN] -> running lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# run lambda appas
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
 		# run the interfaces
@@ -32,7 +32,7 @@ case $1 in
 	kill)
 		echo -e "${RED}Killing Lambda λ${NC}"
 		# append to log
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> killing lambda" >> $log_file
+		echo "[BIN] -> killing lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# kill lambda
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
@@ -42,7 +42,7 @@ case $1 in
 		cd $route
 		echo -e "${BLUE}Updating Lambda λ${NC}"
 		# append to log
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> updating lambda" >> $log_file
+		echo "[BIN] -> updating lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# update lambda
 		git fetch && git merge origin/main
 	;;
@@ -50,7 +50,7 @@ case $1 in
 	reboot)
 		echo -e "${GREEN}Rebooting Lambda λ${NC}"
 		# append to log
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> rebooting lambda" >> $log_file
+		echo "[BIN] -> rebooting lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# kill lambda
 		tmux kill-session -t lambda
 	    tmux kill-session -t discordo
@@ -67,7 +67,7 @@ case $1 in
 		cd $route
 		echo -e "${GREEN}Rupdating Lambda λ${NC}"
 		# append to log
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> rupdating lambda" >> $log_file
+		echo "[BIN] -> rupdating lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# kill lambda
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
@@ -87,9 +87,11 @@ case $1 in
 		cd $route
 		echo -e "${BLUE}Making Lambda Backup λ${NC}"
 		# append to log
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> lambda backup" >> $log_file
+		echo "[BIN] -> lambda backup at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# date label to name the file
 		date=$(date +%m-%d-%Y)
+		# get the last lines of the log
+		last_log=$(tail $log_file)
 		# create the folder for the files called backup
 		mkdir backup
 		# copy the important files to the folder
@@ -99,7 +101,7 @@ case $1 in
 		# remove the backup file
 		rm -rf backup
 		# and clear the log file, only keep the last lines
-		tail $log_file > $log_file
+		echo "$last_log" > $log_file
 	;;
 
 	# load a backup from a certain file
@@ -118,7 +120,7 @@ case $1 in
 		# finally move the checkpoint to backups
 		mv $2 $route/backups
 		# and add this to the log
-		echo "$(date +"[%Y-%m-%d - %T]")[BIN] -> lambda checkpoint" >> $log_file
+		echo "[BIN] -> lambda checkpoint at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 	;;
 
 	*)

@@ -36,8 +36,6 @@ def lambda_cli(message):
 	if commands == 'lambda rupdate':
     	# the command will be executed in the discord app.py
 		command = 'tmux new-session -d -s rupdate "cd $HOME/Lambda && lambda rupdate && tmux kill-session -t rupdate"'
-      	# record for the log file
-		log = f'[DISCORD] -> running lambda rupdate'
       	# doesn't return nothing
 		os.popen(command).read()
       	# lambda will be restarted...
@@ -45,7 +43,6 @@ def lambda_cli(message):
 
     # if it was a simple command      
 	else:
-		log = f'[DISCORD] -> access lambda-cli {commands}'
 		# then send the comands to the terminal
 		res = os.popen(commands).read()
 		# if the command is not correct, res will be ''
@@ -103,7 +100,7 @@ def get_admin_manual():
 
 
 # simplificar a controllers las funciones de members
-def add_member(message, members, info):
+def add_member(message, members, info, admin):
 	# user will be the third argument
 	user = message.content.split(' ')[2]
 	# but as a tagged user, the id will be like
@@ -111,11 +108,11 @@ def add_member(message, members, info):
 	user = user[2:-1]
 	# if the user is already in members
 	if user in members:
-		log = f'[DISCORD] -> Admin on members -> tried to add <@{user}>'
-		return f"> <@{user}> ya está con dios", log
+		log = f'[DISCORDO] -> Admin <@{admin}> tried to add <@{user}>'
+		return f"> <@{user}> ya es parte de Lambda", log
 	# if the user is not in members yet
 	else:
-		log = f'[DISCORD] -> Admin on members -> added <@{user}>'
+		log = f'[DISCORDO] -> Admin <@{admin}> added <@{user}>'
 		# append the user
 		info['members'].append(user)
 		# write changes
@@ -123,10 +120,10 @@ def add_member(message, members, info):
 		# and refresh
 		refresh_users(members)
 		# send confirmation
-		return f"> Bienvenido <@{user}> a la buena vida", log
+		return f"> <@{user}> se bienvenido a Lambda", log
 
 
-def delete_member(message, members, info):
+def delete_member(message, members, info, admin):
 	# user will be the third argument
 	user = message.content.split(' ')[2]
 	# but as a tagged user, the id will be like
@@ -142,12 +139,12 @@ def delete_member(message, members, info):
 		info.write()
 		# and refresh
 		refresh_users(members)
-		msg = f"> <@{user}> exitosamente bajado del cielo"
-		log = f'[DISCORD] -> Admin on members -> deleted <@{user}>'
+		msg = f"> <@{user}> eliminado de Lambda"
+		log = f'[DISCORDO] -> Admin <@{admin}> deleted <@{user}> from members'
 	# if there's no user in members
 	except:
-		log = f'[DISCORD] -> Admin on members -> tried to delete <@{user}>'
-		msg = f"> <@{user}> no es miembro"
+		log = f'[DISCORDO] -> Admin <@{admin}> tried to delete <@{user}> from members'
+		msg = f"> <@{user}> actualimente no es parte de Lambda"
 		# finally send the mesage
 	return msg, log
 
@@ -179,4 +176,4 @@ def lambdrive_cli(message, command):
 	
 	# if the command is unknown
 	else:
-		return ["> Escribe bien wey [ls|rm|mv|cp]"]
+		return ["> No entendí tu comando. Los comandos disponibles son", "lambdrive [ls|rm|mv|cp]"]

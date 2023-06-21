@@ -56,4 +56,4 @@ def app_to_log(msg: str):
   # Open a file in append mode
   with open(log_file, 'a') as file:
     # append the line to the log file
-    file.write(f'\n{time} {msg}')
+    file.write(f'{msg} at {time}\n')

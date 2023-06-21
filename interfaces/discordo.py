@@ -25,7 +25,7 @@ bot = commands.Bot(command_prefix='-', intents=intents)
 # when the bot starts running
 @bot.event
 async def on_ready():
-    print('[DISCORDO] -> Lambda -> im alive')
+    print('im alive')
 
 
 # when a message came
@@ -41,6 +41,8 @@ async def on_message(message):
         if str(message.author.id) in members:
             # the message without 'Lambda '
             msg = message.content[7:]
+            # add to log
+            memory.app_to_log(f'[DISCORDO] -> called to lambda from <@{str(message.author.id)}>')
             # call lambda
             answers = discordo.call_lambda(msg, str(message.author.id))
             # split the answer in answers
@@ -52,8 +54,9 @@ async def on_message(message):
 
         # not registered users
         else:
-            print(str(message.author.id))
-            await message.channel.send(f"> Lo siento @{str(message.author)} no tienes acceso a mi")
+            # add to log
+            memory.app_to_log(f'[DISCORDO] -> <@{str(message.author.id)}> not in members called lambda')
+            await message.channel.send(f"> Lo siento @<{str(message.author.id)}> no tienes acceso a mi")
             await message.channel.send(f"> Si lo deseas pídele a un admin que te de acceso")
 
     # Admin level
@@ -64,14 +67,14 @@ async def on_message(message):
 ############# lambda cli
         if message.content[:2] == '$ ':
             # this is for the log
-            memory.app_to_log(f'[DISCORD] -> Admin on lambda-cli -> {message.content[2:]}')
+            memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> called lambda-cli -> {message.content[2:]}')
             pieces = discordo.lambda_cli(message) # use the lambda_cli controller
             for p in pieces: # send the message or messages
                 await message.channel.send(p)
 
 ############# the admin manual
-        elif message.content == 'aman':
-            memory.app_to_log(f'[DISCORD] -> {message.author} admin manual')
+        elif message.content in ['aman', 'Aman']:
+            memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> called manual')
             # get the message by pieces
             pieces = discordo.get_admin_manual()
             # send the pieces
@@ -79,12 +82,12 @@ async def on_message(message):
                 await message.channel.send(p)
 
 ############# member admin
-        elif message.content[:7] == 'member ':
+        elif message.content[:7] in ['member ','Member ']:
 
             # add user
             if message.content[7:10] == 'add':
                 # use the controller
-                msg, log = discordo.add_member(message, members, info)
+                msg, log = discordo.add_member(message, members, info, str(message.author.id))
                 # make the log
                 memory.app_to_log(log)
                 # and send the message
@@ -93,17 +96,17 @@ async def on_message(message):
             # see users
             elif message.content[7:] == 'see':
                 # make the log
-                memory.app_to_log(f'[DISCORD] -> Admin on members -> seen members')
+                memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> saw members')
                 # and send the result
                 await message.channel.send("**Lista de Miembros**")
                 # show all the vip users
                 for user in members:
-                    await message.channel.send(f"> <@{user}>")
+                    await message.channel.send(f"> <@{str(message.author.id)}>")
             
             # delete user
             elif message.content[7:10] == 'del':
                 # use the controller
-                msg, log = discordo.delete_member(message, members, info)
+                msg, log = discordo.delete_member(message, members, info, str(message.author.id))
                 # make the log
                 memory.app_to_log(log)
                 # and send the message
@@ -111,22 +114,23 @@ async def on_message(message):
 
             # command not understood                
             else:
-                memory.app_to_log(f'[DISCORD] -> Admin on members -> bad command')
+                memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> error on members')
                 await message.channel.send("> Escribe bien wey [add|see|del]")
         
 ############# echo funcion
         elif message.content[:5] == 'echo ':
+            memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> echoes {message.content[5:]}')
             await message.channel.send(f"```{message.content[5:]}```")
 
 
 ############# lambdrive files
-        elif message.content[:10] == 'lambdrive ':
+        elif message.content[:10] in ['lambdrive ', 'Lambdrive ']:
             # get the command
             command = message.content[10:12]
             # excecute the command
             pieces = discordo.lambdrive_cli(message, command)
             # app to log
-            memory.app_to_log(f'[DISCORD] -> Admin on lambdrive -> {message.content[10:]}')
+            memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> called lambdrive: {message.content[10:]}')
             # send the message
             for p in pieces:
                 await message.channel.send(p)

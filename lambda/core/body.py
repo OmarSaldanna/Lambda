@@ -44,7 +44,9 @@ def generate_qr(content: str, user: str):
 	img.save(f"{lambdrive_path}qrs/{h}.png")
 	# upload to cloudinary
 	url = upload_image(f"{lambdrive_path}qrs/{h}.png")
-	# and return the messages	
+	# app to log
+	app_to_log(f'[BODY] -> <@{user}> created a QR: {data}')
+	# and return the messages
 	return [url]
 
 # crea|genera una imagen de algo
@@ -72,6 +74,8 @@ def call_dalle(content: str, user: str):
 		download_image(link, lambdrive_path + 'dalle/ ' + str(hash(link)))
 		# append to answer the links
 		answer.append(link)
+	# add to log
+	app_to_log(f'[BODY] -> <@{user}> called dalle for {quantity} images: {prompt}')
 	return answer
 
 # lambda dime cuando fue la revolucion francesa
@@ -84,8 +88,9 @@ def call_gpt(content: str, user: str):
 		{"role": "system", "content": personality},
 		{"role": "user", "content": content}
 	]
-	
 	answer = gpt(messages)
+	# add to log
+	app_to_log(f'[BODY] -> <@{user}> called gpt: {content}')
 	return [answer]
 
 ##############################################################
@@ -105,6 +110,8 @@ def look_on_state(content: str, user: str):
 		{"role": "user", "content": f"{content}. Responde de manera rápida, no más de un párrafo. Responde de manera cómica basándote en los datos de tu cpu y en tus registros: \n{ram}\n{log_tail}"}
 	]
 	answer = gpt(messages, temp=.7)
+	# add to log
+	app_to_log(f'[BODY] -> <@{user}> questioned lambda state: {content}')
 	return [answer]
 
 # Lambda quien eres
@@ -117,6 +124,8 @@ def look_on_person(content: str, user: str):
 		{"role": "user", "content": f"{content}. Responde basado en tu personalidad, pero que sea una respuesta de no más de un párrafo."}
 	]
 	answer = gpt(messages, temp=.7)
+	# add to log
+	app_to_log(f'[BODY] -> <@{user}> questioned lambda personality: {content}')
 	return [answer]
 
 # Lambda cuando fue la ultima vez que te actualizaste
@@ -128,9 +137,11 @@ def look_on_log(content: str, user:str):
 	# define the message
 	messages = [
 		{"role": "system", "content": personality},
-		{"role": "user", "content": f"{content}. Responde de manera científica, no más de un párrafo, básate en la siguiente información: \n{log}"}
+		{"role": "user", "content": f"{content}. Responde de manera científica, no más de un párrafo, básate en la siguiente información. En los registros, lo primero es la fecha y luego de -> lo que pasó \n{log}"}
 	]
 	answer = gpt(messages, temp=.7)
+	# add to log
+	app_to_log(f'[BODY] -> <@{user}> questioned lambda logs: {content}')
 	return [answer]
 
 
@@ -139,7 +150,7 @@ def look_on_log(content: str, user:str):
 ##############################################################
 
 def default(content: str, user: str):
-	return f"> Lo siento, la verdad no entendí que querías decir con _{content}_"
+	return [f"> Lo siento, la verdad no entendí que querías decir con:",f"> *{content}*"]
 
 ##############################################################
 ################# The Funcion Dict ###########################

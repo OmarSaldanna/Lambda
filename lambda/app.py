@@ -30,7 +30,7 @@ def discordo():
 		# process the message
 		answer = ai(message, author)
 		# add a log
-		app_to_log(f'[LAMBDA] -> request from: {author}')
+		app_to_log(f'[APP] -> request from: <@{author}>')
 		# and send the anser
 		return jsonify({'content': answer})
 
