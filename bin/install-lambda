@@ -18,6 +18,11 @@ echo "export PATH=/home/omarsaldanna/Lambda/bin:$PATH" >> ~/.bashrc
 # and make executable the files
 chmod 700 bin/*
 
+mkdir -p backups
+mkdir -p lambdrive
+mkdir -p lambdrive/dalle
+mkdir -p lambdrive/qrs
+
 # send the final messages
 echo ""
 echo -e "${BLUE}Lambda λ Basic Configuration Made${NC}"
