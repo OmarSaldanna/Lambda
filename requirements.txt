@@ -3,9 +3,8 @@ flask
 flask_cors
 openai
 discord
-telebot
 pytz
 qrcode
 requests
 tqdm
-hashlib
+cloudinary

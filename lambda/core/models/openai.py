@@ -29,13 +29,9 @@ class DALLE:
 			n=n,
 			size="1024x1024"
 		)
-		# number of images generated
-		if n == 1:
-			# return one url
-			return [response['data'][0]['url']]
-		else:
-			# return all urls
-			urls = []
-			for i in range(n):
-				urls.append(response['data'][i]['url'])
-			return urls
+
+		# return all urls
+		urls = []
+		for i in range(n):
+			urls.append(response['data'][i]['url'])
+		return urls

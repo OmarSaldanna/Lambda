@@ -20,41 +20,71 @@ openai_token = info['openai']
 # the openai models
 gpt = GPT(openai_token)
 dalle = DALLE(openai_token)
-
+# lambdrive path
+lambdrive_path = 'lambdrive/'
 
 ##############################################################
 ################# Verbal Funcions ############################
 ##############################################################
 
-# Lambda crea|genera un qr de|con www.google.com
+# crea|genera un qr de|con www.google.com
 def generate_qr(content: str, user: str):
 	# create QR code instance
-	#qr = qrcode.QRCode(version=1, box_size=10, border=5)
+	qr = qrcode.QRCode(version=1, box_size=10, border=5)
+	# select the qr content
+	data = content.split(' ')[-1]
 	# add data to QR code
-	#qr.add_data(content)
-	#qr.make(fit=True)
+	qr.add_data(data)
+	qr.make(fit=True)
 	# create image from QR code
-	#img = qr.make_image(fill_color="black", back_color="white")
+	img = qr.make_image(fill_color="black", back_color="white")
 	# create a hash to save the file
-	#h = generate_hash(content)
-	# save image to file
-	#img.save(f"{h}.png")
-	return f"tu QR está en algun_lado.png"
+	h = hash(data)
+	# save image on lambdrive/qrs
+	img.save(f"{lambdrive_path}qrs/{h}.png")
+	# upload to cloudinary
+	url = upload_image(f"{lambdrive_path}qrs/{h}.png")
+	# and return the messages	
+	return [url]
 
-# lambda crea|genera una imagen de algo
+
+# crea|genera una imagen de algo
 def call_dalle(content: str, user: str):
-	# url = dalle(content)
-	# return url[0]
-	return "calling dalle"
+	# everything after the fourth word 
+	prompt = content.split(' ')[4:]
+	prompt = ' '.join(prompt)
+	# second word is the number of images
+	second_word = content.split(' ')[1]
+	quantity = 1
+	# una was skipped
+	if second_word == 'dos':
+		quantity = 2
+	if second_word == 'tres':
+		quantity = 3
+
+	# start writing the answer
+	answer = []
+	# create the images with dalle
+	images = dalle(prompt, quantity)
+	# download the images
+	for link in images:
+		# save as the hashed link
+		download_image(link, lambdrive_path + 'dalle/ ' + str(hash(link)))
+		# append to answer the links
+		answer.append(link)
+	return answer
+
 
 # lambda dime cuando fue la revolucion francesa
+# fast questions, and more precise questions
 def call_gpt(content: str, user: str):
 	messages = [
-		{"role": "system", "content": "eres un asistente, es prioritario que des respuestas cortas, preferentemente de no más de un párrafo."},
+		{"role": "system", "content": "Eres un ser digital, complemento de un humano, tu deber es responder las preguntas de la manera más breve posible y responder únicamente lo que se preguntó"},
 		{"role": "user", "content": content}
 	]
-	# return gpt(messages)
-	return "calling gpt"
+	
+	answer = gpt(messages, temp=.3)
+	return [answer]
 
 ##############################################################
 ################# Question Funcions ##########################
@@ -73,7 +103,7 @@ def look_on_log(content: str, user:str):
 	return "fue de hecho ayer"
 
 ##############################################################
-################# Default Funcion ##########################
+################# Default Funcion ############################
 ##############################################################
 
 def default(content: str, user: str):
@@ -100,6 +130,7 @@ verb_dic = list_dic(
 	],
 	default
 )
+
 # and questions
 quest_dic = list_dic(
 	vocab['preguntas'],

@@ -32,7 +32,7 @@ def discordo():
 		# add a log
 		app_to_log(f'[LAMBDA] -> request from: {author}')
 		# and send the anser
-		return jsonify({'content': [answer]})
+		return jsonify({'content': answer})
 
 
 # run the app, on localhost only

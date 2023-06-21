@@ -1,11 +1,32 @@
 # helper functions for the body functions
-import hashlib
+
+# modules
+from core.memory import get_memory
+
+# cloduinary
+import cloudinary
+import cloudinary.uploader
+# get the cloudinary credentials
+info = get_memory('info')['cloudinary']
+# returns "https" URLs by setting secure=True  
+config = cloudinary.config(
+	secure=True, cloud_name= info['cloud_name'],
+	api_key=info['api_key'], api_secret=info['api_secret']
+	)
 
 
-# used to save qr codes
-def generate_hash(text: str):
-	hash_object = hashlib.sha256(text.encode())
-	return hash_object.hexdigest()
+# cloudinary function
+def upload_image(img_path: str):
+	ans = cloudinary.uploader.upload(img_path)
+	return ans['secure_url']
+
+
+# download images, linux only
+def download_image(img_link: str, name: str, extension='.png'):
+	# Create the wget command
+	wget_command = f'wget "{image_url}" -O "{output_file}{extension}"'
+	# Execute the wget command using os.popen
+	os.popen(wget_command)
 
 
 # this will be like a dict, but the keys are lists of words
@@ -77,4 +98,8 @@ func_dic = list_dic(
 func_dic['hello']()
 func_dic['hola']()
 func_dic['product']()
+'''
+'''
+answer = upload_image('lambdrive/first-anime.png')
+print(answer)
 '''

@@ -1,4 +1,5 @@
 import discord
+import time
 from discord.ext import commands
 # modules
 from controllers import discordo, memory
@@ -41,12 +42,13 @@ async def on_message(message):
             # the message without 'Lambda '
             msg = message.content[7:]
             # call lambda
-            answers = discordo.call_lambda(msg, str(message.author))
+            answers = discordo.call_lambda(msg, str(message.author.id))
             # split the answer in answers
             answers = discordo.split_text('\n'.join(answers))
             # and send them
             for a in answers:
                 await message.channel.send(a)
+                
 
         # not registered users
         else:
@@ -128,13 +130,6 @@ async def on_message(message):
             # send the message
             for p in pieces:
                 await message.channel.send(p)
-
-
-############# End of Admin functions
-        else:
-            memory.app_to_log(f'[DISCORD] -> Admin command -> error')
-            await message.channel.send("> Error comando no válido\n> Puedes consultar el manual de admin con _aman_")
-
 
 
 # run the bot
