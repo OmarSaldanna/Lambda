@@ -47,7 +47,6 @@ def generate_qr(content: str, user: str):
 	# and return the messages	
 	return [url]
 
-
 # crea|genera una imagen de algo
 def call_dalle(content: str, user: str):
 	# everything after the fourth word 
@@ -55,6 +54,7 @@ def call_dalle(content: str, user: str):
 	prompt = ' '.join(prompt)
 	# second word is the number of images
 	second_word = content.split(' ')[1]
+	
 	quantity = 1
 	# una was skipped
 	if second_word == 'dos':
@@ -74,16 +74,18 @@ def call_dalle(content: str, user: str):
 		answer.append(link)
 	return answer
 
-
 # lambda dime cuando fue la revolucion francesa
 # fast questions, and more precise questions
 def call_gpt(content: str, user: str):
+	# load the user personality
+	personality = get_personality(user)
+	# create the structure
 	messages = [
-		{"role": "system", "content": "Eres un ser digital, complemento de un humano, tu deber es responder las preguntas de la manera más breve posible y responder únicamente lo que se preguntó"},
+		{"role": "system", "content": personality},
 		{"role": "user", "content": content}
 	]
 	
-	answer = gpt(messages, temp=.3)
+	answer = gpt(messages)
 	return [answer]
 
 ##############################################################
@@ -92,15 +94,45 @@ def call_gpt(content: str, user: str):
 
 # Lambda como estás?
 def look_on_state(content: str, user: str):
-	return "estoy bien"
+	# load personality for questions
+	personality = get_personality(user)
+	# get the stats
+	ram = os.popen('free -h').read()
+	log_tail = os.popen(f'tail {log_file}').read()
+	# define the message
+	messages = [
+		{"role": "system", "content": personality},
+		{"role": "user", "content": f"{content}. Responde de manera rápida, no más de un párrafo. Responde de manera cómica basándote en los datos de tu cpu y en tus registros: \n{ram}\n{log_tail}"}
+	]
+	answer = gpt(messages, temp=.7)
+	return [answer]
 
 # Lambda quien eres
 def look_on_person(content: str, user: str):
-	return "Soy Lambda"
+	# load personality for questions
+	personality = get_personality(user)
+	# define the message
+	messages = [
+		{"role": "system", "content": personality},
+		{"role": "user", "content": f"{content}. Responde basado en tu personalidad, pero que sea una respuesta de no más de un párrafo."}
+	]
+	answer = gpt(messages, temp=.7)
+	return [answer]
 
 # Lambda cuando fue la ultima vez que te actualizaste
 def look_on_log(content: str, user:str):
-	return "fue de hecho ayer"
+	# load personality for questions
+	personality = get_personality(user)
+	# load the log
+	log = read_log()
+	# define the message
+	messages = [
+		{"role": "system", "content": personality},
+		{"role": "user", "content": f"{content}. Responde de manera científica, no más de un párrafo, básate en la siguiente información: \n{log}"}
+	]
+	answer = gpt(messages, temp=.7)
+	return [answer]
+
 
 ##############################################################
 ################# Default Funcion ############################

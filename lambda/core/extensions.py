@@ -1,7 +1,7 @@
 # helper functions for the body functions
 
 # modules
-from core.memory import get_memory
+from core.memory import get_memory, log_file
 
 # cloduinary
 import cloudinary
@@ -14,6 +14,9 @@ config = cloudinary.config(
 	api_key=info['api_key'], api_secret=info['api_secret']
 	)
 
+# get the api key for the weather app
+open_weather = get_memory('info')['open_weather']
+
 
 # cloudinary function
 def upload_image(img_path: str):
@@ -24,9 +27,28 @@ def upload_image(img_path: str):
 # download images, linux only
 def download_image(img_link: str, name: str, extension='.png'):
 	# Create the wget command
-	wget_command = f'wget "{image_url}" -O "{output_file}{extension}"'
+	wget_command = f'wget "{image_link}" -O "{output_file}{extension}"'
 	# Execute the wget command using os.popen
 	os.popen(wget_command)
+
+
+# read the log file
+def read_log():
+	with open(log_file, "r") as file:
+	    file_contents = file.read()
+	return file_contents
+
+# read the personality
+def get_personality(user: str):
+	# try to find the user, if wasn't found, return the default
+	person_file = get_memory('personality')
+	personality = ''
+	try:
+		personality = person_file[user]
+	except:
+		print(f'[LAMBDA] -> Personality not found <@{user}>')
+		personality = person_file['default']
+	return personality
 
 
 # this will be like a dict, but the keys are lists of words

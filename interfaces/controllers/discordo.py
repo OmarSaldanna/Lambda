@@ -51,7 +51,7 @@ def lambda_cli(message):
 		# if the command is not correct, res will be ''
 		if res == '':
 			# and discord throws error sending empty messages
-			res = "Tu comando todo ñengo no jaló mano"
+			res = "Tu comando todo no jaló mano"
 
 		# if the result it's larger than discord's limit
 		if len(res) > 2000:
