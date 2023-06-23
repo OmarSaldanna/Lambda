@@ -29,6 +29,9 @@ class Memory:
     except:
       raise KeyError(f"[MEMORY] -> KeyError: {key}")
 
+  def __setitem__ (self, key: str, value):
+    self.dic[key] = value
+
 
 # read the memory files
 def get_memory(mem: str):

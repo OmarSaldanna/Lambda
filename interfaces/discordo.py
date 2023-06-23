@@ -35,7 +35,11 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    # if lambda was called
+###########################################################################################
+#################### Lambda Calls #########################################################
+###########################################################################################
+
+############# lambda calls
     elif message.content[:7] in ['lambda ', 'Lambda ']:
         # and the user is a member
         if str(message.author.id) in members:
@@ -51,7 +55,6 @@ async def on_message(message):
             for a in answers:
                 await message.channel.send(a)
                 
-
         # not registered users
         else:
             # add to log
@@ -59,11 +62,120 @@ async def on_message(message):
             await message.channel.send(f"> Lo siento @<{str(message.author.id)}> no tienes acceso a mi")
             await message.channel.send(f"> Si lo deseas pídele a un admin que te de acceso")
 
+###########################################################################################
+##################### Public Commands #####################################################
+###########################################################################################
+
+############# active lockdown room
+    # salasegura para [@member1] [@member2] ...
+    elif message.content[:11] in ['Salasegura ', 'salasegura ']:
+        # read the memory
+        memory_file = memory.get_memory('memory')
+
+        # if the author is not in a voice channel
+        if message.author.voice is None:
+            await message.channel.send('> Lo siento, primero debes de entrar al canal de voz')
+
+        # there's no white list active, then create one
+        elif memory_file['lockdown_members'] == []:
+            # get the voice channel of the user
+            voice_channel = str(message.author.voice.channel)
+            # get the message str
+            msg = message.content
+            # ids mentions are like <@id>
+            members = msg.split(' ')[2:]
+            # extract the ids without symbols
+            member_ids = [m[2:-1] for m in members]
+            # save the members and the channel in memory
+            memory_file['lockdown_members'] = member_ids
+            memory_file['lockdown_channel'] = voice_channel
+            # write memory
+            memory_file.write()
+            # send a confirmation
+            await message.channel.send(f"ya esta lista la **sala segura** para {' '.join(members)} en **{voice_channel}**")
+
+        # there's a white list active
+        else:
+            await message.channel.send('> Lo siento, no puedo hacer eso, ya hay una **sala segura** activa')
+
+
+############# add users to lockdown
+    elif message.content[:13] in ['Agregarasala ','agregarasala ']:
+        # read the lockdown members
+        memory_file = memory.get_memory('memory')
+        # check if the user is in the list
+        if str(message.author.id) in memory_file['lockdown_members']:
+            # get the message str
+            msg = message.content
+            # ids mentions are like <@id>
+            members = msg.split(' ')[1:]
+            # extract the ids without symbols as a set
+            member_ids = set([m[2:-1] for m in members])
+            # add the users
+            memory_file['lockdown_members'] += member_ids
+            # write the memory
+            memory_file.write()
+            # and send the message
+            await message.channel.send(f"> Listo, miembros agregados a **{memory_file['lockdown_channel']}**")
+         # if the user is not in the list
+        else:
+            await message.channel.send(f'> Lo siento, no tienes permiso para hacer eso')
+
+
+############# remove users from lockdown
+    elif message.content[:13] in ['Quitardesala ','quitardesala ']:
+        # read the lockdown members
+        memory_file = memory.get_memory('memory')
+        # check if the user is in the list
+        if str(message.author.id) in memory_file['lockdown_members']:
+            # get the message str
+            msg = message.content
+            # ids mentions are like <@id>
+            members = msg.split(' ')[1:]
+            # extract the ids without symbols as a set
+            member_ids = set([m[2:-1] for m in members])
+            # get the actual members as a set
+            actual_ids = set(memory_file['lockdown_members'])
+            # add the users, as a list
+            memory_file['lockdown_members'] = list(actual_ids - member_ids)
+            # write the memory
+            memory_file.write()
+            # and send the message
+            await message.channel.send(f"> Listo, miembros eliminados de **{memory_file['lockdown_channel']}**")
+        # if the user is not in the list
+        else:
+            await message.channel.send(f'> Lo siento, no tienes permiso para hacer eso')
+
+
+############# clear lockdown room
+    # only lockdown members can clear the list
+    elif message.content[:9] in ['Salalibre','salalibre']:
+        # read the lockdown members
+        memory_file = memory.get_memory('memory')
+        # see if there's not a lockdown active
+        if memory_file['lockdown_members'] == []:
+            await message.channel.send(f"> Lo siento, no hay una **sala segura* activa en **{memory_file['lockdown_channel']}**")
+        # see if this user is in the members
+        elif str(message.author.id) in memory_file['lockdown_members']:
+            # delete the lockdown list
+            memory_file['lockdown_members'] = []
+            memory_file.write()
+            # send a confirmation
+            await message.channel.send('> Listo, todos son libres de entrar')
+        else:
+            await message.channel.send("> Lo siento, no tienes permiso para eso")
+
+###########################################################################################
+############## Admin Commands #############################################################
+###########################################################################################
+
     # Admin level
     # lambda cli #
     # add members: add, see, del #
     # lambdrive files: ls, rm, mv #
+
     elif str(message.author.id) in admins:
+
 ############# lambda cli
         if message.content[:2] == '$ ':
             # this is for the log
@@ -134,6 +246,28 @@ async def on_message(message):
             # send the message
             for p in pieces:
                 await message.channel.send(p)
+
+###########################################################################################
+############## Discord Events #############################################################
+###########################################################################################
+
+# kick members that aren't in white list when they join the channel
+@bot.event
+async def on_voice_state_update(member: discord.Member, before, after):
+    memory_file = memory.get_memory('memory')
+
+    # Check if member is in a voice channel
+    if member.voice is not None and member.voice.channel is not None:
+        voice_channel_name = str(member.voice.channel.name)
+        # Check if there is an active lockdown and member is in the designated lockdown channel
+        if memory_file['lockdown_members'] != [] and voice_channel_name == memory_file['lockdown_channel']:
+            # Check if member is not in the whitelist
+            if str(member.id) not in memory_file['lockdown_members']:
+                # Disconnect member who is not in the whitelist
+                await member.move_to(None)
+    else:
+        # Member is not in a voice channel
+        pass
 
 
 # run the bot
