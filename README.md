@@ -1,4 +1,4 @@
-# Lambda <3
+# Lambda AI System
 
 [https://github.com/OmarSaldanna/Lambda](https://github.com/OmarSaldanna/Lambda)
 
