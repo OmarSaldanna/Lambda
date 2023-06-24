@@ -88,6 +88,12 @@ def get_admin_manual():
             *aman*
             > **Descripción:** es en escencia el mensaje que despliega el manual del adninistrador, que `explica a detalle las funciones propias del administrador de lambda.`
 
+            ** Manual de Admin **
+            > **Uso:** aman
+            > **Ejemplo**
+            *aman*
+            > **Descripción:** es en escencia el mensaje que despliega el manual del adninistrador, que `explica a detalle las funciones propias del administrador de lambda.`
+
             ** Lambdrive CLI **
             > **Uso:** lambdrive [ls|rm|mv|cp] argumentos
             > **Ejemlos:**
