@@ -1,5 +1,5 @@
 # modules
-from controllers.memory import refresh_users
+from controllers.memory import get_memory
 # libraries
 import requests
 import os
@@ -55,7 +55,7 @@ def lambda_cli(message):
 			# split the text in pieces
 			pieces = split_text(res, 2000)
 			# add the final message
-			pieces.append("**Mames, it's so fucking big**")
+			pieces.append("**" + '-'*100 + "**")
 			# return pieces
 			return pieces
 		else:
@@ -106,53 +106,56 @@ def get_admin_manual():
 
 
 # simplificar a controllers las funciones de members
-def add_member(message, members, info, admin):
+def add_member(message):
+	# read the memory
+	memory_file = get_memory('info')	
 	# user will be the third argument
 	user = message.content.split(' ')[2]
 	# but as a tagged user, the id will be like
 	# <@1024056505789587486>
 	user = user[2:-1]
 	# if the user is already in members
-	if user in members:
-		log = f'[DISCORDO] -> Admin <@{admin}> tried to add <@{user}>'
+	if user in memory_file['members']:
+		log = f'[DISCORDO] -> Admin <@{message.author.id}> tried to add <@{user}>'
 		return f"> <@{user}> ya es parte de Lambda", log
 	# if the user is not in members yet
 	else:
-		log = f'[DISCORDO] -> Admin <@{admin}> added <@{user}>'
+		log = f'[DISCORDO] -> Admin <@{message.author.id}> added <@{user}>'
 		# append the user
-		info['members'].append(user)
+		memory_file['members'].append(user)
 		# write changes
-		info.write()
-		# and refresh
-		refresh_users(members)
+		memory_file.write()
 		# send confirmation
 		return f"> <@{user}> se bienvenido a Lambda", log
 
 
-def delete_member(message, members, info, admin):
+def delete_member(message):
 	# user will be the third argument
 	user = message.content.split(' ')[2]
 	# but as a tagged user, the id will be like
 	# <@1024056505789587486>
 	user = user[2:-1]
+
 	# try to delete the user
 	try:
+		# read the memory
+		memory_file = get_memory('info')
 		# find the idx
-		idx = members.index(user)
+		idx = memory_file['members'].index(user)
 		# delete it from members
-		info['members'].pop(idx)
+		memory_file['members'].pop(idx)
 		# save changes
-		info.write()
-		# and refresh
-		refresh_users(members)
+		memory_file.write()
+		# return the messages
 		msg = f"> <@{user}> eliminado de Lambda"
-		log = f'[DISCORDO] -> Admin <@{admin}> deleted <@{user}> from members'
+		log = f'[DISCORDO] -> Admin <@{message.author.id}> deleted <@{user}> from members'
+		return msg, log
 	# if there's no user in members
 	except:
-		log = f'[DISCORDO] -> Admin <@{admin}> tried to delete <@{user}> from members'
+		log = f'[DISCORDO] -> Admin <@{message.author.id}> tried to delete <@{user}> from members'
 		msg = f"> <@{user}> actualimente no es parte de Lambda"
 		# finally send the mesage
-	return msg, log
+		return msg, log
 
 
 def lambdrive_cli(message, command):

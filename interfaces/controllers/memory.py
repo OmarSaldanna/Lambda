@@ -59,11 +59,3 @@ def app_to_log(msg: str):
   with open(log_file, 'a') as file:
     # append the line to the log file
     file.write(f'{msg} at {time}\n')
-
-
-# a specific function that helps refresh memory variables
-def refresh_users(var):
-  # read the memory
-  mem = get_memory('info')
-  # and return the variabes
-  var = mem['members']
