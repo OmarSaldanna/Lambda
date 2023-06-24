@@ -24,15 +24,21 @@ ai = AI(function_dic)
 @app.route('/lambda', methods=['GET'])
 def discordo():
 	if request.method == 'GET':
-		# extract the message from the request
-		message = request.headers.get('message')
-		author = request.headers.get('author')
-		# process the message
-		answer = ai(message, author)
-		# add a log
-		app_to_log(f'[APP] -> request from: <@{author}>')
-		# and send the anser
-		return jsonify({'content': answer})
+		try:
+			# extract the message from the request
+			message = request.headers.get('message')
+			author = request.headers.get('author')
+			# process the message
+			answer = ai(message, author)
+			# add a log
+			app_to_log(f'[APP] -> request from: <@{author}>')
+			# and send the anser
+			return jsonify({'content': answer})
+		except:
+			# add a log
+			app_to_log(f'[APP][ERROR]')
+			# and send the anser
+			return jsonify({'content': '> Lo siento, como que me confundí'})
 
 
 # run the app, on localhost only
