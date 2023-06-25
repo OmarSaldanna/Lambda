@@ -62,9 +62,46 @@ async def on_message(message):
             memory.app_to_log(f'[LAMBDA][ERROR] -> <@{message.author.id}>: {message.content}')
             await message.channel.send(f"> Lo siento, algo salió mal")
 
+############# lambda calls
+    elif message.content[:7] in ['lambda,', 'Lambda,']:
+        try:
+            # and the user is a member
+            if str(message.author.id) in memory.get_memory('info')['members']:
+                # the message without 'Lambda '
+                msg = message.content[8:]
+                # add to log
+                memory.app_to_log(f'[DISCORDO] -> conversation from <@{str(message.author.id)}>')
+                # call lambda
+                answers = discordo.call_lambda(msg, str(message.author.id), on_conversation=True)
+                # split the answer in answers
+                answers = discordo.split_text('\n'.join(answers))
+                # and send them
+                for a in answers:
+                    await message.channel.send(a)
+                    
+            # not registered users
+            else:
+                # add to log
+                memory.app_to_log(f'[DISCORDO] -> <@{str(message.author.id)}> not in members called lambda')
+                await message.channel.send(f"> Lo siento @<{str(message.author.id)}> no tienes acceso a mi")
+                await message.channel.send(f"> Si lo deseas pídele a un admin que te de acceso")
+        except:
+            memory.app_to_log(f'[LAMBDA][ERROR] -> <@{message.author.id}>: {message.content}')
+            await message.channel.send(f"> Lo siento, algo salió mal")
+
 ###########################################################################################
 ##################### Public Commands #####################################################
 ###########################################################################################
+
+############# the admin manual
+    elif message.content in ['Manual', 'manual', 'man']:
+        memory.app_to_log(f'[DISCORD] -> Member <@{str(message.author.id)}> called manual')
+        # get the message by pieces
+        pieces = discordo.get_public_manual()
+        # send the pieces
+        for p in pieces:
+            await message.channel.send(p)
+
 
 ############# active lockdown room
     # salasegura para [@member1] [@member2] ...
@@ -157,8 +194,9 @@ async def on_message(message):
             await message.channel.send(f"> Lo siento, no hay una **sala segura* activa en **{memory_file['lockdown_channel']}**")
         # see if this user is in the members
         elif str(message.author.id) in memory_file['lockdown_members']:
-            # delete the lockdown list
+            # delete the lockdown list and the channel
             memory_file['lockdown_members'] = []
+            memory_file['lockdown_channel'] = ""
             memory_file.write()
             # send a confirmation
             await message.channel.send('> Listo, todos son libres de entrar')
@@ -270,9 +308,6 @@ async def on_voice_state_update(member: discord.Member, before, after):
             if str(member.id) not in memory_file['lockdown_members']:
                 # Disconnect member who is not in the whitelist
                 await member.move_to(None)
-    else:
-        # Member is not in a voice channel
-        pass
 
 
 # run the bot

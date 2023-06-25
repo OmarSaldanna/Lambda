@@ -52,7 +52,6 @@ def read_log(token_limit=3000):
 	return log
 
 
-
 # read the personality
 def get_personality(user: str):
 	# try to find the user, if wasn't found, return the default
@@ -143,7 +142,8 @@ def recreate_context(user: str, message: list, memory_file, on_conversation):
 		{"role": "system", "content": personality}
 	]
 	# add the actual context's tail, if it's on conversation
-	if not on_conversation:
+	if on_conversation:
+		print('recreating as conversation')
 		new_context += message
 	# finally save the context
 	memory_file['gpt_contexts'][user] = new_context

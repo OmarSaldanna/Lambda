@@ -6,10 +6,20 @@ import os
 
 lambdrive_path = 'lambdrive/'
 
-def call_lambda(message: str, author: str):
+############################################################
+###################### General Functions ###################
+############################################################
+
+def call_lambda(message: str, author: str, on_conversation=False):
+	# default lambda url for calls
+	lambda_url = 'http://127.0.0.1:8080/lambda'
+	# if it was a conversation request
+	if on_conversation:
+		lambda_url = 'http://127.0.0.1:8080/lambda/conversation'
+		print(lambda_url)
 	# call lambda api
 	answer = requests.get(
-		'http://127.0.0.1:8080/lambda', 
+		lambda_url,
 		headers={
 			"message": message,
 			"author": author
@@ -25,6 +35,41 @@ def call_lambda(message: str, author: str):
 def split_text(text, n=2000):
     return [text[i:i+n] for i in range(0, len(text), n)]
 
+def get_public_manual():
+	return split_text("""
+# Manual de Usuario
+_Cualquier duda y para mejor explicación preguntar a_ **@Reagan**.
+            
+> **Lo Nuevo en Lambda**
+Actualmente lambda se encuentra en su versión 2, la cual hace de lambda algo más que una simple herramienta o bot de discord, **Lambda ha incluido nuevos ajustes que permiten una interacción muy personalizada para los usuarios:**
+
+* **Adios Comandos**: Para los usuarios, lambda ya no cuenta con un alto repertorio de comandos, sino que ahora, para todo lo que necesites solo tendrás que usar la palabra **Lambda**, investigaciones, imágenes generadas con IA, conversaciones, QRs y mucho más al **alcance de una sola palabra**.
+* **Ajuste de personalidad**: puedes pedirlque **que hable como alguna figura literaria** y sostener una contínua conversación con Lambda como si fuera ese mítico personaje. _Para cambiar ese ajuste contacta a @Reagan_.
+* **Contexto**: ahora como el chatGPT lambda ya basa sus respuestas en tus preguntas y sus respuestas anteriores, de manera que puedes sostener conversaciones sin que lambda pierda el hilo de esta. de un mensaje a otro.
+* **Conversaciones**: Lambda tiene dos ajustes para guardar contexto: si el contexto llega a llenarse con **preguntas, entonces el contexto será elminado para una nueva plática**. Por otro lado, si se llena en **una conversación, Lambda mantendrá el contexto de tu última pregunta y la última respuesta, de esa manera la conversación puede ser más extensa**.
+
+# Interacción con Lambda
+
+Como fue previamente mencionado, ahora la mayoría de funciones de Lambda puden ser usadas mediante su nombre. Aquí algunos ejemplos de Lo que lambda puede hacer:
+
+> **Imágenes o QRs:**
+* Lambda **[genera|crea]** un QR _de www.mipagina.com_
+* Lambda **[genera|crea] [una|dos|tres]** imágenes _de a wonderful landscape on martian surface_
+
+> **Preguntas generales:**
+* Lambda **dime** _cuál es la cápital de Italia?_
+
+> **Conversaciones contínuas:**
+* Lambda, _en que nos quedamos?_
+
+> Preguntas generales:
+* Lambda quien eres?
+* Lambda cómo estás?
+* Lambda cuándo fue la última vez que te reiniciaste?
+* Lambda qué sabes hacer?
+* Lambda qué puedes hacer?
+
+	""", 2000)
 
 ############################################################
 ###################### Admin Functions #####################
@@ -64,7 +109,7 @@ def lambda_cli(message):
 
 def get_admin_manual():
 	return split_text("""
-            **Manual de Admin**
+            # Manual de Admin
 
             ** Lambda CLI **
             > **Uso:** $ comando
@@ -88,11 +133,11 @@ def get_admin_manual():
             *aman*
             > **Descripción:** es en escencia el mensaje que despliega el manual del adninistrador, que `explica a detalle las funciones propias del administrador de lambda.`
 
-            ** Manual de Admin **
-            > **Uso:** aman
+            ** Función de Echo **
+            > **Uso:** echo mensaje...
             > **Ejemplo**
-            *aman*
-            > **Descripción:** es en escencia el mensaje que despliega el manual del adninistrador, que `explica a detalle las funciones propias del administrador de lambda.`
+            *echo @Lambda*
+            > **Descripción:** imprime en cuestón, lo que está después de echo, pero sin ser procesado. Esta función es utilizada principalmente para desarrollo y para demostraciones del chat de discord.
 
             ** Lambdrive CLI **
             > **Uso:** lambdrive [ls|rm|mv|cp] argumentos

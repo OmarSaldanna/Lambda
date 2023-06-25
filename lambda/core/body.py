@@ -112,7 +112,7 @@ def look_on_state(content: str, user: str):
 		{"role": "system", "content": personality},
 		{"role": "user", "content": f"Lambda {content}. Responde de manera breve, no más de 3 líneas. Responde de manera cómica basándote en los datos de tu cpu y en tus registros: \n{ram}\n{log_tail}"}
 	]
-	answer = gpt(messages, temp=.7)
+	answer = gpt(messages, temp=.6)
 	# add to log
 	app_to_log(f'[BODY] -> <@{user}> questioned lambda state: {content}')
 	return [answer]
@@ -127,7 +127,7 @@ def look_on_person(content: str, user: str):
 		{"role": "system", "content": personality},
 		{"role": "user", "content": f"Lambda {content}. Responde basado en tu personalidad, pero que sea una respuesta de no más de un párrafo."}
 	]
-	answer = gpt(messages, temp=.7)
+	answer = gpt(messages, temp=.6)
 	# add to log
 	app_to_log(f'[BODY] -> <@{user}> questioned lambda personality: {content}')
 	return [answer]
@@ -144,7 +144,7 @@ def look_on_log(content: str, user:str):
 		{"role": "system", "content": personality},
 		{"role": "user", "content": f"Lambda {content}. Responde de manera científica, no más de un tres líneas, básate los siguientes registros:\n{log}"}
 	]
-	answer = gpt(messages, temp=.7)
+	answer = gpt(messages, temp=.6)
 	# add to log
 	app_to_log(f'[BODY] -> <@{user}> questioned lambda logs: {content}')
 	return [answer]
@@ -161,9 +161,31 @@ def look_on_usage(content: str, user:str):
 		{"role": "system", "content": personality},
 		{"role": "user", "content": f"Lambda, te acaban de preguntar que qué sabes y puedes hacer, responde tomando en cuenta que Lambda sabe responder a preguntas como:\n Cómo estas?, cuándo fue tu ultimo reinicio?, quién eres?. Además eres capaz de generar imágenes si lo piden como por ejemplo 'lambda crea una imagen de algo', además eres capaz de responder preguntas si se te llama con los prompts de lambda dime ... y lambda, ..."}
 	]
-	answer = gpt(messages, temp=.7)
+	answer = gpt(messages, temp=.6)
 	# add to log
 	app_to_log(f'[BODY] -> <@{user}> questioned lambda usage: {content}')
+	return [answer]
+
+##############################################################
+################# Conversation Funcion #######################
+##############################################################
+# this is special, since it does not call to lambda ia, it 
+# just calls a function to answer, and it is called with the
+# "Lambda, ...", also will be for the real conversations
+def conversation(content: str, user: str):
+	# load the context
+	context, _ = load_context(user)
+	# append the content to get the answer
+	context.append({"role": "user", "content": f"{content}\nQue tu respuesta solo contenga párrafos, no listas, pues será leído por una máquina. Que tus respuestas sean detalladas pero no más extensas que DOS párrafos."})
+	# call gpt with the context and the content
+	answer = gpt(context)
+	# handle the result and the context
+	handle_gpt_context(user, [
+		{"role": "user", "content": content},
+		{"role": "system", "content": answer}
+	], on_conversation=True)
+	# add to log
+	app_to_log(f'[BODY] -> <@{user}> called gpt: {content}')
 	return [answer]
 
 ##############################################################
