@@ -176,7 +176,7 @@ def conversation(content: str, user: str):
 	# load the context
 	context, _ = load_context(user)
 	# append the content to get the answer
-	context.append({"role": "user", "content": f"{content}\nQue tu respuesta solo contenga párrafos, no listas, pues será leído por una máquina. Que tus respuestas sean detalladas pero no más extensas que DOS párrafos."})
+	context.append({"role": "user", "content": f"{content}\nQue tu respuesta solo contenga párrafos, no listas, pues será leído por una máquina. Que tus respuestas no sean más extensas que DOS párrafos."})
 	# call gpt with the context and the content
 	answer = gpt(context)
 	# handle the result and the context
