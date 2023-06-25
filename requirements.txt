@@ -8,4 +8,4 @@ qrcode
 requests
 tqdm
 cloudinary
-PyNaCl
+tiktoken

@@ -5,6 +5,9 @@ from core.memory import get_memory, log_file
 
 import os
 
+# to tokenize GPT scontext
+import tiktoken
+
 # cloduinary
 import cloudinary
 import cloudinary.uploader
@@ -16,6 +19,9 @@ config = cloudinary.config(
 	api_key=info['api_key'], api_secret=info['api_secret']
 	)
 
+##########################################################################
+################## Helper Functions for body #############################
+##########################################################################
 
 # cloudinary function
 def upload_image(img_path: str):
@@ -31,11 +37,21 @@ def download_image(img_link: str, name: str, extension='.png'):
 	os.popen(wget_command)
 
 
-# read the log file
-def read_log():
-	with open(log_file, "r") as file:
-	    file_contents = file.read()
-	return file_contents
+# get the last of the log file that sums ~3000 tokens
+def read_log(token_limit=3000):
+	token_counter = 0
+	counter = 10
+	log = ''
+	while token_counter < 3000:
+		# read the n last lines
+		log = os.popen(f'tail -n {counter} {log_file}').read()
+		# count the tokens
+		token_counter = tokenize_counter(log)
+		# 
+		counter += 5
+	return log
+
+
 
 # read the personality
 def get_personality(user: str):
@@ -49,6 +65,117 @@ def get_personality(user: str):
 		personality = person_file['default']
 	return personality
 
+##########################################################################
+################## GPT Context Processing ################################
+##########################################################################
+
+# 4,096 tokens is the max context. Then clear the context of the user
+# once the user actual context has surpassed the limit size.
+token_limit = 4000
+
+
+# get the actual tokens of the context
+def tokenize_counter(string: str, encoding_name='gpt2'):
+	# tokenize
+	encoding = tiktoken.get_encoding(encoding_name)
+	# count the tokens
+	num_tokens = len(encoding.encode(string))
+	return num_tokens
+
+
+# create a context register if the user does not has one.
+# also if the context is new, append the personality as 
+# the first message in context
+def load_context(user: str):
+	# read the memory
+	memory_file = get_memory('memory')
+	# get the personality
+	personality = get_personality(user)
+
+	# try to get the context of the user
+	try:
+		# the context exists
+		user_context = memory_file['gpt_contexts'][user]
+	# this is in case of new users
+	except:
+		# the context does not exists, then create the instance
+		# with the personality as the firt item
+		memory_file['gpt_contexts'][user] = [
+			{"role": "system", "content": personality}
+		]
+		# save changes
+		memory_file.write()
+		# and return the context
+		user_context = memory_file['gpt_contexts'][user]
+	return user_context, memory_file
+
+
+# counts the size in tokens of an user's gpt context
+def get_context_len(user: str):
+	# select the context
+	context, memory_file = load_context(user)
+	token_counter = 0
+	# iterate the messages structure
+	for msg in context:
+		# and count the tokens
+		token_counter += tokenize_counter(msg['content'])
+	return token_counter, memory_file
+
+
+# counts the tokens from a specific message structure
+def get_message_len(message: list):
+	token_counter = 0
+	# iterate the messages structure
+	for msg in message:
+		# and count the tokens
+		token_counter += tokenize_counter(msg['content'])
+	return token_counter
+
+
+# create a context for a user once the context has gone full
+def recreate_context(user: str, message: list, memory_file, on_conversation):
+	# if it was "Lambda dime ...", it's not conversation
+	# if it was "Lambda, ...", it's a conversation
+	# and conversations keep the context's tail to keep the thread
+	# so, form the new context
+	personality = get_personality(user)
+	new_context = [
+		{"role": "system", "content": personality}
+	]
+	# add the actual context's tail, if it's on conversation
+	if not on_conversation:
+		new_context += message
+	# finally save the context
+	memory_file['gpt_contexts'][user] = new_context
+	memory_file.write()
+
+
+# this function is called in every gpt call, it recieves the
+# user and the message of the call. The function:
+# if: the message and answer tokens + actual tokens > token_limit
+# -> then send the answer and creates a new context
+# else: the message and answer tokens + actual tokens <= token_limit
+# -> then just append these new messages to the context
+def handle_gpt_context(user: str, message: list, on_conversation=False):
+	# get the actual len of the saved context
+	context_size, memory_file = get_context_len(user)
+	# get the len of the new context
+	new_size = get_message_len(message)
+	# once the context has gone full
+	if context_size + new_size > token_limit:
+		# create a new context
+		recreate_context(user, message, memory_file, on_conversation)
+	# since the context isn't full already
+	else:
+		# just aadd the message to the actual context
+		memory_file['gpt_contexts'][user] += message
+		# save changes
+		memory_file.write()
+
+
+##########################################################################
+################## List Dic: words2functions #############################
+##########################################################################
 
 # this will be like a dict, but the keys are lists of words
 class list_dic:

@@ -81,14 +81,17 @@ def call_dalle(content: str, user: str):
 # lambda dime cuando fue la revolucion francesa
 # fast questions, and more precise questions
 def call_gpt(content: str, user: str):
-	# load the user personality
-	personality = get_personality(user)
-	# create the structure
-	messages = [
-		{"role": "system", "content": personality},
-		{"role": "user", "content": content}
-	]
-	answer = gpt(messages)
+	# load the context
+	context, _ = load_context(user)
+	# append the content to get the answer
+	context.append({"role": "user", "content": content})
+	# call gpt with the context and the content
+	answer = gpt(context)
+	# handle the result and the context
+	handle_gpt_context(user, [
+		{"role": "user", "content": content},
+		{"role": "system", "content": answer}
+	])
 	# add to log
 	app_to_log(f'[BODY] -> <@{user}> called gpt: {content}')
 	return [answer]
@@ -107,12 +110,13 @@ def look_on_state(content: str, user: str):
 	# define the message
 	messages = [
 		{"role": "system", "content": personality},
-		{"role": "user", "content": f"{content}. Responde de manera rápida, no más de un párrafo. Responde de manera cómica basándote en los datos de tu cpu y en tus registros: \n{ram}\n{log_tail}"}
+		{"role": "user", "content": f"Lambda {content}. Responde de manera breve, no más de 3 líneas. Responde de manera cómica basándote en los datos de tu cpu y en tus registros: \n{ram}\n{log_tail}"}
 	]
 	answer = gpt(messages, temp=.7)
 	# add to log
 	app_to_log(f'[BODY] -> <@{user}> questioned lambda state: {content}')
 	return [answer]
+
 
 # Lambda quien eres
 def look_on_person(content: str, user: str):
@@ -121,14 +125,15 @@ def look_on_person(content: str, user: str):
 	# define the message
 	messages = [
 		{"role": "system", "content": personality},
-		{"role": "user", "content": f"{content}. Responde basado en tu personalidad, pero que sea una respuesta de no más de un párrafo."}
+		{"role": "user", "content": f"Lambda {content}. Responde basado en tu personalidad, pero que sea una respuesta de no más de un párrafo."}
 	]
 	answer = gpt(messages, temp=.7)
 	# add to log
 	app_to_log(f'[BODY] -> <@{user}> questioned lambda personality: {content}')
 	return [answer]
 
-# Lambda cuando fue la ultima vez que te actualizaste
+
+# Lambda cuando fue la ultima vez que te actualizaste, for example
 def look_on_log(content: str, user:str):
 	# load personality for questions
 	personality = get_personality(user)
@@ -137,13 +142,29 @@ def look_on_log(content: str, user:str):
 	# define the message
 	messages = [
 		{"role": "system", "content": personality},
-		{"role": "user", "content": f"{content}. Responde de manera científica, no más de un párrafo, básate en la siguiente información. En los registros, lo primero es la fecha y luego de -> lo que pasó \n{log}"}
+		{"role": "user", "content": f"Lambda {content}. Responde de manera científica, no más de un tres líneas, básate los siguientes registros:\n{log}"}
 	]
 	answer = gpt(messages, temp=.7)
 	# add to log
 	app_to_log(f'[BODY] -> <@{user}> questioned lambda logs: {content}')
 	return [answer]
 
+
+# Lambda que sabes hacer ?
+# Lambda que puedes hacer ?
+# this message is the manual
+def look_on_usage(content: str, user:str):
+	# load personality for questions
+	personality = get_personality(user)
+	# define the message
+	messages = [
+		{"role": "system", "content": personality},
+		{"role": "user", "content": f"Lambda, te acaban de preguntar que qué sabes y puedes hacer, responde tomando en cuenta que Lambda sabe responder a preguntas como:\n Cómo estas?, cuándo fue tu ultimo reinicio?, quién eres?. Además eres capaz de generar imágenes si lo piden como por ejemplo 'lambda crea una imagen de algo', además eres capaz de responder preguntas si se te llama con los prompts de lambda dime ... y lambda, ..."}
+	]
+	answer = gpt(messages, temp=.7)
+	# add to log
+	app_to_log(f'[BODY] -> <@{user}> questioned lambda usage: {content}')
+	return [answer]
 
 ##############################################################
 ################# Default Funcion ############################
@@ -180,7 +201,8 @@ quest_dic = list_dic(
 	[
 		look_on_state,
 		look_on_person,
-		look_on_log
+		look_on_log,
+		look_on_usage
 	],
 	default
 )
