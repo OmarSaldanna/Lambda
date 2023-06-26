@@ -176,7 +176,7 @@ def conversation(content: str, user: str):
 	# load the context
 	context, _ = load_context(user)
 	# append the content to get the answer
-	context.append({"role": "user", "content": f"{content}\nSi te pregunto como hacer cosas con python o comandos de sistema operativo, únicamente dame el código o el comando. De ser la pregunta orientada a otros temas, da una respuesta de UN PÁRRAFO."})
+	context.append({"role": "user", "content": f"{content}"})
 	# call gpt with the context and the content
 	answer = gpt(context)
 	# handle the result and the context
