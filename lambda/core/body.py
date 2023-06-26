@@ -139,6 +139,7 @@ def look_on_log(content: str, user:str):
 	personality = get_personality(user)
 	# load the log
 	log = read_log()
+	print(log)
 	# define the message
 	messages = [
 		{"role": "system", "content": personality},
