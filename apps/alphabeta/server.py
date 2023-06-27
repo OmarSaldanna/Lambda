@@ -5,11 +5,11 @@ from flask import Flask, request, jsonify
 import modules
 
 # instance the flask app
-app = Flask(__name__)
-CORS(app)
+alphabeta = Flask(__name__)
+CORS(alphabeta)
 
 # lambda conversation
-@app.route('/lambda/talk', methods=['GET'])
+@alphabeta.route('/lambda/alphabeta', methods=['GET'])
 def lambda_conversation():
 	if request.method == 'GET':
 		try:
@@ -26,4 +26,4 @@ def lambda_conversation():
 			return jsonify({'content': 'error'})
 
 # run the app, on localhost only
-app.run(port=88, host="0.0.0.0", debug=True)
+alphabeta.run(port=88, host="0.0.0.0", debug=True)
