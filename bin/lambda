@@ -123,8 +123,28 @@ case $1 in
 		echo "[BIN] -> lambda checkpoint at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 	;;
 
+	# run an app
+	app)
+		cd $route
+		# locate the app
+		app="apps/$2/$2"
+		echo $app
+		# and run the app
+		tmux new-session -d -s $2 "sh $app"
+		# append to log
+		echo "[BIN] -> lambda app $2 ran at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+	;;
+
+	# kill app
+	app-kill)
+		# kill the app session
+		tmux kill-session -t $2
+		# append to log
+		echo "[BIN] -> lambda app $2 killed at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+	;;
+
 	*)
 		echo Unknown Command λ
-		echo lambda "[run|kill|update|reboot|rupdate|backup|checkpoint]"
+		echo lambda "[run|kill|update|reboot|rupdate|backup|checkpoint|app|app-kill]"
 	;;
 esac

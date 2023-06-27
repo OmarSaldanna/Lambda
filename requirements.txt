@@ -10,3 +10,4 @@ tqdm
 cloudinary
 tiktoken
 unidecode
+elevenlabs

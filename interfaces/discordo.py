@@ -219,7 +219,7 @@ async def on_message(message):
     ############# lambda cli
             if message.content[:2] == '$ ':
                 # this is for the log
-                memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> called lambda-cli -> {message.content[2:]}')
+                memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> called lambda-cli -> {message.content}')
                 pieces = discordo.lambda_cli(message) # use the lambda_cli controller
                 for p in pieces: # send the message or messages
                     await message.channel.send(p)
@@ -272,7 +272,7 @@ async def on_message(message):
     ############# echo funcion
             elif message.content[:5] == 'echo ':
                 memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> echoes {message.content[5:]}')
-                await message.channel.send(f"```{message.content[5:]}```")
+                await message.channel.send(f"```{message.content}```")
 
 
     ############# lambdrive files
@@ -282,13 +282,30 @@ async def on_message(message):
                 # excecute the command
                 pieces = discordo.lambdrive_cli(message, command)
                 # app to log
-                memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> called lambdrive: {message.content[10:]}')
+                memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> called lambdrive: {message.content}')
                 # send the message
                 for p in pieces:
                     await message.channel.send(p)
+    
+
+    ############# upload files
+            elif message.content[:6] in ['upload ', 'Upload ']:
+                # get the files
+                files = message.content.split(' ')[1:]
+                # open the files
+                for file in files:
+                    with open(file, 'rb') as f:
+                        # set a discord instance
+                        imagen = discord.File(f)
+                        # send the image
+                        await message.channel.send(file=imagen)
+                # app to log
+                memory.app_to_log(f'[DISCORD] -> Admin <@{str(message.author.id)}> upload files: {message.content}')
+
         except:
             memory.app_to_log(f'[ADMIN][ERROR] -> <@{message.author.id}>: {message.content}')
             await message.channel.send(f"> Lo siento, algo salió mal")
+
 
 ###########################################################################################
 ############## Discord Events #############################################################
