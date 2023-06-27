@@ -125,14 +125,16 @@ case $1 in
 
 	# run an app
 	app)
-		cd $route
 		# locate the app
 		app="apps/$2/$2"
-		echo $app
 		# and run the app
-		tmux new-session -d -s $2 "sh $app"
+		tmux new-session -d -s $2 "cd $route && sh $app"
 		# append to log
 		echo "[BIN] -> lambda app $2 ran at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		# wait to errors
+		sleep 1
+		# and see results
+		tmux ls
 	;;
 
 	# kill app
