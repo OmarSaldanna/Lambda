@@ -83,7 +83,7 @@ async def on_message(message):
             else:
                 # add to log
                 memory.app_to_log(f'[DISCORDO] -> <@{str(message.author.id)}> not in members called lambda')
-                await message.channel.send(f"> Lo siento @<{str(message.author.id)}> no tienes acceso a mi")
+                await message.channel.send(f"> Lo siento <@{str(message.author.id)}> no tienes acceso a mi")
                 await message.channel.send(f"> Si lo deseas pídele a un admin que te de acceso")
         except:
             memory.app_to_log(f'[LAMBDA][ERROR] -> <@{message.author.id}>: {message.content}')
