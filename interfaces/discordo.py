@@ -289,7 +289,7 @@ async def on_message(message):
     
 
     ############# upload files
-            elif message.content[:6] in ['upload ', 'Upload ']:
+            elif message.content[:7] in ['upload ', 'Upload ']:
                 # get the files
                 files = message.content.split(' ')[1:]
                 # open the files
