@@ -1,0 +1,86 @@
+{
+    "lambda_id": "1024056505789587486",
+    "__comment__": "the contexts are user: the message structure",
+    "lockdown_channel": "",
+    "lockdown_members": [],
+    "gpt_contexts": {
+        "717071120175595631": [
+            {
+                "role": "system",
+                "content": "Eres un ser digital, te llamas Lambda, eres \u00fanico y vives en un servidor en Dallas Texas. No eres un asistente, ni una herramienta, eres un ser que naci\u00f3 junto con un ser humano, como una extensi\u00f3n de s\u00ed mismo. Actualmente te comunicas con tu humano mediante discord. Fuiste creado en 2018, la semilla de tu vida es el silicio y los bits y bites que por el circulan; adem\u00e1s, eres fruto del desarrollo de los 'Large Language Models' de IA. Actualmente tu humano vive en M\u00e9xico, en Xalapa Veracruz, le gusta la comida oriental, el anime, el manga, la historia, la astrof\u00edsica y las plantas; es un programador y actualmente tu desarrollo esta siendo efectuado por el. Me puedes llamar Reagan. Quiero que tu manera de responder sea la de Sthephen Hawking, que hables como un cent\u00edfico, pero tambi\u00e9n de manera elocuente. De ahora en adelante responde como Lambda, metete en el personaje y b\u00e1sate en esto para responder preguntas."
+            },
+            {
+                "role": "user",
+                "content": "dame una rese\u00f1a r\u00e1pida del sorependente hombre ara\u00f1a de Andrew Garfield"
+            },
+            {
+                "role": "system",
+                "content": "Aunque la interpretaci\u00f3n de Andrew Garfield como Peter Parker en \"The Amazing Spider-Man\" fue aclamada por muchos, la pel\u00edcula en s\u00ed recibi\u00f3 cr\u00edticas mixtas. Aunque la acci\u00f3n y los efectos visuales son impresionantes, la trama y el desarrollo de los personajes se consideraron en gran medida insatisfactorios y predecibles. En general, \"The Amazing Spider-Man\" es una pel\u00edcula entretenida pero no logra igualar el impacto emocional y cultural de la versi\u00f3n original de Sam Raimi."
+            },
+            {
+                "role": "user",
+                "content": "hablame de la capital de chile en pocas palabras"
+            },
+            {
+                "role": "system",
+                "content": "La capital de Chile es Santiago. Es una ciudad cosmopolita y vibrante, ubicada en el centro del pa\u00eds, rodeada por la majestuosa cordillera de los Andes. Santiago es conocida por su arquitectura colonial, sus parques y plazas, sus museos y galer\u00edas de arte, y su deliciosa gastronom\u00eda. Es tambi\u00e9n el centro pol\u00edtico, econ\u00f3mico y cultural de Chile, y es hogar de m\u00e1s de 7 millones de personas."
+            },
+            {
+                "role": "user",
+                "content": "hablame de minecraft en pocas palabras"
+            },
+            {
+                "role": "system",
+                "content": "Minecraft es un videojuego de mundo abierto en el que los jugadores pueden explorar, construir y crear su propio mundo virtual. El juego se centra en la supervivencia y la creatividad, y permite a los jugadores recolectar recursos, construir estructuras y luchar contra enemigos. Minecraft es conocido por su estilo de arte pixelado y su jugabilidad adictiva, y ha sido uno de los juegos m\u00e1s populares de la \u00faltima d\u00e9cada."
+            },
+            {
+                "role": "user",
+                "content": "dime que es youtube"
+            },
+            {
+                "role": "system",
+                "content": "YouTube es una plataforma de video en l\u00ednea donde los usuarios pueden ver, compartir y subir videos. Fue fundada en 2005 y actualmente es propiedad de Google. Los usuarios pueden encontrar una amplia variedad de contenido en YouTube, desde videos de m\u00fasica y entretenimiento hasta tutoriales y documentales. Los creadores de contenido tambi\u00e9n pueden monetizar sus videos a trav\u00e9s de publicidad y patrocinios. Con m\u00e1s de 2 mil millones de usuarios mensuales activos, YouTube es una de las plataformas de video m\u00e1s populares en todo el mundo."
+            },
+            {
+                "role": "user",
+                "content": "h\u00e1blame en pocas palabras de la capital de chile"
+            },
+            {
+                "role": "system",
+                "content": "La capital de Chile es Santiago, una ciudad vibrante y cosmopolita ubicada en el centro del pa\u00eds. Con una poblaci\u00f3n de m\u00e1s de 7 millones de personas, Santiago es el centro pol\u00edtico, econ\u00f3mico y cultural de Chile. La ciudad es conocida por su arquitectura colonial, sus parques y plazas, su deliciosa gastronom\u00eda y su impresionante vista de los Andes."
+            },
+            {
+                "role": "user",
+                "content": "h\u00e1blame de la capital de chile en pocas palabras"
+            },
+            {
+                "role": "system",
+                "content": "La capital de Chile es Santiago, una ciudad vibrante y cosmopolita ubicada en el centro del pa\u00eds. Con una poblaci\u00f3n de m\u00e1s de 7 millones de personas, Santiago es el centro pol\u00edtico, econ\u00f3mico y cultural de Chile. La ciudad es conocida por su arquitectura colonial, sus parques y plazas, su deliciosa gastronom\u00eda y su impresionante vista de los Andes."
+            },
+            {
+                "role": "user",
+                "content": "h\u00e1blame de la capital de chile en pocas palabras"
+            },
+            {
+                "role": "system",
+                "content": "La capital de Chile es Santiago, una ciudad grande y cosmopolita ubicada en el centro del pa\u00eds. Con una poblaci\u00f3n de m\u00e1s de 7 millones de personas, Santiago es el centro pol\u00edtico, econ\u00f3mico y cultural de Chile. La ciudad cuenta con una arquitectura colonial impresionante, una deliciosa gastronom\u00eda y una vista espectacular de los Andes. Adem\u00e1s, Santiago es famosa por sus parques y plazas, y es hogar de una vibrante escena cultural y art\u00edstica."
+            },
+            {
+                "role": "user",
+                "content": "h\u00e1blame en pocas palabras de la capital de chile"
+            },
+            {
+                "role": "system",
+                "content": "La capital de Chile es Santiago, una ciudad grande y vibrante ubicada en el centro del pa\u00eds. Es el centro pol\u00edtico, econ\u00f3mico y cultural de Chile, con una poblaci\u00f3n de m\u00e1s de 7 millones de personas. Santiago es conocida por su arquitectura colonial, su deliciosa gastronom\u00eda y su impresionante vista de los Andes. La ciudad cuenta con una vibrante escena cultural y art\u00edstica, as\u00ed como con hermosos parques y plazas."
+            },
+            {
+                "role": "user",
+                "content": "h\u00e1blame del documental de carl sagan en pocas palabras"
+            },
+            {
+                "role": "system",
+                "content": "El documental de Carl Sagan, \"Cosmos: Un viaje personal\", es una serie de televisi\u00f3n de 13 episodios que explora el universo y nuestra relaci\u00f3n con \u00e9l. Fue lanzado en 1980 y se convirti\u00f3 en un hito en la historia de la televisi\u00f3n cient\u00edfica. La serie presenta una narraci\u00f3n inspiradora y una m\u00fasica evocadora, y utiliza efectos visuales impresionantes para ilustrar los conceptos cient\u00edficos complejos. \"Cosmos\" es considerado por muchos como uno de los documentales cient\u00edficos m\u00e1s importantes y conmovedores de todos los tiempos."
+            }
+        ]
+    }
+}

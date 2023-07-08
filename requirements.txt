@@ -11,3 +11,4 @@ cloudinary
 tiktoken
 unidecode
 elevenlabs
+hashlib

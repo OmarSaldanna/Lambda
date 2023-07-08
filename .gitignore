@@ -6,21 +6,25 @@ music
 share
 __pycache__
 
-# folder with the lambda backups and memory
-backups
-memory
+# files from lambdrive
+*.tar.gz
+*.mp3
+*.png
 
-# lambda drive service
-lambdrive
+# folders from memory
+errors
+images
+log
+members
+servers
 
 # Ignore Mac system files
 *.DS_Store
 *.cfg
 
-# private important files
-*.json
-*.txt
-
 # other files from system
 __init__.py
 __init__.pyc
+
+# the tester file
+tester.py

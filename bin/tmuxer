@@ -1,7 +1,0 @@
-#!/bin/bash
-# run commands in a tmux session, like lambda's ones
-
-session_name="$1"
-command_to_run="$2"
-
-tmux new-session -d -s "$session_name" "$command_to_run"

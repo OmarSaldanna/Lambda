@@ -1,0 +1,26 @@
+{
+	"__comment__": "this file contains the prototypes for the dbs",
+	
+	"members": {
+		"servers": [],
+		"role": "user",
+		"benefits": [],
+		"usage": {
+			"images": 0,
+			"context": 0
+		},
+		"model": "gpt3.5",
+		"context": [],
+		"personality": ""
+	},
+
+	"images": {
+		"images": [],
+		"variations": []
+	},
+	
+	"servers": {
+		"lockdown_channel": "",
+  		"lockdown_members": []
+	}
+}
