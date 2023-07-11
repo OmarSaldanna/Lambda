@@ -44,6 +44,17 @@ class Memory:
     except:
       raise KeyError(f"[MEMORY] -> KeyError: {key}")
 
+  # set items
+  def __setitem__ (self, key: str, value):
+    try:
+      self.dic[key] = value
+    except:
+      raise KeyError(f"[MEMORY] -> KeyError: {key}")
+
+  # in case of print the memory
+  def __str__ (self):
+    return self.dic
+
 
 # read the memory files
 def get_memory(mem: str):
@@ -53,13 +64,14 @@ def get_memory(mem: str):
 # read the memory files by id
 def get_memory_by_id(database: str, _id: str):
   # returns a memory instance
+  print(f'{memory_path}{database}/{_id}.json')
   return Memory(f'{memory_path}{database}/{_id}.json')
 
 # create a memory file, mostly used when memory
 # files from users and servers are not found
 def create_memory(path: str, content: dict):
   with open(memory_path+path, "w") as write_file:
-      json.dump(content, write_file, indent=4)
+    json.dump(content, write_file, indent=4)
 
 # make a memory file for user, server or images
 # based on the prototypes.json
@@ -74,7 +86,7 @@ def make_memory(_id: str, database: str):
     # and make it based on the prototype
     prototype
   )
-  return prototype
+  return get_memory(f'{database}/{_id}')
 
 
 # function for time, for the log format
@@ -90,11 +102,11 @@ def get_time():
 
 
 # append smth to a log file
-def app_to_log(msg: str, file_name: str):
+def app_to_log(file_name: str, msg: str):
   # get the time
   time = get_time()
   # Open a file in append mode
-  with open(log_path + file_name, 'a') as file:
+  with open(log_path + file_name + '.txt', 'a') as file:
     # append the line to the log file
     file.write(f'{msg} at {time}\n')
 

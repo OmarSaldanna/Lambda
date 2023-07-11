@@ -11,12 +11,15 @@ __pycache__
 *.mp3
 *.png
 
+# credentials
+credentials.json
+
 # folders from memory
-errors
-images
-log
-members
-servers
+db/data/errors
+db/data/images
+db/data/log
+db/data/members
+db/data/servers
 
 # Ignore Mac system files
 *.DS_Store

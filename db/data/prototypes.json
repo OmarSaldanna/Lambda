@@ -1,5 +1,5 @@
 {
-	"__comment__": "this file contains the prototypes for the dbs",
+	"__comment__": "this file contains the prototypes for the dbs, that are created for new users or errors, or edited for existing ones",
 	
 	"members": {
 		"servers": [],
@@ -7,11 +7,12 @@
 		"benefits": [],
 		"usage": {
 			"images": 0,
-			"context": 0
+			"context": 0,
+			"qrs": 0
 		},
 		"model": "gpt3.5",
-		"context": [],
 		"personality": ""
+		"context": [],
 	},
 
 	"images": {
@@ -22,5 +23,16 @@
 	"servers": {
 		"lockdown_channel": "",
   		"lockdown_members": []
-	}
+	},
+
+	"errors": {
+		"count": 1,
+		"code": "",
+		"servers": [],
+		"members": [],
+		"calls": []
+	},
+
+	"__comment__": "this structure contains the vocabulary functions, that will be defined when are created, actually this strcuct is not used",
+	"verbs": {}
 }
