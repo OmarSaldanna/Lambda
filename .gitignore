@@ -12,7 +12,7 @@ __pycache__
 *.png
 
 # credentials
-credentials.json
+info.json
 
 # folders from memory
 db/data/errors
