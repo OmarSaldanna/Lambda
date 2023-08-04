@@ -4,19 +4,31 @@
 	"members": {
 		"servers": [],
 		"role": "user",
-		"benefits": [],
 		"usage": {
-			"images": 0,
-			"context": 0,
-			"qrs": 0
+			"gpt-3.5-turbo": 6000,
+			"gpt-3.5-turbo-16k": 0,
+			"gpt-4": 0,
+			"cloudinary_files": 1,
+			"dalle": 3
 		},
-		"model": "gpt3.5",
-		"personality": ""
-		"context": [],
+		"model": "gpt-3.5-turbo",
+		"personality": "Eres un asistente inteligente",
+		"context": []
+	},
+
+	"member_renewal": {
+		"usage": {
+			"gpt-3.5-turbo": 6000,
+			"gpt-3.5-turbo-16k": 0,
+			"gpt-4": 0,
+			"cloudinary_files": 1,
+			"dalle": 3
+		}
 	},
 
 	"images": {
 		"images": [],
+		"edits": [],
 		"variations": []
 	},
 	
@@ -34,5 +46,6 @@
 	},
 
 	"__comment__": "this structure contains the vocabulary functions, that will be defined when are created, actually this strcuct is not used",
+	
 	"verbs": {}
 }

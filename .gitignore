@@ -12,14 +12,14 @@ __pycache__
 *.png
 
 # credentials
-info.json
+.env
 
-# folders from memory
-db/data/errors
-db/data/images
-db/data/log
-db/data/members
-db/data/servers
+# all the files from memory
+# db/data/errors/*
+db/data/images/*.json
+db/data/log/*.txt
+db/data/members/*.json
+db/data/servers/*.json
 
 # Ignore Mac system files
 *.DS_Store

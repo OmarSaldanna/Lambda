@@ -26,4 +26,4 @@ def lambda_conversation():
 			return jsonify({'content': 'error'})
 
 # run the app, on localhost only
-app.run(port=8090, host="0.0.0.0", debug=True)
+app.run(port=8091, host="0.0.0.0", debug=True)

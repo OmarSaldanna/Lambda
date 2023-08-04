@@ -1,4 +1,5 @@
 {
-	"imagen": "generate_dalle",
-	"qr": "generate_qr"
+    "type": "multi",
+    "imagen": "generate_dalle",
+    "qr": "generate_qr"
 }

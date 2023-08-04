@@ -3,9 +3,9 @@
 # lambda path
 route=$HOME/Lambda
 # memory path
-memory=$route/memory
+memory=$route/db/data
 # log file
-log_file=$memory/log.txt
+log_file=$memory/log/bin.txt
 
 # colors
 RED='\033[0;31m'
@@ -18,10 +18,10 @@ case $1 in
 	run)
 		echo -e "${GREEN}Running Lambda λ${NC}"
 		# append to log
-		echo "[BIN] -> running lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
-		# run lambda appas
+		echo "running lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		# run lambda
+		tmux new-session -d -s db "cd $route && python3 db/app.py"
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
-		# run the interfaces
 		tmux new-session -d -s discordo "cd $route && python3 interfaces/discordo.py"
 		# sleep and wait to errors
         sleep 1
@@ -32,8 +32,9 @@ case $1 in
 	kill)
 		echo -e "${RED}Killing Lambda λ${NC}"
 		# append to log
-		echo "[BIN] -> killing lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "killing lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# kill lambda
+		tmux kill-session -t db
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
 	;;
@@ -42,7 +43,7 @@ case $1 in
 		cd $route
 		echo -e "${BLUE}Updating Lambda λ${NC}"
 		# append to log
-		echo "[BIN] -> updating lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "updating lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# update lambda
 		git fetch && git merge origin/main
 	;;
@@ -50,11 +51,13 @@ case $1 in
 	reboot)
 		echo -e "${GREEN}Rebooting Lambda λ${NC}"
 		# append to log
-		echo "[BIN] -> rebooting lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "rebooting lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# kill lambda
+		tmux kill-session -t db
 		tmux kill-session -t lambda
 	    tmux kill-session -t discordo
 	    # and run lambda again
+		tmux new-session -d -s db "cd $route && python3 db/app.py"
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
         tmux new-session -d -s discordo "cd $route && python3 interfaces/discordo.py"
         # sleep and wait to errors
@@ -67,13 +70,15 @@ case $1 in
 		cd $route
 		echo -e "${GREEN}Rupdating Lambda λ${NC}"
 		# append to log
-		echo "[BIN] -> rupdating lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "rupdating lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# kill lambda
+		tmux kill-session -t db
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
 		# update lambda
 		git fetch && git merge origin/main
 		# run lambda again
+		tmux new-session -d -s db "cd $route && python3 db/app.py"
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
 		tmux new-session -d -s discordo "cd $route && python3 interfaces/discordo.py"
 		# sleep and wait to errors
@@ -82,45 +87,26 @@ case $1 in
         tmux ls
 	;;
 
-	# backup from all the memory files. located in ram and data
+	# backup from all the memory files, actually db/data
 	backup)
 		cd $route
 		echo -e "${BLUE}Making Lambda Backup λ${NC}"
 		# append to log
-		echo "[BIN] -> lambda backup at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "lambda backup at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# date label to name the file
 		date=$(date +%m-%d-%Y)
-		# get the last lines of the log
-		last_log=$(tail $log_file)
 		# create the folder for the files called backup
-		mkdir backup
+		mkdir data
 		# copy the important files to the folder
-		cp -r memory backup
+		cp -r $memory .
 		# make the memory backup and send it to backups
-		tar -cvf backups/$date-backup.tar.gz backup
+		tar -cvf backups/$date-backup.tar.gz data
 		# remove the backup file
-		rm -rf backup
-		# and clear the log file, only keep the last lines
-		echo "$last_log" > $log_file
-	;;
-
-	# load a backup from a certain file
-	checkpoint)
-		# first make a backup from the actual memory
-		lambda backup
-		# remove the memory dir
-		rm -rf $memory
-		# unzip the backup, a backup folder will be created
-		tar -xvf $2
-		# move the memory dir to Lambda
-		mv backup/memory $route
-		# and delete the backup unziped backup
-		rm -rf backup
-		echo -e "${BLUE}Lambda Checpoint Saved λ${NC}"
-		# finally move the checkpoint to backups
-		mv $2 $route/backups
-		# and add this to the log
-		echo "[BIN] -> lambda checkpoint at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		rm -rf data
+		# remove all the other log files
+		rm $memory/log/*.txt
+		# and let the first line of log be the backup line
+		echo "lambda backup at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 	;;
 
 	# run an app
@@ -130,7 +116,7 @@ case $1 in
 		# and run the app
 		tmux new-session -d -s $2 "cd $route && sh $app"
 		# append to log
-		echo "[BIN] -> lambda app $2 ran at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "lambda app $2 ran at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# wait to errors
 		sleep 1
 		# and see results
@@ -142,11 +128,11 @@ case $1 in
 		# kill the app session
 		tmux kill-session -t $2
 		# append to log
-		echo "[BIN] -> lambda app $2 killed at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "lambda app $2 killed at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 	;;
 
 	*)
 		echo Unknown Command λ
-		echo lambda "[run|kill|update|reboot|rupdate|backup|checkpoint|app|app-kill]"
+		echo lambda "[run|kill|update|reboot|rupdate|backup|app|app-kill]"
 	;;
 esac

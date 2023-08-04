@@ -5,73 +5,96 @@
 # returns an answer. As easy as that. 
 
 # import all the models
-# from core.models import lmm, lwr
-
-from core.models.lmm import Lambda_Mindful_Messenger
 from core.models.lwr import Lambda_Word_Recognizer
 
 # import the functions dic, and inside are the verbs
 # and questions list, used on lambda word recognizer
 # from body import function_dic
 
-# this will module will be useful to determine easily
-# if a word is a verb or a question
-from core.extensions import list_dic
+# import all the modules
+from core.modules import OpenAI, DB
+# libraries
+import os
+import importlib
 
 
 class AI:
   # instance all the models and the function dic
-  def __init__ (self, function_dic: dict):
-    self.function_dic = function_dic
-    # get the all the known words in lists
-    question_dic = function_dic['question']
-    thing_dic = function_dic['thing']
-    verb_dic = function_dic['verb']
-    # create a list of all the known words for orders
-    known_words = question_dic.get_all_keys() + verb_dic.get_all_keys()
-
+  def __init__ (self):
+    # create a list of all the known verbs
+    known_words = os.listdir("db/data/verbs")
+    known_words = [file[:-5] for file in known_words if file.endswith('.json')]
     # lambda word recognizer for all the known words
     self.word_recognizer = Lambda_Word_Recognizer()
     # train the model with the knwon words
     self.word_recognizer.train(known_words)
+    # instance the db
+    self.db = DB()
 
-    # the LMM will need a new instance of LWR trained with the 
-    # thing_list since some words are associated to more than
-    # one function, and things are the differences on the function
-    # calling. This has a better explanation in vocab file and LMM
-    thing_recognizer = Lambda_Word_Recognizer()
-    thing_recognizer.train(thing_dic.get_all_keys())
+  # function used to run lambda skills
+  def __call_function(self, lib_name: str, params):
+    #try:
+    # import the function
+    main_module = importlib.import_module(f"skills.{lib_name}")
+    # and use it
+    return main_module.main(params)
+    #except:
+      # throw a simple message
+      # return [{
+      #  "type": "error",
+      #  "content": "Lo siento, ocurrió un error, comprueba que tu comando este bien escrito. \
+      #  Este error será reportado para su solución."
+      #}]
 
-    # and instance the lmm model with the trained word recognizer
-    self.lmm = Lambda_Mindful_Messenger(thing_recognizer, function_dic)
 
-    # form a list_dic with the questions and the verbs, to
-    # help determining wether is a verb or a question. Thus
-    # the keys will be the questions and verbs and the values
-    # "question" or "verb"
-    self.verb_or_question = list_dic(
-      question_dic.get_all_keys() + verb_dic.get_all_keys(),
-      ["question" for _ in range(len(question_dic.get_all_keys()))] + \
-      ["verb" for _ in range(len(verb_dic.get_all_keys()))],
-      "Error"
-    )
-
-  def __call__ (self, message: str, author: str):
+  # main function
+  def __call__ (self, message: str, author: str, server: str):
     # select the first word of the message
     first_word = message.split(' ')[0]
     # correct the first word
-    corrected_first_word = self.word_recognizer(first_word)
-    # see if it's a verb or a question
-    tag = self.verb_or_question[corrected_first_word]
-    # now let the Lambda Mindful Messager associate the command
-    # with the lambda function
-    function = self.lmm(message, tag, corrected_first_word)
-    # then call the function. All the functions only receive 2
-    # parameters from the message, the message and the author.
-    # All that functions return answers.
-    answer = function(message, author)
-    # just return the anser
-    return answer
+    verb = self.word_recognizer(first_word)
+    # now load the db from the verb
+    verb_data = self.db.get('/verbs', {
+      'verb': verb
+    })['answer']
+    # there are general functions, and multi functions
+    if verb_data['type'] == 'multi': # multi function
+      # then the objects are the keys of verb_data
+      # and a LWR is needed to correct the word and
+      # call the right function
+      things = set(verb_data.keys()) - {'type'}
+      thing_recognizer = Lambda_Word_Recognizer()
+      # train the LWR with the things of the verb
+      thing_recognizer.train(list(things))
+      # then correct the word
+      third_word = message.split(' ')[2]
+      thing = thing_recognizer(third_word)
+      # and select the function and run it
+      return self.__call_function(
+        # and pass the params
+        verb_data[thing], (message, author, server)
+      )
+    # general function: only has one function
+    elif verb_data['type'] == 'general':
+      # since there's only one function then use it
+      return self.__call_function(
+        # and pass the params
+        verb_data['function'], (message, author, server)
+      )
+    # error on function type
+    else:
+      # this is a clear error on db
+      raise ValueError(f"Error on database, verb: {verb}, type unknown")
+      
+
+  # this is a fast function, independent. This is a simple
+  # function for fast usage, like: Lambda, ...
+  def chat(self, message: str, author: str, server: str):
+    # instance openai module
+    openai = OpenAI(author)
+    # now call gpt
+    return openai.gpt(message)
+
 
 '''
 ai = AI(function_dic)

@@ -6,9 +6,10 @@ discord
 pytz
 qrcode
 requests
-tqdm
 cloudinary
 tiktoken
 unidecode
 elevenlabs
 hashlib
+python-dotenv
+importlib

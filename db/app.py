@@ -1,3 +1,4 @@
+import os
 # libraries
 import json
 from flask_cors import CORS
@@ -8,6 +9,8 @@ import controllers
 # this server, won't include the try and catch, since 
 # normaly databases throw error on bad requests
 
+os.system('clear')
+
 # instance the flask app
 app = Flask(__name__)
 CORS(app)
@@ -17,14 +20,16 @@ CORS(app)
 # example request
 # {
 #	"db": "members|images",
-#	"id": "[id]"
+#	"id": "[id]",
 #	*"data": {data}
 # }
-@app.route('/db/members', methods=['GET','PUT'])
+@app.route('/members', methods=['GET','PUT'])
 def members():
 	# extract the message from the request
 	author_id = request.headers.get('id')
 	database = request.headers.get('db')
+
+	print(f"{request.method} -> /members -> {database} -> {author_id}")
 
 	# get is to read data
 	if request.method == 'GET':
@@ -49,10 +54,12 @@ def members():
 #	"id": "[id]"
 #	*"data": {data}
 # }
-@app.route('/db/servers', methods=['GET', 'PUT'])
+@app.route('/servers', methods=['GET', 'PUT'])
 def servers():
 	# extract the message from the request
 	server_id = request.headers.get('id')
+	
+	print(f"{request.method} -> /servers -> {server_id}")
 
 	# get is to read data
 	if request.method == 'GET':
@@ -75,14 +82,19 @@ def servers():
 # {
 #	"verb": "[verb]"
 #	"data": {
+#       "type": "general|multi"
 # 		"object": "function name",
+#		*"function": "function name"
 #		...
 # 	}
 # }
-@app.route('/db/verbs', methods=['GET','PUT','POST'])
+@app.route('/verbs', methods=['GET','PUT','POST'])
 def verbs():
 	# extract the message from the request
 	verb = request.headers.get('verb')
+
+	print(f"{request.method} -> /verbs -> {verb}")
+
 
 	# post to add info
 	if request.method == 'GET':
@@ -116,13 +128,15 @@ def verbs():
 #	"db": "bin|admins|errors|general"
 #	"data": "message to add"
 # }
-@app.route('/db/logs', methods=['POST'])
+@app.route('/logs', methods=['POST'])
 def log():
 	# extract the message from the request
 	database = request.headers.get('db')
 	# data in this case is just a string
 	data = request.headers.get('data')
 	
+	print(f"{request.method} -> /logs -> {database}")
+
 	# post to add info
 	if request.method == 'POST':
 		# use the controller
@@ -137,15 +151,17 @@ def log():
 #	"data": {
 #		"call": lambda call that generated the error
 # 		"code": error code
-# 		"user": user id
+# 		"member": user id
 # 		"server": server
 # 	}
 # }
-@app.route('/db/errors', methods=['POST'])
+@app.route('/errors', methods=['POST'])
 def errors():
 	# extract the message from the request
 	data = json.loads(request.headers.get('data'))
 	
+	# print(f"{request.method} -> /members -> {author_id}")
+
 	# post to add info
 	if request.method == 'POST':
 		# use the controller
@@ -155,4 +171,4 @@ def errors():
 
 
 # run the app, on localhost only
-app.run(port=8083, host="127.0.0.1", debug=True)
+app.run(port=8081, host="127.0.0.1", debug=True)
