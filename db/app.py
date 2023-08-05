@@ -27,13 +27,14 @@ async def members():
 	# extract the message from the request
 	author_id = request.headers.get('id')
 	database = request.headers.get('db')
+	server = request.headers.get('server')
 
 	print(f"{request.method} -> /members -> {database} -> {author_id}")
 
 	# get is to read data
 	if request.method == 'GET':
 		# get the user json
-		data = controllers.get_user_data(author_id, database)
+		data = controllers.get_user_data(author_id, database, server)
 		# and return
 		return jsonify({'answer': data})
 		# put is to update data

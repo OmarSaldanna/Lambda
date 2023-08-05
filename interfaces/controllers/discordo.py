@@ -27,12 +27,12 @@ def db_request(type_: str, api: str, headers: dict):
 		raise ValueError('Type of request unknown')
 
 # general functions to use lambda
-def call_lambda(message: str, author: str, server: str,on_conversation=False):
+def call_lambda(message: str, author: str, server: str, chat=False):
 	# default lambda url for calls
 	lambda_url = 'http://127.0.0.1:8080/lambda'
 	# if it was a conversation request
-	if on_conversation:
-		lambda_url = 'http://127.0.0.1:8080/lambda/conversation'
+	if chat:
+		lambda_url = 'http://127.0.0.1:8080/lambda/chat'
 	# call lambda api
 	answer = requests.get(
 		lambda_url,

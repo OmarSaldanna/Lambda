@@ -20,7 +20,7 @@ def main(params: tuple):
 	# start writing the answer
 	answer = []
 	# instance the openai object to use models
-	openai = OpenAI(author)
+	openai = OpenAI(author, server)
 	# create the images with dalle
 	#urls = 'ok'
 	answer = openai.create_image(prompt, quantity)

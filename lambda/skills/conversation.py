@@ -5,7 +5,7 @@ def main(params: tuple):
 	# extract the params
 	message, member, server = params
 	# instance openai module
-	openai = OpenAI(member)
+	openai = OpenAI(member, server)
 	# try to make the answer shorter as possible
 	message += ". Que tu respuesta sea breve y concisa."
 	# now call gpt

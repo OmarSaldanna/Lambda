@@ -56,6 +56,11 @@ class AI:
         "server": server
       }
     })
+    # and in logs
+    self.db.post("/logs", {
+      "db" : "errors",
+      "data": f"[{member}] {message}"
+    })
 
   # function used to run lambda skills
   def __call_function(self, lib_name: str, params):
@@ -118,7 +123,7 @@ class AI:
   # function for fast usage, like: Lambda, ...
   def chat(self, message: str, author: str, server: str):
     # instance openai module
-    openai = OpenAI(author)
+    openai = OpenAI(author, server)
     # try to make the answer shorter as possible
     message += ". Que tu respuesta sea breve y concisa."
     # now call gpt

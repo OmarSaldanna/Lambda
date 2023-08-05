@@ -2,17 +2,29 @@
 from modules import *
 
 #controllers.get_user_data(author_id, database)
-def get_user_data(user_id: str, database: str):
+def get_user_data(user_id: str, database: str, server: str):
 	# try to open the user file
 	try:
 		# open the memory file
 		mem = get_memory_by_id(database, user_id)
+		# check the servers
+		if server not in mem['servers']:
+			# add the server
+			mem['servers'] += [server]
+			# and write
+			mem.write()
 		# return the memory fle data
 		return mem.dic
 	# the user has no file
 	except:
 		# then create one
 		new_data = make_memory(user_id, database)
+		# check the servers
+		if server not in mem['servers']:
+			# add the server
+			mem['servers'] += [server]
+			# and write
+			mem.write()
 		# once created the memory, return the new data
 		return new_data.dic
 

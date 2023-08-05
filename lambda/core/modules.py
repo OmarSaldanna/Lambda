@@ -236,7 +236,7 @@ class OpenAI:
 	command
 	"""
 	# receives the user id only
-	def __init__ (self, user_id: str):
+	def __init__ (self, user_id: str, server: str):
 		# set the user_id
 		self.user_id = user_id
 		# set the key
@@ -252,7 +252,8 @@ class OpenAI:
 		# get the user data
 		self.user_data = self.db.get('/members', {
 			"id": self.user_id,
-			"db": "members"
+			"db": "members",
+			"server": server
 		})['answer']
 
 

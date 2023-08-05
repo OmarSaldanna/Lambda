@@ -10,8 +10,8 @@ headers={
 	#"message": "crea una imagen de photo of slim asian girl, 20yo, close-up, high detail, studio, smoke, sharp, pink violet light, studio, 85mm sigma art lens",
 	#"message": "crea un qr de www.google.com",
 	#"message": "crea una imagen de photo of a christmas cat",
-	"message": "cual es la capital de Perú",
-	"server": "11",
+	"message": "cual es la capital de Alemania",
+	"server": "112",
 	"author": "11"
 }
 
