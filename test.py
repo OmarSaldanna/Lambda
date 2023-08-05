@@ -10,14 +10,16 @@ headers={
 	#"message": "crea una imagen de photo of slim asian girl, 20yo, close-up, high detail, studio, smoke, sharp, pink violet light, studio, 85mm sigma art lens",
 	#"message": "crea un qr de www.google.com",
 	#"message": "crea una imagen de photo of a christmas cat",
-	"message": "cual es la capital de Alemania",
-	"server": "112",
+	#"message": "cual es la capital de Alemania",
+	"message": "dime algo sobre agujeros negros",
+	"server": "1110291",
 	"author": "11"
 }
 
 try:
 	ans = requests.get(
-		'http://127.0.0.1:8080/lambda/chat',
+		#'http://127.0.0.1:8080/lambda/chat',
+		'http://127.0.0.1:8080/lambda',
 		headers=headers
 	)
 	print('\n',ans.json(),'\n')
