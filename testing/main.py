@@ -30,22 +30,3 @@ end_time = time.time()
 # Calculate the time taken
 time_taken = end_time - start_time
 print(f"Time taken: {time_taken:.6f} seconds")
-
-'''
-def try_lambda():
-	user = "717071120175595631"
-
-	while True:
-		msg = input("message: ")
-		if msg == ';':
-			break
-		else:
-			ans = requests.get(
-				'http://127.0.0.1:8080/lambda', 
-				headers={
-					"message": msg,
-					"author": user
-				}
-			)
-			print('\n',ans.json(),'\n')
-'''

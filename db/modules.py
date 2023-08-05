@@ -108,7 +108,7 @@ def app_to_log(file_name: str, msg: str):
   # Open a file in append mode
   with open(log_path + file_name + '.txt', 'a') as file:
     # append the line to the log file
-    file.write(f'{msg} at {time}\n')
+    file.write(f'{msg} {time}\n')
 
 # hash function
 def generate_hash(string: str):

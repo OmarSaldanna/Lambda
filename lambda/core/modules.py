@@ -37,28 +37,6 @@ def generate_hash(data: str):
 ################################# Modules ################################
 ##########################################################################
 
-# cloudinary module
-class Cloudinary:
-	"""
-	This is a module that uses cloudinary to upload
-	files into cloudinary
-	"""
-	def __init__ (self):
-		# get the cloudinary credentials
-		# returns "https" URLs by setting secure=True  
-		config = cloudinary.config(
-			secure=True,
-			cloud_name=os.getenv("cloud_name"),
-			api_key=os.getenv("api_key"),
-			api_secret=os.getenv("api_secret")
-		)
-
-	# upload files
-	def upload (self, img_path: str):
-		ans = cloudinary.uploader.upload(img_path)
-		return ans['secure_url']
-
-
 # this will be like a dict, but the keys are lists of 
 # words, used on lambda V2. Now is a module extra that
 # may can be used to create new functions
@@ -138,7 +116,7 @@ class DB:
 	 	}
 	}
 
-	{ /log
+	{ /logs
 		"db": "bin|admins|errors|general"
 		"data": "message to add"
 	}
@@ -185,6 +163,47 @@ class DB:
 		headers = self.__preprocess(headers)
 		# send the request
 		return requests.put(self.api + api, headers=headers).json()
+
+
+# cloudinary module
+class Cloudinary:
+	"""
+	This is a module that uses cloudinary to upload
+	files into cloudinary
+	"""
+	def __init__ (self):
+		# get the cloudinary credentials
+		# returns "https" URLs by setting secure=True  
+		config = cloudinary.config(
+			secure=True,
+			cloud_name=os.getenv("cloud_name"),
+			api_key=os.getenv("api_key"),
+			api_secret=os.getenv("api_secret")
+		)
+		# instance a db to use it
+		self.db = DB()
+
+	# upload files
+	def upload (self, img_path: str):
+		# try to upload the image
+		try:
+			# upload process
+			ans = cloudinary.uploader.upload(img_path)
+			# if it worked, regist on log
+			self.db.post("/logs", {
+				"db": "clodinary",
+				"data": f"[{self.user_id}] uploaded file {image_path} to {ans['secure_url']}"
+			})
+			return ans['secure_url']
+		except:
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] error on uploading file {image_path}"
+			})
+			return [{
+				"type": "error",
+				"content": f"Lo siento <@{self.user_id}>, ocurrió un error al subir el archivo"
+				}]
 
 
 # models:
@@ -405,6 +424,11 @@ class OpenAI:
 		availability = self.__gpt_availability_check()
 		# if the user is out of tokens
 		if not availability:
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] no more tokens left"
+			})
 			# then return a message, in the correct 
 			# format: a list of dicts per message
 			return [{
@@ -423,6 +447,11 @@ class OpenAI:
 			messages=self.user_data['context'],
 			temperature=temp
 		)
+		# regist on the logs also the answer
+		self.db.post("/logs", {
+			"db": "chat",
+			"data": f"[{self.user_id}] Q: {message}... A: {res['choices'][0]['message']['content']}"
+		})
 		# handle context but for answer
 		messages = self.__handle_context(
 			res['choices'][0]['message']['content'],
@@ -510,7 +539,6 @@ class OpenAI:
 	def create_image(self, prompt:str, n=1):
 		# first check availability for the requested images
 		available, remaining = self.__dalle_availability(n)
-		print(remaining)
 		# if there are images available
 		if available:
 			# generate the images
@@ -519,6 +547,11 @@ class OpenAI:
 				n=n,
 				size="1024x1024"
 			)
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "images",
+				"data": f"[{self.user_id}] {prompt}"
+			})
 			# get the urls
 			urls = []
 			for i in range(n):
@@ -542,6 +575,11 @@ class OpenAI:
 
 		# if there are no available images
 		else:
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] no more images left"
+			})
 			# return a message
 			return [{
 				"type": "error",
@@ -561,6 +599,11 @@ class OpenAI:
 			  	n=n,
 			  	size="1024x1024"
 			)
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "images",
+				"data": f"[{self.user_id}] edited: {image_path}, {prompt}"
+			})
 			# get the urls
 			urls = []
 			for i in range(n):
@@ -583,6 +626,11 @@ class OpenAI:
 
 		# if there are no available images
 		else:
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] no more images left"
+			})
 			# return a message
 			return [{
 				"type": "error",
@@ -601,6 +649,11 @@ class OpenAI:
 			  	n=n,
 			  	size="1024x1024"
 			)
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "images",
+				"data": f"[{self.user_id}] variated: {image_path}"
+			})
 			# get the urls
 			urls = []
 			for i in range(n):
@@ -623,6 +676,11 @@ class OpenAI:
 
 		# if there are no available images
 		else:
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] no more images left"
+			})
 			# return a message
 			return [{
 				"type": "error",
