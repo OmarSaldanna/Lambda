@@ -1,15 +1,14 @@
-import os
 # libraries
 import json
+import asyncio
 from flask_cors import CORS
 from flask import Flask, request, jsonify
+
 # db controllers
 import controllers
 
 # this server, won't include the try and catch, since 
 # normaly databases throw error on bad requests
-
-os.system('clear')
 
 # instance the flask app
 app = Flask(__name__)
@@ -24,7 +23,7 @@ CORS(app)
 #	*"data": {data}
 # }
 @app.route('/members', methods=['GET','PUT'])
-def members():
+async def members():
 	# extract the message from the request
 	author_id = request.headers.get('id')
 	database = request.headers.get('db')
@@ -55,7 +54,7 @@ def members():
 #	*"data": {data}
 # }
 @app.route('/servers', methods=['GET', 'PUT'])
-def servers():
+async def servers():
 	# extract the message from the request
 	server_id = request.headers.get('id')
 	
@@ -89,7 +88,7 @@ def servers():
 # 	}
 # }
 @app.route('/verbs', methods=['GET','PUT','POST'])
-def verbs():
+async def verbs():
 	# extract the message from the request
 	verb = request.headers.get('verb')
 
@@ -129,7 +128,7 @@ def verbs():
 #	"data": "message to add"
 # }
 @app.route('/logs', methods=['POST'])
-def log():
+async def log():
 	# extract the message from the request
 	database = request.headers.get('db')
 	# data in this case is just a string
@@ -156,7 +155,7 @@ def log():
 # 	}
 # }
 @app.route('/errors', methods=['POST'])
-def errors():
+async def errors():
 	# extract the message from the request
 	data = json.loads(request.headers.get('data'))
 	

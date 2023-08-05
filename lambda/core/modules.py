@@ -1,6 +1,3 @@
-# helper functions for the body functions
-# mañana meter las funciones de contexto dentro de OpenAI y meterlo en este archivo. Además crear más modulos como clases, una de cloudinary, una de DB y otra de Systema, y una de logs y errores
-
 # modules
 import os
 import json
@@ -450,7 +447,6 @@ class OpenAI:
 
 	########################### DALL-E sub functions ###########################
 
-
 	# function to save the images in lambdrive
 	# receives the urls and returns hashes, names
 	# where the images are, now on lambdrive. Image
@@ -480,7 +476,7 @@ class OpenAI:
 			}
 		})
 		# return the image paths
-		return images_paths
+		return images_paths, hashes
 
 	# same function but for images, this one also
 	# recieves the number of images that wants to be 
@@ -514,6 +510,7 @@ class OpenAI:
 	def create_image(self, prompt:str, n=1):
 		# first check availability for the requested images
 		available, remaining = self.__dalle_availability(n)
+		print(remaining)
 		# if there are images available
 		if available:
 			# generate the images
@@ -526,14 +523,16 @@ class OpenAI:
 			urls = []
 			for i in range(n):
 				urls.append(response['data'][i]['url'])
+			print(urls)
 			# download the images
-			paths = self.__download_images(urls, 'images')
+			paths, hashes = self.__download_images(urls, 'images')
 			# update the usage
 			self.__update_dalle_usage(n)
 			# finally return the paths in the correct format
 			answer = []
-			for p in paths:
+			for p,h in zip(paths, hashes):
 				answer.append({'type':'file', 'content':p})
+				answer.append({'type':'text', 'content':f"Imagen disponible como ${h}"})
 			# and append a message with the remaining images
 			answer.append({
 				"type": "text",
@@ -567,13 +566,14 @@ class OpenAI:
 			for i in range(n):
 				urls.append(response['data'][i]['url'])
 			# download the images
-			paths = self.__download_images(urls, 'edits')
+			paths, hashes = self.__download_images(urls, 'images')
 			# update the usage
 			self.__update_dalle_usage(n)
 			# finally return the paths in the correct format
 			answer = []
-			for p in paths:
+			for p,h in zip(paths, hashes):
 				answer.append({'type':'file', 'content':p})
+				answer.append({'type':'text', 'content':f"Imagen disponible como ${h}"})
 			# and append a message with the remaining images
 			answer.append({
 				"type": "text",
@@ -606,13 +606,14 @@ class OpenAI:
 			for i in range(n):
 				urls.append(response['data'][i]['url'])
 			# download the images
-			paths = self.__download_images(urls, 'variations')
+			paths, hashes = self.__download_images(urls, 'images')
 			# update the usage
 			self.__update_dalle_usage(n)
 			# finally return the paths in the correct format
 			answer = []
-			for p in paths:
+			for p,h in zip(paths, hashes):
 				answer.append({'type':'file', 'content':p})
+				answer.append({'type':'text', 'content':f"Imagen disponible como ${h}"})
 			# and append a message with the remaining images
 			answer.append({
 				"type": "text",

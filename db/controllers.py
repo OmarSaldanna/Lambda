@@ -126,6 +126,12 @@ def add_to_log(database: str, data: str):
 	return 'ok'
 
 
+# function to generate hashes, it must not be used to security operations
+def generate_hash(data: str):
+	# generate a numerical hash with python
+    # convert it to hexadecimal
+    return hex(hash(data) & 0xFFFFFFFFFFFFFFFF)[2:].zfill(16)
+
 #	"data": {
 #		"call": lambda call that generated the error
 # 		"code": error code
@@ -135,7 +141,7 @@ def add_to_log(database: str, data: str):
 #controllers.add_to_errors(database, data)
 def add_to_errors(data: dict):
 	# hash the error code
-	error_hash = hash(data['code'])
+	error_hash = generate_hash(data['code'])
 	# try to open the error file
 	try:
 		# open the memory file

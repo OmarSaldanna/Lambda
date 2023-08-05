@@ -1,6 +1,6 @@
 {
     "count": 2,
-    "code": "invalid syntax (conversation.py, line 4)",
+    "code": "No module named 'modules'",
     "servers": [
         "10"
     ],
@@ -8,6 +8,6 @@
         "717071120175595631"
     ],
     "calls": [
-        "dime algo sobre los agujeros negros"
+        "cual es la capital de Polonia"
     ]
 }
