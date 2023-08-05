@@ -1,21 +1,22 @@
 # This is the lambda main module, here is where the
 # funcions are linked to words based on the incoming
 # messages.
-# AI class, when is called it recies a message and
+# AI class, when is called it recieves a message and
 # returns an answer. As easy as that. 
 
 # import all the models
 from core.models.lwr import Lambda_Word_Recognizer
 
-# import the functions dic, and inside are the verbs
-# and questions list, used on lambda word recognizer
-# from body import function_dic
-
-# import all the modules
+# import needed modules
 from core.modules import OpenAI, DB
-# libraries
+# and libraries
 import os
 import importlib
+import telebot
+from dotenv import load_dotenv
+
+# load the .env variables
+load_dotenv()
 
 
 class AI:
@@ -30,22 +31,49 @@ class AI:
     self.word_recognizer.train(known_words)
     # instance the db
     self.db = DB()
+    # get the telegram variables: token, chat id
+    self.telegram_chat = os.getenv("alert_chat")
+    # instance the telebram bot
+    self.tbot = telebot.TeleBot(os.getenv("TELEGRAM"))
+
+  # function used to report errors on lambda skills, it will be saved on
+  # the db on errors and also a report will be sent to the admin via telegram.
+  # The error will be reported as well as the user, server and the message
+  def __error_report (self, error_str: str, params: tuple):
+    message, member, server = params
+    # send the report to telegram
+    try:
+      # send the messages to the chat
+      self.tbot.send_message(self.telegram_chat, f"Error on: {message}\n\n{error_str}")
+    except:
+      print("Error sending message for telegram")
+    # now save it in the error db
+    self.db.post("/errors", {
+      "data": {
+        "call": message,
+        "code": error_str,
+        "member": member,
+        "server": server
+      }
+    })
 
   # function used to run lambda skills
   def __call_function(self, lib_name: str, params):
-    #try:
-    # import the function
-    main_module = importlib.import_module(f"skills.{lib_name}")
-    # and use it
-    return main_module.main(params)
-    #except:
-      # throw a simple message
-      # return [{
-      #  "type": "error",
-      #  "content": "Lo siento, ocurrió un error, comprueba que tu comando este bien escrito. \
-      #  Este error será reportado para su solución."
-      #}]
-
+    try:
+      # import the function
+      main_module = importlib.import_module(f"skills.{lib_name}")
+      # and use it
+      return main_module.main(params)
+    # if the skill doesn't work, then use the error report
+    except Exception as e:
+      # use the report
+      self.__error_report(str(e), params)
+      # now throw a simple message
+      return [{
+        "type": "error",
+        "content": "Lo siento, ocurrió un error, comprueba que tu comando este bien escrito. \
+        Este error será reportado para su solución."
+      }]
 
   # main function
   def __call__ (self, message: str, author: str, server: str):
@@ -86,26 +114,12 @@ class AI:
       # this is a clear error on db
       raise ValueError(f"Error on database, verb: {verb}, type unknown")
       
-
   # this is a fast function, independent. This is a simple
   # function for fast usage, like: Lambda, ...
   def chat(self, message: str, author: str, server: str):
     # instance openai module
     openai = OpenAI(author)
+    # try to make the answer shorter as possible
+    message += ". Que tu respuesta sea breve y concisa."
     # now call gpt
     return openai.gpt(message)
-
-
-'''
-ai = AI(function_dic)
-# verbs
-print(ai('dime cual es la capital de Mexico', 'kerr'))
-print(ai('crea un QR con algo', 'kerr'))
-print(ai('genera una imagen de algo', 'kerr'))
-print(ai('genera dos imagenes de algo', 'kerr'))
-# questions
-print(ai('cómo estas?', 'kerr'))
-print(ai('que sabes hacer', 'kerr'))
-print(ai('Qué es lo que quieres ?', 'kerr'))
-print(ai('Cuándo fue la ultima vez que te reiniciaste', 'kerr'))
-'''

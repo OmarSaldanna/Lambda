@@ -17,7 +17,7 @@ import cloudinary.uploader
 load_dotenv()
 
 ##########################################################################
-################## Functions ################################
+############################### Functions ################################
 ##########################################################################
 
 # download images, linux only
@@ -30,8 +30,14 @@ def download_image(img_link: str, name: str, extension='.png', where="lambdrive/
 	# return the image path
 	return f"{where}{name}{extension}"
 
+# function to generate hashes, it must not be used to security operations
+def generate_hash(data: str):
+	# generate a numerical hash with python
+    # convert it to hexadecimal
+    return hex(hash(data) & 0xFFFFFFFFFFFFFFFF)[2:].zfill(16)
+
 ##########################################################################
-################## Modules ################################
+################################# Modules ################################
 ##########################################################################
 
 # cloudinary module
@@ -57,8 +63,8 @@ class Cloudinary:
 
 
 # this will be like a dict, but the keys are lists of 
-# words, used on lambda V2, may be used on some 
-# functions of lambda V3
+# words, used on lambda V2. Now is a module extra that
+# may can be used to create new functions
 class list_dic:
 	# keys is a list of lists, and values just a list
 	def __init__ (self, keys: list, values: list):
@@ -108,7 +114,7 @@ class list_dic:
 		return self.values
 
 
-# db class to interact 
+# db class to interact
 class DB:
 	"""
 	Module to interact with the lambda database: verbs,
@@ -293,12 +299,14 @@ class OpenAI:
 		# return the total
 		return total
 
-	# determines the context limit based on the model
+	# determines the context limit based on the model, here's
+	# the limit of the context's size, once the context reaches
+	# IMPORTANT: LIMIT OF THE TOKENS TO RESET THE CONTEXT
 	def __get_token_limit (self, model: str):
 		if model == "gpt-3.5-turbo-16k":
-			return 16000
+			return 800
 		else:
-			return 4000
+			return 800
 
 	# create a context for a user once the context has gone full
 	def __recreate_context(self, n: int):
@@ -314,15 +322,15 @@ class OpenAI:
 
 	# VERY IMPORTANT!
 	# function used to update the context usage
-	# 
+	# if the prices change in the future this part must change
 	def __count_gpt_usage (self, context_len: int, answer: str):
 		# calculate the tokens of the answer
 		answer_len = self.token_counter_str(answer)
 		# make the cost
 		tokens_in = context_len
-		# since answer tokens costs 2 times context 
+		# since answer tokens costs 1.3 times context 
 		# tokens, see openAI pricing
-		tokens_out = answer_len * 2
+		tokens_out = int(answer_len * 1.3)
 		# then count total tokens
 		tokens_count = tokens_in + tokens_out
 		# return the total tokens
@@ -331,6 +339,10 @@ class OpenAI:
 	# main context function, used to handle it,
 	# is called before and after the GPT call
 	def __handle_context (self, text: str, model: str, on_answer=False):
+		# get the context len
+		context_len = self.__token_counter_list(
+			self.user_data["context"]
+		)
 		# in case the function was called after
 		# gpt was called to answer. Here the thing
 		# is to:
@@ -340,17 +352,13 @@ class OpenAI:
 		# then recreate it and save it
 		# * finally make the updates on DB
 		if on_answer:
-			# get the context len
-			context_len = self.__token_counter_list(
-				self.user_data["context"]
-			)
 			# * count the tokens in and out
 			token_count, answer_len = self.__count_gpt_usage(
 				context_len, text
 			)
 			# * once counted, add the answer to the context
 			self.user_data['context'].append({
-				"rol": "system",
+				"role": "system",
 				"content": text
 			})
 			# and update the context len
@@ -381,7 +389,7 @@ class OpenAI:
 		else:
 			# add the text to the context
 			self.user_data['context'].append({
-				"rol": "user",
+				"role": "user",
 				"content": text
 			})
 			# may be the prompt makes the context
@@ -403,8 +411,8 @@ class OpenAI:
 			# then return a message, in the correct 
 			# format: a list of dicts per message
 			return [{
-				"type": "text",
-				"content": f"> **Lo siento <@{self.user_id}> se te acabaron los tokens de conversación**"
+				"type": "error",
+				"content": f"Lo siento <@{self.user_id}> se te acabaron los tokens de conversación"
 				}]
 		# then the user has tokens to use yet
 		model, on_current_model = availability
@@ -434,13 +442,14 @@ class OpenAI:
 		# avaulability reasons
 		if not on_current_model:
 			answer.append({
-				"type": "text",
-				"content": f"> **<@{self.user_id}> tu modelo de lenguaje en uso fue cambiado a _{model}_**"
+				"type": "error",
+				"content": f"<@{self.user_id}> tu modelo de lenguaje en uso fue cambiado a _{model}"
 			})
 		# finally return the answer
 		return answer
 
 	########################### DALL-E sub functions ###########################
+
 
 	# function to save the images in lambdrive
 	# receives the urls and returns hashes, names
@@ -451,7 +460,7 @@ class OpenAI:
 		images_paths = []
 		# per image url
 		for url in urls:
-			name = str(hash(url))
+			name = str(generate_hash(url))
 			# download the image and save the path
 			images_paths.append(download_image(url, name, dev=True))
 			# save the name
@@ -487,7 +496,7 @@ class OpenAI:
 			return False, remaining_images
 		# if there are images available
 		else:
-			return True, remaining_images
+			return True, remaining_images - n
 
 	# function to update usage, after generating the images
 	# also saves the images hash

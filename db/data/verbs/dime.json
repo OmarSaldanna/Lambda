@@ -1,4 +1,5 @@
 {
-	"type": "general",
-	"function": "conversation"
+	"type": "multi",
+	"sobre": "conversation",
+	"acerca": "conversation"
 }

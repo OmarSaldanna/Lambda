@@ -13,3 +13,4 @@ elevenlabs
 hashlib
 python-dotenv
 importlib
+telebot

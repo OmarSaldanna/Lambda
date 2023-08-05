@@ -27,25 +27,25 @@ def lambda_call():
 		# and send the anser
 		return jsonify({'content': answer})
 		#except:
-			# and send the anser
+			# and send the answer
 			#return jsonify({'content': ['> Lo siento, como que me confundí']})
 
 # lambda requests for fast usage
 @app.route('/lambda/chat', methods=['GET'])
 def lambda_conversation():
 	if request.method == 'GET':
-		try:
-			# extract the message from the request
-			message = request.headers.get('message')
-			author = request.headers.get('author')
-			server = request.headers.get('server')
-			# process the message
-			answer = ai.chat(message, author, server)
+		#try:
+		# extract the message from the request
+		message = request.headers.get('message')
+		author = request.headers.get('author')
+		server = request.headers.get('server')
+		# process the message
+		answer = ai.chat(message, author, server)
+		# and send the answer
+		return jsonify({'content': answer})
+		#except:
 			# and send the anser
-			return jsonify({'content': answer})
-		except:
-			# and send the anser
-			return jsonify({'content': ['> Lo siento, como que me confundí']})
+			#return jsonify({'content': ['> Lo siento, como que me confundí']})
 
 
 # run the app, on localhost only

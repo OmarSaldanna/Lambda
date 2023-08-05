@@ -25,7 +25,7 @@ class Memory:
   # save changes
   def write (self):
     with open(self.file_path, "w") as write_file:
-      json.dump(self.dic, write_file, indent=4)
+      json.dump(self.dic, write_file, indent=4, ensure_ascii=False)
 
   # update file
   def update (self, data: dict):
@@ -35,7 +35,7 @@ class Memory:
       self.dic[key] = value
     # and save them
     with open(self.file_path, "w") as write_file:
-      json.dump(self.dic, write_file, indent=4)
+      json.dump(self.dic, write_file, indent=4, ensure_ascii=False)
 
   # select items
   def __getitem__ (self, key: str):
@@ -71,7 +71,7 @@ def get_memory_by_id(database: str, _id: str):
 # files from users and servers are not found
 def create_memory(path: str, content: dict):
   with open(memory_path+path, "w") as write_file:
-    json.dump(content, write_file, indent=4)
+    json.dump(content, write_file, indent=4, ensure_ascii=False)
 
 # make a memory file for user, server or images
 # based on the prototypes.json

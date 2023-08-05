@@ -1,4 +1,5 @@
 import qrcode
+from modules import generate_hash
 
 # crea|genera un qr de|con www.google.com
 def main(params: tuple):
@@ -13,7 +14,7 @@ def main(params: tuple):
 	# create image from QR code
 	img = qr.make_image(fill_color="black", back_color="white")
 	# create a hash to save the file
-	h = hash(data)
+	h = generate_hash(data)
 	# save image on lambdrive/qrs
 	img.save(f"lambdrive/qrs/{h}.png")
 	# and return the messages
