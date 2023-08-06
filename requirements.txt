@@ -14,3 +14,5 @@ hashlib
 python-dotenv
 importlib
 telebot
+Flask[async]
+dotenv
