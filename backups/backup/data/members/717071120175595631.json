@@ -1,0 +1,47 @@
+{
+    "servers": [],
+    "role": "user",
+    "usage": {
+        "cloudinary_files": 1,
+        "dalle": 0,
+        "gpt-3.5-turbo": 5498,
+        "gpt-3.5-turbo-16k": 0,
+        "gpt-4": 0
+    },
+    "model": "gpt-3.5-turbo",
+    "personality": "Eres un asistente inteligente",
+    "context": [
+        {
+            "content": "dime algo sobre los agujeros negros. No respondas más de dos párrafos.",
+            "role": "user"
+        },
+        {
+            "content": "Los agujeros negros son regiones del espacio-tiempo con una fuerza gravitacional tan intensa que nada puede escapar de su atracción, ni siquiera la luz. Se forman cuando una estrella masiva colapsa bajo su propia gravedad, concentrando toda su masa en un punto infinitesimal llamado singularidad. Los agujeros negros son fascinantes objetos astrofísicos que desafían nuestra comprensión actual de la física y continúan siendo objeto de estudio e investigación para desvelar sus misterios.",
+            "role": "system"
+        },
+        {
+            "content": "dime algo acerca de los numeros primos. Que tu respuesta sea breve y concisa.",
+            "role": "user"
+        },
+        {
+            "content": "Los números primos son aquellos números enteros mayores que 1 que solo tienen dos divisores: ellos mismos y el número 1. Son fundamentales en la teoría de números y su estudio ha sido de gran importancia a lo largo de la historia de las matemáticas.",
+            "role": "system"
+        },
+        {
+            "content": "dime algo acerca de, ahora dime como se relacionan los temas que te pregunté. Que tu respuesta sea breve y concisa.",
+            "role": "user"
+        },
+        {
+            "content": "Los agujeros negros y los números primos son dos conceptos completamente diferentes y no tienen una relación directa entre sí. Los agujeros negros son objetos astrofísicos relacionados con la gravedad y la física del espacio-tiempo, mientras que los números primos son entidades matemáticas relacionadas con la teoría de números. No hay una conexión evidente entre ambos temas.",
+            "role": "system"
+        },
+        {
+            "role": "user",
+            "content": "cual es la capital de Polonia. Que tu respuesta sea breve y concisa."
+        },
+        {
+            "role": "system",
+            "content": "La capital de Polonia es Varsovia."
+        }
+    ]
+}

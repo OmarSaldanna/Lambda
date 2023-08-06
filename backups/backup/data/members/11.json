@@ -1,0 +1,25 @@
+{
+    "servers": [
+        "1110291"
+    ],
+    "role": "user",
+    "usage": {
+        "cloudinary_files": 1,
+        "dalle": 2,
+        "gpt-3.5-turbo": 5908,
+        "gpt-3.5-turbo-16k": 0,
+        "gpt-4": 0
+    },
+    "model": "gpt-3.5-turbo",
+    "personality": "Eres un asistente inteligente",
+    "context": [
+        {
+            "role": "user",
+            "content": "dime algo sobre agujeros negros. Que tu respuesta sea breve y concisa."
+        },
+        {
+            "role": "system",
+            "content": "Los agujeros negros son regiones del espacio-tiempo con una atracción gravitacional tan intensa que nada, ni siquiera la luz, puede escapar de su influencia."
+        }
+    ]
+}

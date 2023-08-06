@@ -15,10 +15,10 @@ NC='\033[0m' # No color
 
 case $1 in
 
-	run)
-		echo -e "${GREEN}Running Lambda λ${NC}"
+	start)
+		echo -e "${GREEN}Starting Lambda λ${NC}"
 		# append to log
-		echo "running lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "Started Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# run lambda
 		tmux new-session -d -s db "cd $route && python3 db/app.py"
 		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
@@ -29,11 +29,11 @@ case $1 in
         tmux ls
 	;;
 
-	kill)
-		echo -e "${RED}Killing Lambda λ${NC}"
+	stop)
+		echo -e "${RED}Stopping Lambda λ${NC}"
 		# append to log
-		echo "killing lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
-		# kill lambda
+		echo "Stopped Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		# stop lambda
 		tmux kill-session -t db
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
@@ -43,48 +43,45 @@ case $1 in
 		cd $route
 		echo -e "${BLUE}Updating Lambda λ${NC}"
 		# append to log
-		echo "updating lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "Updated Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# update lambda
 		git fetch && git merge origin/main
 	;;
 
-	reboot)
-		echo -e "${GREEN}Rebooting Lambda λ${NC}"
+	restart)
+		echo -e "${GREEN}Restarting Lambda λ${NC}"
 		# append to log
-		echo "rebooting lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
-		# kill lambda
-		tmux kill-session -t db
-		tmux kill-session -t lambda
-	    tmux kill-session -t discordo
-	    # and run lambda again
-		tmux new-session -d -s db "cd $route && python3 db/app.py"
-		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
-        tmux new-session -d -s discordo "cd $route && python3 interfaces/discordo.py"
-        # sleep and wait to errors
-        sleep 1
-        # see tmux active sessions
-        tmux ls
+		echo "Restarted Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		# stop lambda
+	    $0 stop
+	    sleep 1
+	    # and run lambda again	    
+	    $0 start
 	;;
 
+	# reboot and update code
 	rupdate)
 		cd $route
 		echo -e "${GREEN}Rupdating Lambda λ${NC}"
 		# append to log
-		echo "rupdating lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "Rupdating Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# kill lambda
-		tmux kill-session -t db
-		tmux kill-session -t lambda
-		tmux kill-session -t discordo
+		$0 stop
 		# update lambda
 		git fetch && git merge origin/main
 		# run lambda again
-		tmux new-session -d -s db "cd $route && python3 db/app.py"
-		tmux new-session -d -s lambda "cd $route && python3 lambda/app.py"
-		tmux new-session -d -s discordo "cd $route && python3 interfaces/discordo.py"
-		# sleep and wait to errors
-        sleep 1
-        # see tmux active sessions
-        tmux ls
+		$0 start
+	;;
+
+	# used to install new python requirements
+	reqinstall)
+		echo "Reqinstalling Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		# stop lambda
+		$0 stop
+		# install requirements
+		pip3 install -r requirements.txt
+		# run lambda again
+		$1 start
 	;;
 
 	# backup from all the memory files, actually db/data
@@ -96,17 +93,27 @@ case $1 in
 		# date label to name the file
 		date=$(date +%m-%d-%Y)
 		# create the folder for the files called backup
-		mkdir data
-		# copy the important files to the folder
-		cp -r $memory .
+		mkdir backup
+		# copy the memory dirs to backup
+		cp -r lambdrive backup
+		cp -r db/data backup
 		# make the memory backup and send it to backups
-		tar -cvf backups/$date-backup.tar.gz data
+		tar -cvf backups/backup-$date.tar.gz backup
 		# remove the backup file
-		rm -rf data
-		# remove all the other log files
+		rm -rf backup
+		# remove all the log files
 		rm $memory/log/*.txt
-		# and let the first line of log be the backup line
-		echo "lambda backup at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+	;;
+
+	full-backup)
+		# append to log
+		echo "lambda full backup at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		# open home dir
+		cd $HOME
+		# date label to name the file
+		date=$(date +%m-%d-%Y)
+		# make the memory backup and send it to backups
+		tar -cvf full-backup-$date.tar.gz Lambda
 	;;
 
 	# run an app
@@ -133,6 +140,6 @@ case $1 in
 
 	*)
 		echo Unknown Command λ
-		echo lambda "[run|kill|update|reboot|rupdate|backup|app|app-kill]"
+		echo lambda "[start|stop|update|restart|rupdate|reqinstall|backup|app|app-kill]"
 	;;
 esac

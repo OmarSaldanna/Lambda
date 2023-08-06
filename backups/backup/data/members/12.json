@@ -1,0 +1,23 @@
+{
+    "servers": [],
+    "role": "user",
+    "usage": {
+        "cloudinary_files": 1,
+        "dalle": 3,
+        "gpt-3.5-turbo": 5974,
+        "gpt-3.5-turbo-16k": 0,
+        "gpt-4": 0
+    },
+    "model": "gpt-3.5-turbo",
+    "personality": "Eres un asistente inteligente",
+    "context": [
+        {
+            "role": "user",
+            "content": "cual es la capital de Alemania. Que tu respuesta sea breve y concisa."
+        },
+        {
+            "role": "system",
+            "content": "Berlín."
+        }
+    ]
+}
