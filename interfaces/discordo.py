@@ -3,9 +3,12 @@ import time
 import json
 import discord
 from discord.ext import commands
+from dotenv import load_dotenv
 # modules
 from controllers import discordo
 
+# load the .env variables
+load_dotenv()
 # load credentials
 token = os.environ["DISCORD"]
 
@@ -24,6 +27,7 @@ async def on_ready():
 # when a message came
 @bot.event
 async def on_message(message):
+
     # if the message was from Lambda
     if message.author == bot.user:
         return
@@ -80,7 +84,7 @@ async def on_message(message):
             # save the error code on a str
             error_str = str(e)
             # regist that error on the db
-            discordo.db_request('POST', '/db/errors', {
+            discordo.db_request('POST', '/errors', {
                 "code": error_str,
                 "call": message.content[7:].strip(),
                 "member": str(message.author.id),
@@ -131,7 +135,7 @@ async def on_message(message):
             # save the error code on a str
             error_str = str(e)
             # regist that error on the db
-            discordo.db_request('POST', '/db/errors', {
+            discordo.db_request('POST', '/errors', {
                 "code": error_str,
                 "call": message.content[7:].strip(),
                 "member": str(message.author.id),
@@ -158,7 +162,7 @@ async def on_message(message):
     # salasegura para [@member1] [@member2] ...
     elif message.content[:11] in ['Salasegura ', 'salasegura ']:
         # get the server info
-        server_db = discordo.db_request('GET', '/db/servers', {
+        server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
         })
 
@@ -179,7 +183,7 @@ async def on_message(message):
             server_db['lockdown_members'] = member_ids
             server_db['lockdown_channel'] = voice_channel
             # write db
-            discordo.db_request('PUT', '/db/servers', {
+            discordo.db_request('PUT', '/servers', {
                 "id": str(message.guild.id),
                 "data": server_db
             })
@@ -188,13 +192,13 @@ async def on_message(message):
 
         # there's a white list active
         else:
-            await message.channel.send(f'> Lo siento, no puedo hacer eso, ya hay una **sala segura** activa en {server_db['lockdown_channel']}')
+            await message.channel.send(f'> Lo siento, no puedo hacer eso, ya hay una **sala segura** activa en {server_db["lockdown_channel"]}')
 
 
 ############# add users to lockdown
     elif message.content[:13] in ['Agregarasala ','agregarasala ']:
         # get the server info
-        server_db = discordo.db_request('GET', '/db/servers', {
+        server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
         })
         # check if the user is in the list
@@ -208,7 +212,7 @@ async def on_message(message):
             server_db['lockdown_members'] += member_ids
             # write the memory
             # write db
-            discordo.db_request('PUT', '/db/servers', {
+            discordo.db_request('PUT', '/servers', {
                 "id": str(message.guild.id),
                 "data": server_db
             })
@@ -222,7 +226,7 @@ async def on_message(message):
 ############# remove users from lockdown
     elif message.content[:13] in ['Quitardesala ','quitardesala ']:
         # get the server info
-        server_db = discordo.db_request('GET', '/db/servers', {
+        server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
         })
         # check if the user is in the list
@@ -237,7 +241,7 @@ async def on_message(message):
             # add the users, as a list
             server_db['lockdown_members'] = list(actual_ids - member_ids)
             # write db
-            discordo.db_request('PUT', '/db/servers', {
+            discordo.db_request('PUT', '/servers', {
                 "id": str(message.guild.id),
                 "data": server_db
             })
@@ -252,7 +256,7 @@ async def on_message(message):
     # only lockdown members can clear the list
     elif message.content[:9] in ['Salalibre','salalibre']:
         # get the server info
-        server_db = discordo.db_request('GET', '/db/servers', {
+        server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
         })
         # see if there's not a lockdown active
@@ -264,7 +268,7 @@ async def on_message(message):
             server_db['lockdown_members'] = []
             server_db['lockdown_channel'] = ""
             # write db
-            discordo.db_request('PUT', '/db/servers', {
+            discordo.db_request('PUT', '/servers', {
                 "id": str(message.guild.id),
                 "data": server_db
             })
@@ -325,7 +329,7 @@ async def on_message(message):
 @bot.event
 async def on_voice_state_update(member: discord.Member, before, after):
     # get the server info
-    server_db = discordo.db_request('GET', '/db/servers', {
+    server_db = discordo.db_request('GET', '/servers', {
         "id": str(member.guild.id)
     })
 

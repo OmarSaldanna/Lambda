@@ -11,7 +11,7 @@ headers={
 	#"message": "crea un qr de www.google.com",
 	#"message": "crea una imagen de photo of a christmas cat",
 	#"message": "cual es la capital de Alemania",
-	"message": "dime algo sobre agujeros negros",
+	"message": "genera un qr de www.facebook.com",
 	"server": "1110291",
 	"author": "11"
 }

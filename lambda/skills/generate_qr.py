@@ -1,5 +1,5 @@
 import qrcode
-from modules import generate_hash
+from core.modules import generate_hash
 
 # crea|genera un qr de|con www.google.com
 def main(params: tuple):

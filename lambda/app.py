@@ -23,7 +23,7 @@ async def lambda_call():
 		# process the message
 		answer = ai(message, author, server)
 		# and send the anser
-		return jsonify({'content': answer})
+		return jsonify({'answer': answer})
 
 
 # lambda requests for fast usage
@@ -37,7 +37,7 @@ async def lambda_conversation():
 		# process the message
 		answer = ai.chat(message, author, server)
 		# and send the answer
-		return jsonify({'content': answer})
+		return jsonify({'answer': answer})
 
 
 # run the app, on localhost only

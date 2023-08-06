@@ -76,8 +76,7 @@ class AI:
       # now throw a simple message
       return [{
         "type": "error",
-        "content": "Lo siento, ocurrió un error, comprueba que tu comando este bien escrito. \
-        Este error será reportado para su solución."
+        "content": "Lo siento, ocurrió un error, comprueba que tu comando este bien escrito. Este error será reportado para su solución."
       }]
 
   # main function

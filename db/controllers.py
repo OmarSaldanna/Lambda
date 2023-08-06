@@ -22,11 +22,11 @@ def get_user_data(user_id: str, database: str, server: str):
 		new_data = make_memory(user_id, database)
 		# check the servers in case of db=members
 		if database == "members":
-			if server not in mem['servers']:
+			if server not in new_data['servers']:
 				# add the server
-				mem['servers'] += [server]
+				new_data['servers'] += [server]
 				# and write
-				mem.write()
+				new_data.write()
 		# once created the memory, return the new data
 		return new_data.dic
 
