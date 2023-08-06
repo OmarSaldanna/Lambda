@@ -18,11 +18,11 @@ load_dotenv()
 ##########################################################################
 
 # download images, linux only
-def download_image(img_link: str, name: str, extension='.png', where="lambdrive/dalle/", dev=False):
+def download_image(img_link: str, name: str, extension='.png', where="lambdrive/dalle/"):
 	# Create the wget command
 	wget_command = f'wget "{img_link}" -O "{where}{name}{extension}"'
 	# Execute the wget command using os.popen
-	if not dev:
+	if os.getenv("dev") != "yes":
 		os.popen(wget_command)
 	# return the image path
 	return f"{where}{name}{extension}"
@@ -488,7 +488,7 @@ class OpenAI:
 		for url in urls:
 			name = str(generate_hash(url))
 			# download the image and save the path
-			images_paths.append(download_image(url, name, dev=True))
+			images_paths.append(download_image(url, name))
 			# save the name
 			hashes.append(name)
 		# get the actual images

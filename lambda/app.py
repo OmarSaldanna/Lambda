@@ -39,6 +39,8 @@ async def lambda_conversation():
 		# and send the answer
 		return jsonify({'answer': answer})
 
+# set the dev mode based on the .env variable
+dev = True if os.getenv("dev") == 'yes' else False
 
 # run the app, on localhost only
-app.run(port=8080, host="127.0.0.1", debug=True)
+app.run(port=8080, host="127.0.0.1", debug=dev)

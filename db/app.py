@@ -3,12 +3,16 @@ import json
 import asyncio
 from flask_cors import CORS
 from flask import Flask, request, jsonify
+from dotenv import load_dotenv
 
 # db controllers
 import controllers
 
 # this server, won't include the try and catch, since 
 # normaly databases throw error on bad requests
+
+# load the .env variables
+load_dotenv()
 
 # instance the flask app
 app = Flask(__name__)
@@ -169,6 +173,7 @@ async def errors():
 		# and return
 		return jsonify({'answer': ans})
 
+dev = True if os.getenv("dev") == 'yes' else False
 
 # run the app, on localhost only
-app.run(port=8081, host="127.0.0.1", debug=True)
+app.run(port=8081, host="127.0.0.1", debug=dev)
