@@ -12,6 +12,7 @@ sudo apt install -y python3-pip tmux
 
 # download the python libraries
 pip3 install -r requirements.txt
+pip3 install 'Flask[async]'
 
 # append Lambda/bin to path
 echo "export PATH=/home/omarsaldanna/Lambda/bin:$PATH" >> ~/.bashrc
