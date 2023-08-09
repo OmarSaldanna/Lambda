@@ -148,21 +148,21 @@ class DB:
 		# preprocess the headers
 		headers = self.__preprocess(headers)
 		# send the request
-		return requests.get(self.api + api, headers=headers).json()
+		return requests.get(self.api + api, json=headers).json()
 
 	# post request
 	def post (self, api: str, headers: dict):
 		# preprocess the headers
 		headers = self.__preprocess(headers)
 		# send the request
-		return requests.post(self.api + api, headers=headers).json()
+		return requests.post(self.api + api, json=headers).json()
 
 	# put request
 	def put (self, api: str, headers: dict):
 		# preprocess the headers
 		headers = self.__preprocess(headers)
 		# send the request
-		return requests.put(self.api + api, headers=headers).json()
+		return requests.put(self.api + api, json=headers).json()
 
 
 # cloudinary module
@@ -340,14 +340,14 @@ class OpenAI:
 	# VERY IMPORTANT!
 	# function used to update the context usage
 	# if the prices change in the future this part must change
-	def __count_gpt_usage (self, context_len: int, answer: str):
+	def __count_gpt_usage (self, context_len: int, answer: str, model: str):
 		# calculate the tokens of the answer
 		answer_len = self.token_counter_str(answer)
 		# make the cost
 		tokens_in = context_len
 		# since answer tokens costs 1.3 times context 
 		# tokens, see openAI pricing
-		tokens_out = int(answer_len * 1.3)
+		tokens_out = int(answer_len * 1.3) if model != "gpt-4" else int(answer_len * 2)
 		# then count total tokens
 		tokens_count = tokens_in + tokens_out
 		# return the total tokens
@@ -355,7 +355,7 @@ class OpenAI:
 
 	# main context function, used to handle it,
 	# is called before and after the GPT call
-	def __handle_context (self, text: str, model: str, on_answer=False):
+	def __handle_context (self, text: str, model: str, on_answer=False, on_fast=False):
 		# get the context len
 		context_len = self.__token_counter_list(
 			self.user_data["context"]
@@ -371,7 +371,7 @@ class OpenAI:
 		if on_answer:
 			# * count the tokens in and out
 			token_count, answer_len = self.__count_gpt_usage(
-				context_len, text
+				context_len, text, model
 			)
 			# * once counted, add the answer to the context
 			self.user_data['context'].append({
@@ -417,6 +417,27 @@ class OpenAI:
 				# the last messages are: user, system
 				self.user_data['context'] = self.__recreate_context(3)
 
+
+	# function used to manage the tokens used in the fast function
+	def __count_fast_tokens(self, question: str, answer: str, model: str):
+		# based on the tokenizer counter of the prototype's value
+		# "Eres alguien inteligente"
+		context_len = 8 + self.token_counter_str(question)
+		# now call the count_gpt usage function
+		token_count, _ = self.__count_gpt_usage(context_len, answer, model)
+		# * finally make the updates on DB:
+		# usage
+		self.user_data['usage'][model] -= token_count
+		# model, may be changed due to availability
+		self.user_data['model'] = model
+		# context was already changed
+		# then make the update
+		self.__set_user_data({
+			"usage": self.user_data['usage'],
+			"model": self.user_data['model'],
+			"context": self.user_data['context'],
+		})
+
 	########################### GPT usage function ###########################
 
 	# gpt genereal usage, it requires the messages structure
@@ -454,7 +475,7 @@ class OpenAI:
 			"data": f"[{self.user_id}] Q: {message}... A: {res['choices'][0]['message']['content']}"
 		})
 		# handle context but for answer
-		messages = self.__handle_context(
+		self.__handle_context(
 			res['choices'][0]['message']['content'],
 			model, on_answer=True
 		)
@@ -470,7 +491,64 @@ class OpenAI:
 		if not on_current_model:
 			answer.append({
 				"type": "error",
-				"content": f"<@{self.user_id}> tu modelo de lenguaje en uso fue cambiado a _{model}"
+				"content": f"<@{self.user_id}> tu modelo de lenguaje en uso fue cambiado a _{model} por falta de tokens"
+			})
+		# finally return the answer
+		return answer
+
+	# fast usage of chat gpt, this one doesn't save context
+	# then it's cheaper and faster for the users
+	def fast(self, message: str, temp=0.5): 
+		# check tokens availability
+		availability = self.__gpt_availability_check()
+		# if the user is out of tokens
+		if not availability:
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] no more tokens left"
+			})
+			# then return a message, in the correct 
+			# format: a list of dicts per message
+			return [{
+				"type": "error",
+				"content": f"Lo siento <@{self.user_id}> se te acabaron los tokens de conversación"
+				}]
+		# then the user has tokens to use yet
+		model, on_current_model = availability
+		# so use gpt with the available model
+		res = openai.ChatCompletion.create(
+			model=model,
+			messages=[
+				{"role": "system", "content": "Eres alguien inteligente"},
+				{"role": "user", "content": message},
+			],
+			temperature=temp
+		)
+		# regist on the logs also the answer
+		self.db.post("/logs", {
+			"db": "chat",
+			"data": f"[{self.user_id}] Q) {message} A) {res['choices'][0]['message']['content']}"
+		})
+		# handle context but for answer, in this case
+		# this function will just count the tokens
+
+		self.__count_fast_tokens(
+			message, res['choices'][0]['message']['content'], model
+		)
+		# form the answer in the format
+		answer = [
+			{
+				"type": "text",
+				"content": res['choices'][0]['message']['content']
+			}
+		]
+		# check if the model was changed for
+		# avaulability reasons
+		if not on_current_model:
+			answer.append({
+				"type": "error",
+				"content": f"<@{self.user_id}> tu modelo de lenguaje en uso fue cambiado a _{model} por falta de tokens"
 			})
 		# finally return the answer
 		return answer

@@ -85,10 +85,12 @@ async def on_message(message):
             error_str = str(e)
             # regist that error on the db
             discordo.db_request('POST', '/errors', {
-                "code": error_str,
-                "call": message.content[7:].strip(),
-                "member": str(message.author.id),
-                "server": str(message.guild.id)
+                "data": {
+                    "code": error_str,
+                    "call": message.content[7:].strip(),
+                    "member": str(message.author.id),
+                    "server": str(message.guild.id)
+                }
             })
             # and send a message
             await message.channel.send(f"> Lo siento, algo salió mal")
@@ -104,20 +106,11 @@ async def on_message(message):
                 msg,
                 str(message.author.id),
                 str(message.guild.id),
-                chat=True
+                mode="chat"
             )
             # send the answers
             for answer in answers['answer']:
-                # for images or files
-                if answer['type'] == 'file':
-                    # open the file, content will be
-                    # the file path to open
-                    with open(answer['content'], 'rb') as f:
-                        # set a discord instance
-                        file = discord.File(f)
-                        # send the the file
-                        await message.channel.send(file=file)
-                elif answer['type'] == 'error':
+                if answer['type'] == 'error':
                     # split the answer in pieces
                     pieces = discordo.split_text(answer['content'])
                     # and send them
@@ -136,10 +129,57 @@ async def on_message(message):
             error_str = str(e)
             # regist that error on the db
             discordo.db_request('POST', '/errors', {
-                "code": error_str,
-                "call": message.content[7:].strip(),
-                "member": str(message.author.id),
-                "server": str(message.guild.id)
+                "data": {
+                    "code": error_str,
+                    "call": message.content[7:].strip(),
+                    "member": str(message.author.id),
+                    "server": str(message.guild.id)
+                }
+            })
+            # and send a message
+            await message.channel.send(f"> Lo siento, algo salió mal")
+
+
+############# lambda call for fast questions
+    elif message.content[:2] in ['l,', 'L,']:
+        # in case of error
+        try:
+            # get the message without 'lambda '
+            msg = message.content[2:].strip()
+            # call lambda
+            answers = discordo.call_lambda(
+                msg,
+                str(message.author.id),
+                str(message.guild.id),
+                mode="fast"
+            )
+            # send the answers
+            for answer in answers['answer']:
+                if answer['type'] == 'error':
+                    # split the answer in pieces
+                    pieces = discordo.split_text(answer['content'])
+                    # and send them
+                    for p in pieces:
+                        await message.channel.send('> ' + p)
+                # for just text or other things
+                else:
+                    # split the answer in pieces
+                    pieces = discordo.split_text(answer['content'])
+                    # and send them
+                    for p in pieces:
+                        await message.channel.send(p)
+        # there was an error
+        except Exception as e:
+            # save the error code on a str
+            error_str = str(e)
+            # regist that error on the db
+            discordo.db_request('POST', '/errors', {
+                "data": {
+                    "code": error_str,
+                    "call": message.content[7:].strip(),
+                    "member": str(message.author.id),
+                    "server": str(message.guild.id)
+                }
             })
             # and send a message
             await message.channel.send(f"> Lo siento, algo salió mal")

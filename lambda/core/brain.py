@@ -12,7 +12,6 @@ from core.modules import OpenAI, DB
 # and libraries
 import os
 import importlib
-import telebot
 from dotenv import load_dotenv
 
 # load the .env variables
@@ -31,23 +30,13 @@ class AI:
     self.word_recognizer.train(known_words)
     # instance the db
     self.db = DB()
-    # get the telegram variables: token, chat id
-    self.telegram_chat = os.getenv("alert_chat")
-    # instance the telebram bot
-    self.tbot = telebot.TeleBot(os.getenv("TELEGRAM"))
 
   # function used to report errors on lambda skills, it will be saved on
   # the db on errors and also a report will be sent to the admin via telegram.
   # The error will be reported as well as the user, server and the message
   def __error_report (self, error_str: str, params: tuple):
     message, member, server = params
-    # send the report to telegram
-    try:
-      # send the messages to the chat
-      self.tbot.send_message(self.telegram_chat, f"Error on: {message}\n\n{error_str}")
-    except:
-      print("Error sending message for telegram")
-    # now save it in the error db
+    # save it in the error db
     self.db.post("/errors", {
       "data": {
         "call": message,
@@ -118,12 +107,24 @@ class AI:
       # this is a clear error on db
       raise ValueError(f"Error on database, verb: {verb}, type unknown")
       
+
   # this is a fast function, independent. This is a simple
   # function for fast usage, like: Lambda, ...
   def chat(self, message: str, author: str, server: str):
     # instance openai module
     openai = OpenAI(author, server)
     # try to make the answer shorter as possible
-    message += ". Que tu respuesta sea breve y concisa."
+    message += ". Responde en 2 párrafos o menos."
     # now call gpt
     return openai.gpt(message)
+
+
+  # this is also a fast function, the thing is that this
+  # one doesn't save context, so it is faster and cheaper
+  def fast(self, message: str, author: str, server: str):
+    # instance openai module
+    openai = OpenAI(author, server)
+    # try to make the answer shorter as possible
+    message += ". Que tu respuesta sea breve y concisa."
+    # now call fast usage
+    return openai.fast(message)

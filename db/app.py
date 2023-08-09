@@ -1,4 +1,5 @@
 # libraries
+import os
 import json
 import asyncio
 from flask_cors import CORS
@@ -7,6 +8,7 @@ from dotenv import load_dotenv
 
 # db controllers
 import controllers
+from modules import Telegram
 
 # this server, won't include the try and catch, since 
 # normaly databases throw error on bad requests
@@ -18,6 +20,8 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+# instance the telegram bot, for the errors
+telegram = Telegram(os.getenv('TELEGRAM'))
 
 # db requests for member data: members/, images/
 # example request
@@ -28,10 +32,12 @@ CORS(app)
 # }
 @app.route('/members', methods=['GET','PUT'])
 async def members():
+	# get the json content
+	data = request.json
 	# extract the message from the request
-	author_id = request.headers.get('id')
-	database = request.headers.get('db')
-	server = request.headers.get('server')
+	author_id = data.get('id')
+	database = data.get('db')
+	server = data.get('server')
 
 	print(f"{request.method} -> /members -> {database} -> {author_id}")
 
@@ -45,7 +51,7 @@ async def members():
 
 	elif request.method == 'PUT':
 		# aditional info to update
-		update = json.loads(request.headers.get('data'))
+		update = json.loads(data.get('data'))
 		# update the user json
 		data = controllers.update_user_data(author_id, database, update)
 		# and return
@@ -60,8 +66,10 @@ async def members():
 # }
 @app.route('/servers', methods=['GET', 'PUT'])
 async def servers():
+	# get the json content
+	data = request.json
 	# extract the message from the request
-	server_id = request.headers.get('id')
+	server_id = data.get('id')
 	
 	print(f"{request.method} -> /servers -> {server_id}")
 
@@ -75,7 +83,7 @@ async def servers():
 	# put is to update data
 	if request.method == 'PUT':
 		# aditional info to update
-		update = json.loads(request.headers.get('data'))
+		update = json.loads(data.get('data'))
 		# update the user json
 		data = controllers.update_server_data(server_id, update)
 		# and return
@@ -94,8 +102,10 @@ async def servers():
 # }
 @app.route('/verbs', methods=['GET','PUT','POST'])
 async def verbs():
+	# get the json content
+	data = request.json
 	# extract the message from the request
-	verb = request.headers.get('verb')
+	verb = data.get('verb')
 
 	print(f"{request.method} -> /verbs -> {verb}")
 
@@ -110,7 +120,7 @@ async def verbs():
 	# post to add info
 	elif request.method == 'POST':
 		# get the extra data
-		data = json.loads(request.headers.get('data'))
+		data = json.loads(data.get('data'))
 		# use the controller
 		ans = controllers.add_verb_data(verb, data)
 		# and return
@@ -119,7 +129,7 @@ async def verbs():
 	# post to add info
 	elif request.method == 'PUT':
 		# get the extra data
-		data = json.loads(request.headers.get('data'))
+		data = json.loads(data.get('data'))
 		# use the controller
 		ans = controllers.update_verb_data(verb, data)
 		# and return
@@ -134,10 +144,12 @@ async def verbs():
 # }
 @app.route('/logs', methods=['POST'])
 async def log():
+	# get the json content
+	data = request.json
 	# extract the message from the request
-	database = request.headers.get('db')
+	database = data.get('db')
 	# data in this case is just a string
-	data = request.headers.get('data')
+	data = data.get('data')
 	
 	print(f"{request.method} -> /logs -> {database}")
 
@@ -161,8 +173,10 @@ async def log():
 # }
 @app.route('/errors', methods=['POST'])
 async def errors():
+	# get the json content
+	data = request.json
 	# extract the message from the request
-	data = json.loads(request.headers.get('data'))
+	data = json.loads(data.get('data'))
 	
 	# print(f"{request.method} -> /members -> {author_id}")
 
@@ -170,10 +184,14 @@ async def errors():
 	if request.method == 'POST':
 		# use the controller
 		ans = controllers.add_to_errors(data)
+		# use telegram bot to notify
+		chat = os.getenv('alert_chat') # get the chat id
+		telegram(chat, f"Call: {data['call']}\n{data['code']}\nUser: {data['member']}\nServer: {data['server']}")
 		# and return
 		return jsonify({'answer': ans})
 
-dev = True if os.getenv("dev") == 'yes' else False
 
+# detect dev mode
+dev = True if os.getenv("dev") == 'yes' else False
 # run the app, on localhost only
 app.run(port=8081, host="127.0.0.1", debug=dev)

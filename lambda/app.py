@@ -1,6 +1,8 @@
 # libraries
-from flask_cors import CORS
+import os
 import asyncio
+# flask stuff
+from flask_cors import CORS
 from flask import Flask, request, jsonify
 # the lambda brain
 from core.brain import AI
@@ -15,32 +17,53 @@ ai = AI()
 # lambda requests for general usage
 @app.route('/lambda', methods=['GET'])
 async def lambda_call():
+	# get the json content of the request
+	data = request.json
 	if request.method == 'GET':
 		# extract the message from the request
-		message = request.headers.get('message')
-		author = request.headers.get('author')
-		server = request.headers.get('server')
+		message = data.get('message')
+		author = data.get('author')
+		server = data.get('server')
 		# process the message
 		answer = ai(message, author, server)
 		# and send the anser
 		return jsonify({'answer': answer})
 
 
-# lambda requests for fast usage
+# lambda requests for chat
 @app.route('/lambda/chat', methods=['GET'])
 async def lambda_conversation():
+	# get the json content of the request
+	data = request.json
 	if request.method == 'GET':
 		# extract the message from the request
-		message = request.headers.get('message')
-		author = request.headers.get('author')
-		server = request.headers.get('server')
+		message = data.get('message')
+		author = data.get('author')
+		server = data.get('server')
 		# process the message
 		answer = ai.chat(message, author, server)
 		# and send the answer
 		return jsonify({'answer': answer})
 
+
+# lambda requests for fast usage
+# this one doesn't save context
+@app.route('/lambda/fast', methods=['GET'])
+async def lambda_fast():
+	# get the json content of the request
+	data = request.json
+	if request.method == 'GET':
+		# extract the message from the request
+		message = data.get('message')
+		author = data.get('author')
+		server = data.get('server')
+		# process the message
+		answer = ai.fast(message, author, server)
+		# and send the answer
+		return jsonify({'answer': answer})
+
+
 # set the dev mode based on the .env variable
 dev = True if os.getenv("dev") == 'yes' else False
-
 # run the app, on localhost only
 app.run(port=8080, host="127.0.0.1", debug=dev)

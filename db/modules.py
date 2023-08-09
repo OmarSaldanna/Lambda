@@ -1,8 +1,11 @@
 # Lambda's memory, yesterday it uses txt files
+import os
 import json
 import pytz
-import datetime
+import telebot
 import hashlib
+import datetime
+
 
 memory_path = './db/data/'
 log_path = './db/data/log/'
@@ -122,3 +125,18 @@ def generate_hash(string: str):
     hash_result = hash_object.hexdigest()
     # return
     return hash_result
+
+# send telegram messages to the chat
+class Telegram:
+
+  def __init__ (self, token: str):
+    # instance the telebram bot
+    self.tbot = telebot.TeleBot(token)
+
+  def __call__ (self, message: str, chat:str):
+    try:  
+      # send the messages to the chat
+      self.tbot.send_message(chat, message)
+    except:
+      # just print sth
+      print("Error in telegram API")

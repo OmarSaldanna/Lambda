@@ -8,35 +8,38 @@ import os
 ############################################################
 
 # general function to make requests to db
-def db_request(type_: str, api: str, headers: dict):
+def db_request(type_: str, api: str, data: dict):
 	api = f'http://127.0.0.1:8081{api}'
 	# prepare the dic
-	for key in headers.keys():
-		# if there's a dic in headers
-		if type(headers[key]) == dict:
+	for key in data.keys():
+		# if there's a dic in data
+		if type(data[key]) == dict:
 			# json dump
-			headers[key] = json.dumps(headers[key])
+			data[key] = json.dumps(data[key])
 	# make the request based on type
 	if type_ == 'GET':
-		return requests.get(api, headers=headers).json()
+		return requests.get(api, json=data).json()
 	elif type_ == 'POST':
-		return requests.post(api, headers=headers).json()
+		return requests.post(api, json=data).json()
 	elif type_ == 'PUT':
-		return requests.put(api, headers=headers).json()
+		return requests.put(api, json=data).json()
 	else:
 		raise ValueError('Type of request unknown')
 
 # general functions to use lambda
-def call_lambda(message: str, author: str, server: str, chat=False):
+def call_lambda(message: str, author: str, server: str, mode=""):
 	# default lambda url for calls
 	lambda_url = 'http://127.0.0.1:8080/lambda'
 	# if it was a conversation request
-	if chat:
+	if mode == "chat":
 		lambda_url = 'http://127.0.0.1:8080/lambda/chat'
+	elif mode == "fast":
+		lambda_url = 'http://127.0.0.1:8080/lambda/fast'
+
 	# call lambda api
 	answer = requests.get(
 		lambda_url,
-		headers={
+		json={
 			"message": message,
 			"author": author,
 			"server": server

@@ -12,7 +12,7 @@
 			"dalle": 3
 		},
 		"model": "gpt-3.5-turbo",
-		"personality": "Eres un asistente inteligente",
+		"personality": "Eres alguien inteligente",
 		"context": []
 	},
 
