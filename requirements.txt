@@ -7,7 +7,6 @@ pytz
 qrcode
 requests
 cloudinary
-tiktoken
 unidecode
 elevenlabs
 hashlib

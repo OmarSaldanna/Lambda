@@ -108,15 +108,17 @@ class AI:
       raise ValueError(f"Error on database, verb: {verb}, type unknown")
       
 
+  #gpt(self, prompt: str, model="gpt-3.5-turbo", temp=0.5, context=True, system="Eres alguien inteligente")
+
   # this is a fast function, independent. This is a simple
   # function for fast usage, like: Lambda, ...
   def chat(self, message: str, author: str, server: str):
     # instance openai module
     openai = OpenAI(author, server)
     # try to make the answer shorter as possible
-    message += ". Responde en 2 párrafos o menos."
+    message += ". Responde en 1 párrafo o menos."
     # now call gpt
-    return openai.gpt(message)
+    return openai.gpt(message, context=True)
 
 
   # this is also a fast function, the thing is that this
@@ -127,4 +129,4 @@ class AI:
     # try to make the answer shorter as possible
     message += ". Que tu respuesta sea breve y concisa."
     # now call fast usage
-    return openai.fast(message)
+    return openai.gpt(message, context=False, system="")

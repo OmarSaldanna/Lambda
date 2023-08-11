@@ -3,9 +3,10 @@ import os
 import json
 import requests
 from dotenv import load_dotenv
-# to tokenize GPT scontext
-import tiktoken
+# open ai
 import openai
+# and tokenizer
+import tiktoken
 # cloduinary
 import cloudinary
 import cloudinary.uploader
@@ -271,213 +272,175 @@ class OpenAI:
 
 	########################### availability checking functions ###########################
 
-	# checks if the current model has tokens yet,
-	def __gpt_availability_check (self):
-		# get the current model
-		current_model = self.user_data['model']
-		# check if it has available tokens
-		if self.user_data['usage'][current_model] > 50:
-			# the model has available tokens
-			# then return the model to use it
-			# the false is that the model is
-			# the same as the current model
-			return current_model, True
-		# if not, check other models
+	# checks if the current model has tokens yet to answer the question
+	# IMPORTANT: AVERAGE ANSWER LEN
+	def __model_availability (self, model: str, message: str, context: bool):
+		# if the context is going to be counted use the actual len
+		# else, just count the context as 8, "Eres alguien inteligente"
+		context_len = self.user_data['context_len'] if context else 8
+		# now tokenize the message
+		message_len = self.token_counter(message)
+		# if model has more tokens than the context + message + avg answer len
+		if self.user_data['usage'][model] >= context_len + message_len + 200:
+			# the model has enough tokens yet
+			return True
+		# if not
 		else:
-			# check the models
-			for model in self.models:
-				# if one other has availability
-				if self.user_data['usage'][model] > 50:
-					# return the model, and a false
-					# that indicates the model is 
-					# another one from the current
-					return model, False
-			# else, the user has no tokens left
-			# then just return False
+			# the model has not enough tokens
 			return False
 
 	########################### context handling functions ###########################
 
 	# get the actual tokens of a string
-	def token_counter_str (self, string: str, encoding_name='gpt2'):
-		# tokenize
-		encoding = tiktoken.get_encoding(encoding_name)
+	def token_counter (self, string: str):
+		# set the tokenizer
+		encoding = tiktoken.get_encoding("cl100k_base")
+		# encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
 		# count the tokens
 		num_tokens = len(encoding.encode(string))
 		return num_tokens
-
-	# count the tokens in a message structure
-	def __token_counter_list (self, messages: list, encoding_name='gpt2'):
-		total = 0
-		# iterate the messages
-		for message in messages:
-			# count the tokens in the message
-			total += self.token_counter_str(message['content'])
-		# return the total
-		return total
 
 	# determines the context limit based on the model, here's
 	# the limit of the context's size, once the context reaches
 	# IMPORTANT: LIMIT OF THE TOKENS TO RESET THE CONTEXT
 	def __get_token_limit (self, model: str):
 		if model == "gpt-3.5-turbo-16k":
-			return 800
+			return 16000
 		else:
-			return 800
+			# this will be lower, since to keep the
+			# conversations cheap, may be change in the future
+			return 1000
 
 	# create a context for a user once the context has gone full
-	def __recreate_context(self, n: int):
+	# only called in cases, BEFORE THE ANSWER
+	def __recreate_context (self):
 		# set the new context starting with personality
 		new_context = [{
 			"role": "system",
 			"content": self.user_data['personality']
 		}]
 		# add the actual context's tail, the last two messages
-		new_context += self.user_data['context'][-n:]
-		# return the new context
-		return new_context
+		# these are the last question an the last answer
+		new_context += self.user_data['context'][-2:]
+		# save the new context
+		self.user_data['context'] = new_context
+		# and restart the context_len counter
+		self.user_data['context_len'] = 0
 
 	# VERY IMPORTANT!
-	# function used to update the context usage
-	# if the prices change in the future this part must change
-	def __count_gpt_usage (self, context_len: int, answer: str, model: str):
-		# calculate the tokens of the answer
-		answer_len = self.token_counter_str(answer)
-		# make the cost
-		tokens_in = context_len
-		# since answer tokens costs 1.3 times context 
-		# tokens, see openAI pricing
-		tokens_out = int(answer_len * 1.3) if model != "gpt-4" else int(answer_len * 2)
-		# then count total tokens
-		tokens_count = tokens_in + tokens_out
-		# return the total tokens
-		return tokens_count, answer_len
+	# used to count the tokens on th
+	def __token_recount (self, usage: dict, model: str, context: bool):
+  		# so, assign the variables
+  		tokens_in = usage['prompt_tokens']
+  		tokens_out = usage['completion_tokens']
+  		# calculate the adjusted based on the model
+  		adjusted = int(tokens_out * 1.3) if model != "gpt-4" else int(tokens_out * 2)
+  		# calculate the total = tokens_in + adjusted
+  		total_tokens = tokens_in + adjusted
+  		# update the user data
+  		self.user_data['usage'][model] -= total_tokens
+  		# ubdate the context len based on the usage
+  		# ONLY IF THE CONTEXT IS ENABLED
+  		if context:
+  			self.user_data['context_len'] = tokens_in + tokens_out
+  		# else, just wait to the next call that uses context
+  		# return the count to save on the logs
+  		return tokens_in, tokens_out, adjusted, total_tokens
 
-	# main context function, used to handle it,
-	# is called before and after the GPT call
-	def __handle_context (self, text: str, model: str, on_answer=False, on_fast=False):
-		# get the context len
-		context_len = self.__token_counter_list(
-			self.user_data["context"]
-		)
-		# in case the function was called after
-		# gpt was called to answer. Here the thing
-		# is to:
-		# * count the tokens in and out
-		# * once counted, add the answer to the context
-		# * if the context is bigger than the limit
-		# then recreate it and save it
-		# * finally make the updates on DB
-		if on_answer:
-			# * count the tokens in and out
-			token_count, answer_len = self.__count_gpt_usage(
-				context_len, text, model
-			)
-			# * once counted, add the answer to the context
+
+	# This functin is called in every response of GPT, but
+	# its function is just to add to context, and save on db
+	def __handle_context (self, answer: str, context: bool): 
+		# if the context was enabled
+		if context:
+			# add the answer to the context
 			self.user_data['context'].append({
 				"role": "system",
-				"content": text
+				"content": answer
 			})
-			# and update the context len
-			context_len += answer_len
-			# * if the context is bigger than the limit
-			# then recreate it and save it
-			if context_len > self.__get_token_limit(model):
-				# recreate the context
-				# the last messages are: user, system
-				self.user_data['context'] = self.__recreate_context(2)
-			# * finally make the updates on DB:
-			# usage
-			self.user_data['usage'][model] -= token_count
-			# model, may be changed due to availability
-			self.user_data['model'] = model
-			# context was already changed
-			# then make the update
-			self.__set_user_data({
-				"usage": self.user_data['usage'],
-				"model": self.user_data['model'],
-				"context": self.user_data['context'],
-			})
-			
-		# in case the function was called before
-		# then text is the user prompt. Here the
-		# point is just ADD THE PROMPT TO THE
-		# PAST CONTEXT and send it to the model
-		else:
-			# add the text to the context
-			self.user_data['context'].append({
-				"role": "user",
-				"content": text
-			})
-			# may be the prompt makes the context
-			# bigger than the limit, in that case,
-			# recreate the context
-			if context_len > self.__get_token_limit(model):
-				# recreate the context
-				# the last messages are: user, system
-				self.user_data['context'] = self.__recreate_context(3)
-
-
-	# function used to manage the tokens used in the fast function
-	def __count_fast_tokens(self, question: str, answer: str, model: str):
-		# based on the tokenizer counter of the prototype's value
-		# "Eres alguien inteligente"
-		context_len = 8 + self.token_counter_str(question)
-		# now call the count_gpt usage function
-		token_count, _ = self.__count_gpt_usage(context_len, answer, model)
-		# * finally make the updates on DB:
-		# usage
-		self.user_data['usage'][model] -= token_count
-		# model, may be changed due to availability
-		self.user_data['model'] = model
-		# context was already changed
 		# then make the update
 		self.__set_user_data({
 			"usage": self.user_data['usage'],
-			"model": self.user_data['model'],
+			"context_len": self.user_data['context_len'],
 			"context": self.user_data['context'],
 		})
 
+
+	# this function prepares context to call the function
+	# tokens will be counted after the answer
+	def __append_to_context(self, text: str, model: str):
+		# before the answer
+		# here is the part of recreate context, only here
+		# so, count the tokens on the message
+		text_len = self.token_counter(text)
+		# if the answer + the context is larger than the limit: recreate the context
+		if text_len + self.user_data['context_len'] > self.__get_token_limit(model):
+			# recreate the context
+			self.__recreate_context()
+		# the answer is just added to the current log
+		else:
+			self.user_data['context'] += [{'role': 'user', 'content': text}]
+
+
 	########################### GPT usage function ###########################
 
-	# gpt genereal usage, it requires the messages structure
-	def gpt(self, message: str, temp=0.5):
-		# check tokens availability
-		availability = self.__gpt_availability_check()
-		# if the user is out of tokens
+	# gpt genereal usage, you can select the model to use and also
+	# you can manage wether save the conversation context or not
+	def gpt (self, prompt: str, model="gpt-3.5-turbo", temp=0.5, context=True, system="Eres alguien inteligente"):
+		# check tokens availability for the selected model
+		# also based on the len of the context
+		availability = self.__model_availability(model, prompt, context)
+		# if the model is out of tokens
 		if not availability:
 			# regist on the logs
 			self.db.post("/logs", {
 				"db": "errors",
-				"data": f"[{self.user_id}] no more tokens left"
+				"data": f"[{self.user_id}] no more tokens left for {model}"
 			})
 			# then return a message, in the correct 
 			# format: a list of dicts per message
 			return [{
 				"type": "error",
 				"content": f"Lo siento <@{self.user_id}> se te acabaron los tokens de conversación"
-				}]
-		# then the user has tokens to use yet
-		model, on_current_model = availability
-		# handle context for the prompt
-		self.__handle_context(
-			message, model, on_answer=False
-		)
+			}]
+		# at this point the user has tokens to use yet. Then add the
+		# incoming message to the context only if the context is enabled
+		if context:
+			# this function just add the prompt to the context
+			self.__append_to_context(prompt, model)
+		# if not, format the prompt to call gpt
+		else:
+			prompt_call = [
+				# this content is found in the __model_availability function
+				# counted as the 8 tokens added
+				{"role": "system", "content": system},
+				{"role": "user", "content": prompt}
+			]
 		# so use gpt with the available model
 		res = openai.ChatCompletion.create(
 			model=model,
-			messages=self.user_data['context'],
+			# here also, if the context is required, call gpt with the
+			# prompt and context, else just use the prompt
+			messages=self.user_data['context'] if context else prompt_call,
 			temperature=temp
 		)
-		# regist on the logs also the answer
+		# make recount of the tokens used, in the response are the
+		# tokens used, tokens in and tokens out, this function
+		tokens_in, tokens_out, adjusted, total_tokens = self.__token_recount(res['usage'], model, context)
+		# regist on the logs the answer
 		self.db.post("/logs", {
 			"db": "chat",
-			"data": f"[{self.user_id}] Q: {message}... A: {res['choices'][0]['message']['content']}"
+			"data": f"[{self.user_id}] Q: {prompt}... A: {res['choices'][0]['message']['content']}"
+		})
+		self.db.post("/logs", {
+			"db": "tokens",
+			"data": f"[{self.user_id}] in: {tokens_in} out: {tokens_out} adjusted: {adjusted} total: {total_tokens}"
 		})
 		# handle context but for answer
+		# this function just appends the answer to the context (if context),
+		#  and saves changes on the database (context, usage and context len)
 		self.__handle_context(
-			res['choices'][0]['message']['content'],
-			model, on_answer=True
+			res['choices'][0]['message']['content'], context
 		)
 		# form the answer in the format
 		answer = [
@@ -486,70 +449,6 @@ class OpenAI:
 				"content": res['choices'][0]['message']['content']
 			}
 		]
-		# check if the model was changed for
-		# avaulability reasons
-		if not on_current_model:
-			answer.append({
-				"type": "error",
-				"content": f"<@{self.user_id}> tu modelo de lenguaje en uso fue cambiado a _{model} por falta de tokens"
-			})
-		# finally return the answer
-		return answer
-
-	# fast usage of chat gpt, this one doesn't save context
-	# then it's cheaper and faster for the users
-	def fast(self, message: str, temp=0.5): 
-		# check tokens availability
-		availability = self.__gpt_availability_check()
-		# if the user is out of tokens
-		if not availability:
-			# regist on the logs
-			self.db.post("/logs", {
-				"db": "errors",
-				"data": f"[{self.user_id}] no more tokens left"
-			})
-			# then return a message, in the correct 
-			# format: a list of dicts per message
-			return [{
-				"type": "error",
-				"content": f"Lo siento <@{self.user_id}> se te acabaron los tokens de conversación"
-				}]
-		# then the user has tokens to use yet
-		model, on_current_model = availability
-		# so use gpt with the available model
-		res = openai.ChatCompletion.create(
-			model=model,
-			messages=[
-				{"role": "system", "content": "Eres alguien inteligente"},
-				{"role": "user", "content": message},
-			],
-			temperature=temp
-		)
-		# regist on the logs also the answer
-		self.db.post("/logs", {
-			"db": "chat",
-			"data": f"[{self.user_id}] Q) {message} A) {res['choices'][0]['message']['content']}"
-		})
-		# handle context but for answer, in this case
-		# this function will just count the tokens
-
-		self.__count_fast_tokens(
-			message, res['choices'][0]['message']['content'], model
-		)
-		# form the answer in the format
-		answer = [
-			{
-				"type": "text",
-				"content": res['choices'][0]['message']['content']
-			}
-		]
-		# check if the model was changed for
-		# avaulability reasons
-		if not on_current_model:
-			answer.append({
-				"type": "error",
-				"content": f"<@{self.user_id}> tu modelo de lenguaje en uso fue cambiado a _{model} por falta de tokens"
-			})
 		# finally return the answer
 		return answer
 
@@ -559,7 +458,7 @@ class OpenAI:
 	# receives the urls and returns hashes, names
 	# where the images are, now on lambdrive. Image
 	# type is the db key: images, edtis or variations
-	def __download_images(self, urls: list, image_type: str):
+	def __download_images (self, urls: list, image_type: str):
 		hashes = []
 		images_paths = []
 		# per image url
@@ -604,7 +503,7 @@ class OpenAI:
 
 	# function to update usage, after generating the images
 	# also saves the images hash
-	def __update_dalle_usage(self, n: int):
+	def __update_dalle_usage (self, n: int):
 		# update the local instance
 		self.user_data['usage']['dalle'] -= n
 		# now update in the db
@@ -615,7 +514,7 @@ class OpenAI:
 	########################### DALL-E functions ###########################
 
 	# DALL-E function to create images
-	def create_image(self, prompt:str, n=1):
+	def create_image (self, prompt:str, n=1):
 		# first check availability for the requested images
 		available, remaining = self.__dalle_availability(n)
 		# if there are images available
@@ -666,7 +565,7 @@ class OpenAI:
 			}]
 
 	# DALL-E function to edit images
-	def edit_image(self, image_path: str, prompt:str, n=1):
+	def edit_image (self, image_path: str, prompt:str, n=1):
 		# first check availability for the requested images
 		available, remaining = self.__dalle_availability(n)
 		# if there are images available
@@ -717,7 +616,7 @@ class OpenAI:
 			}]
 
 	# DALL-E function to generate variations of a given image
-	def variate_image(self, image_path: str, n=1):
+	def variate_image (self, image_path: str, n=1):
 		# first check availability for the requested images
 		available, remaining = self.__dalle_availability(n)
 		# if there are images available
