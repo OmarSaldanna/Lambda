@@ -5,11 +5,11 @@
 		"servers": [],
 		"role": "user",
 		"usage": {
-			"gpt-3.5-turbo": 6000,
+			"gpt-3.5-turbo": 20000,
 			"gpt-3.5-turbo-16k": 0,
 			"gpt-4": 0,
-			"cloudinary_files": 1,
-			"dalle": 3
+			"cloudinary_files": 3,
+			"dalle": 20
 		},
 		"personality": "Eres alguien inteligente",
 		"context_len": 0,
