@@ -18,6 +18,19 @@ source venv/bin/activate
 
 # download the python libraries
 pip3 install -r reqs.txt
+# create the db folders
+mkdir db/data/errors
+mkdir db/data/images
+mkdir db/data/log
+mkdir db/data/members
+mkdir db/data/servers
+# other folders
+mkdir bakups
+mkdir lambdrive
+mkdir lambdrive/audios
+mkdir lambdrive/qrs
+mkdir lambdrive/files
+mkdir lambdrive/dalle
 
 # append Lambda/bin to path
 echo "export PATH=/home/omarsaldanna/Lambda/bin:$PATH" >> ~/.bashrc
