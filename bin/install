@@ -8,13 +8,11 @@ NC='\033[0m' # No color
 # update the packages
 sudo apt update
 # install the needed aplications
-sudo apt install -y python3-pip tmux python3-venv
+sudo apt install -y python3-pip tmux python3-venv tree
 # remove the file that generates problems
 sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 # set a python virtual env
 python3 -m venv venv
-# activate it
-source venv/bin/activate
 
 # download the python libraries
 pip3 install -r reqs.txt
@@ -48,3 +46,7 @@ echo -e "${BLUE}# Restart Lambda everyday at 5am${NC}"
 echo "0 5 * * * lambda reboot"
 echo -e "${BLUE}# Backup Lambda every month${NC}"
 echo "50 4 * * 0 lambda backup"
+echo ""
+echo "use this commands to install python libraries"
+echo " -> source venv/bin/activate"
+echo " -> pip3 install -r reqs.txt"
