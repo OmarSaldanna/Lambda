@@ -18,9 +18,9 @@ import cloudinary.uploader
 def download_image(img_link: str, name: str, extension='.png', where="lambdrive/dalle/"):
 	# Create the wget command
 	wget_command = f'wget "{img_link}" -O "{where}{name}{extension}"'
-	# Execute the wget command using os.popen
+	# Execute the wget command
 	if os.getenv("dev") != "yes":
-		os.popen(wget_command)
+		os.system(wget_command)
 	# return the image path
 	return f"{where}{name}{extension}"
 
@@ -530,7 +530,6 @@ class OpenAI:
 			urls = []
 			for i in range(n):
 				urls.append(response['data'][i]['url'])
-			print(urls)
 			# download the images
 			paths, hashes = self.__download_images(urls, 'images')
 			# update the usage
