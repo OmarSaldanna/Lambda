@@ -9,6 +9,8 @@ NC='\033[0m' # No color
 sudo apt update
 # install the needed aplications
 sudo apt install -y python3-pip tmux python3-venv
+# remove the file that generates problems
+sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 # set a python virtual env
 python3 -m venv venv
 # activate it
@@ -16,7 +18,6 @@ source venv/bin/activate
 
 # download the python libraries
 pip3 install -r reqs.txt
-pip3 install 'Flask[async]'
 
 # append Lambda/bin to path
 echo "export PATH=/home/omarsaldanna/Lambda/bin:$PATH" >> ~/.bashrc
