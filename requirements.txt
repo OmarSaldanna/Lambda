@@ -9,9 +9,7 @@ requests
 cloudinary
 unidecode
 elevenlabs
-hashlib
 python-dotenv
 importlib
 telebot
 Flask[async]
-dotenv

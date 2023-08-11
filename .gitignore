@@ -14,6 +14,9 @@ __pycache__
 # credentials
 .env
 
+# virtual env
+venv
+
 # all the files from memory
 db/data/errors/*
 db/data/images/*

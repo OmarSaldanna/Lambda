@@ -12,10 +12,6 @@ from core.modules import OpenAI, DB
 # and libraries
 import os
 import importlib
-from dotenv import load_dotenv
-
-# load the .env variables
-load_dotenv()
 
 
 class AI:

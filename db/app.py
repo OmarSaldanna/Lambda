@@ -4,7 +4,6 @@ import json
 import asyncio
 from flask_cors import CORS
 from flask import Flask, request, jsonify
-from dotenv import load_dotenv
 
 # db controllers
 import controllers
@@ -12,9 +11,6 @@ from modules import Telegram
 
 # this server, won't include the try and catch, since 
 # normaly databases throw error on bad requests
-
-# load the .env variables
-load_dotenv()
 
 # instance the flask app
 app = Flask(__name__)

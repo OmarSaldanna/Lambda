@@ -2,7 +2,6 @@
 import os
 import json
 import requests
-from dotenv import load_dotenv
 # open ai
 import openai
 # and tokenizer
@@ -10,9 +9,6 @@ import tiktoken
 # cloduinary
 import cloudinary
 import cloudinary.uploader
-
-# load the .env variables
-load_dotenv()
 
 ##########################################################################
 ############################### Functions ################################

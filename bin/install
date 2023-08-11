@@ -8,10 +8,14 @@ NC='\033[0m' # No color
 # update the packages
 sudo apt update
 # install the needed aplications
-sudo apt install -y python3-pip tmux
+sudo apt install -y python3-pip tmux python3-venv
+# set a python virtual env
+python3 -m venv venv
+# activate it
+source venv/bin/activate
 
 # download the python libraries
-pip3 install -r requirements.txt
+pip3 install -r reqs.txt
 pip3 install 'Flask[async]'
 
 # append Lambda/bin to path

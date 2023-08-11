@@ -3,12 +3,9 @@ import time
 import json
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
 # modules
 from controllers import discordo
 
-# load the .env variables
-load_dotenv()
 # load credentials
 token = os.environ["DISCORD"]
 
