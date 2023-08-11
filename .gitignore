@@ -18,11 +18,11 @@ __pycache__
 venv
 
 # all the files from memory
-db/data/errors/*
-db/data/images/*
-db/data/log/*
-db/data/members/*
-db/data/servers/*
+db/data/errors
+db/data/images
+db/data/log
+db/data/members
+db/data/servers
 backups
 
 # Ignore Mac system files
