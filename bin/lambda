@@ -147,12 +147,6 @@ case $1 in
 		echo "lambda app $2 killed at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 	;;
 
-	# add ssh identity to github
-	setkey)
-		eval "$(ssh-agent -s)"
-		ssh-add ~/.ssh/lambda-git-key
-	;;
-
 	*)
 		echo Unknown Command λ
 		echo lambda "[start|stop|update|restart|rupdate|reqinstall|backup|app|app-kill]"
