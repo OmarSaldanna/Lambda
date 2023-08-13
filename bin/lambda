@@ -47,6 +47,9 @@ case $1 in
 		echo -e "${BLUE}Updating Lambda λ${NC}"
 		# append to log
 		echo "Updated Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		# set lambda key
+		eval "$(ssh-agent -s)"
+		ssh-add ~/.ssh/lambda-git-key
 		# update lambda
 		git fetch && git merge origin/main
 	;;
@@ -70,6 +73,9 @@ case $1 in
 		echo "Rupdating Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# kill lambda
 		$0 stop
+		# set lambda key
+		eval "$(ssh-agent -s)"
+		ssh-add ~/.ssh/lambda-git-key
 		# update lambda
 		git fetch && git merge origin/main
 		# run lambda again
