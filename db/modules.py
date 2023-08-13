@@ -80,7 +80,7 @@ def create_memory(path: str, content: dict):
 # based on the prototypes.json
 def make_memory(_id: str, database: str):
   # select the db prototype
-  prototype = get_memory('prototypes')[database]
+  prototype = get_memory('../prototypes')[database]
   # create the memory file
   create_memory(
     # make the memory file with the id and in the
@@ -113,6 +113,7 @@ def app_to_log(file_name: str, msg: str):
     # append the line to the log file
     file.write(f'{msg} {time}\n')
 
+
 # hash function
 def generate_hash(string: str):
     # hash using SHA-256
@@ -125,6 +126,7 @@ def generate_hash(string: str):
     hash_result = hash_object.hexdigest()
     # return
     return hash_result
+
 
 # send telegram messages to the chat
 class Telegram:

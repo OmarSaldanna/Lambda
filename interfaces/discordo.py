@@ -30,11 +30,11 @@ async def on_message(message):
         return
 
     # if the message was a direct message
-    elif not message.guild:
+    #elif not message.guild:
         # send a warning
-        await message.author.send("> Lo siento, no acepto mensajes directos")
+        #await message.author.send("> Lo siento, no acepto mensajes directos")
         # and kill the function
-        return
+        #return
 
 ###########################################################################################
 #################### Lambda Calls #########################################################
@@ -50,7 +50,8 @@ async def on_message(message):
             answers = discordo.call_lambda(
                 msg,
                 str(message.author.id),
-                str(message.guild.id)
+                # 0 if it was a direct message
+                '0' if not message.guild else str(message.guild.id)
             )
             # send the answers
             for answer in answers['answer']:
@@ -86,7 +87,8 @@ async def on_message(message):
                     "code": error_str,
                     "call": message.content[7:].strip(),
                     "member": str(message.author.id),
-                    "server": str(message.guild.id)
+                    # 0 if it was a direct message
+                    "server": '0' if not message.guild else str(message.guild.id)
                 }
             })
             # and send a message
@@ -102,7 +104,8 @@ async def on_message(message):
             answers = discordo.call_lambda(
                 msg,
                 str(message.author.id),
-                str(message.guild.id),
+                # 0 if it was a direct message
+                '0' if not message.guild else str(message.guild.id),
                 mode="chat"
             )
             # send the answers
@@ -130,7 +133,8 @@ async def on_message(message):
                     "code": error_str,
                     "call": message.content[7:].strip(),
                     "member": str(message.author.id),
-                    "server": str(message.guild.id)
+                    # 0 if it was a direct message
+                    "server": '0' if not message.guild else str(message.guild.id)
                 }
             })
             # and send a message
@@ -147,7 +151,8 @@ async def on_message(message):
             answers = discordo.call_lambda(
                 msg,
                 str(message.author.id),
-                str(message.guild.id),
+                # 0 if it was a direct message
+                '0' if not message.guild else str(message.guild.id),
                 mode="fast"
             )
             # send the answers
@@ -175,7 +180,8 @@ async def on_message(message):
                     "code": error_str,
                     "call": message.content[7:].strip(),
                     "member": str(message.author.id),
-                    "server": str(message.guild.id)
+                    # 0 if it was a direct message
+                    "server": '0' if not message.guild else str(message.guild.id)
                 }
             })
             # and send a message
@@ -197,7 +203,7 @@ async def on_message(message):
 
 ############# active lockdown room
     # salasegura para [@member1] [@member2] ...
-    elif message.content[:11] in ['Salasegura ', 'salasegura ']:
+    elif message.content[:11] in ['Salasegura ', 'salasegura '] and message.guild:
         # get the server info
         server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
@@ -233,7 +239,7 @@ async def on_message(message):
 
 
 ############# add users to lockdown
-    elif message.content[:13] in ['Agregarasala ','agregarasala ']:
+    elif message.content[:13] in ['Agregarasala ','agregarasala '] and message.guild:
         # get the server info
         server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
@@ -261,7 +267,7 @@ async def on_message(message):
 
 
 ############# remove users from lockdown
-    elif message.content[:13] in ['Quitardesala ','quitardesala ']:
+    elif message.content[:13] in ['Quitardesala ','quitardesala '] and message.guild:
         # get the server info
         server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
@@ -291,7 +297,7 @@ async def on_message(message):
 
 ############# clear lockdown room
     # only lockdown members can clear the list
-    elif message.content[:9] in ['Salalibre','salalibre']:
+    elif message.content[:9] in ['Salalibre','salalibre'] and message.guild:
         # get the server info
         server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
