@@ -129,16 +129,7 @@ def generate_hash(string: str):
 
 
 # send telegram messages to the chat
-class Telegram:
-
-  def __init__ (self, token: str):
-    # instance the telebram bot
-    self.tbot = telebot.TeleBot(token)
-
-  def __call__ (self, message: str, chat:str):
-    try:  
-      # send the messages to the chat
-      self.tbot.send_message(chat, message)
-    except:
-      # just print sth
-      print("Error in telegram API")
+# using system
+def telegram_message(message: str):
+  command = f"""curl -X POST "https://api.telegram.org/bot$TELEGRAM/sendMessage" -d "chat_id=$alert_chat&text={message}"""
+  os.system(command)

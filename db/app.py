@@ -7,7 +7,7 @@ from flask import Flask, request, jsonify
 
 # db controllers
 import controllers
-from modules import Telegram
+from modules import telegram_message
 
 # this server, won't include the try and catch, since 
 # normaly databases throw error on bad requests
@@ -15,9 +15,6 @@ from modules import Telegram
 # instance the flask app
 app = Flask(__name__)
 CORS(app)
-
-# instance the telegram bot, for the errors
-telegram = Telegram(os.getenv('TELEGRAM'))
 
 # db requests for member data: members/, images/
 # example request
@@ -182,7 +179,7 @@ async def errors():
 		ans = controllers.add_to_errors(data)
 		# use telegram bot to notify
 		chat = os.getenv('alert_chat') # get the chat id
-		telegram(chat, f"Call: {data['call']}\n{data['code']}\nUser: {data['member']}\nServer: {data['server']}")
+		telegram_message(f"Call: {data['call']}\n{data['code']}\nUser: {data['member']}\nServer: {data['server']}")
 		# and return
 		return jsonify({'answer': ans})
 
