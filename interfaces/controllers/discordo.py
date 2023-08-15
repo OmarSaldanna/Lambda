@@ -59,7 +59,7 @@ def generate_hash(data: str):
 
 # function to process not png uploaded images and convert them to
 # square images 1024px and .png
-def process_notpng(img_path: str): 
+def process_notpng(input_path: str): 
 	# Generate the output path by replacing the extension with "_square.png"
     output_path = os.path.splitext(input_path)[0]
     # Check the file extension to determine the image format and open the image accordingly
@@ -79,7 +79,7 @@ def process_notpng(img_path: str):
     # Define the desired size for the square image
     desired_size = (1024, 1024)
     # Resize and create the square image
-    img.thumbnail(desired_size, Image.ANTIALIAS)
+    img.thumbnail(desired_size, Image.LANCZOS)
     img_size = img.size
     new_img = Image.new("RGB", desired_size, (255, 255, 255))
     new_img.paste(img, ((desired_size[0] - img_size[0]) // 2, (desired_size[1] - img_size[1]) // 2))

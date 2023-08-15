@@ -40,7 +40,7 @@ async def on_message(message):
 ###########################################################################################
 
     files_messages = []  # List to store saved files
-    db_update = {} # dict to update the user db
+    update = {"images":[],"documents":[], "audios":[]} # dict to update the user db
     # if there are attatchemnts that are files
     if message.attachments:
         # iterate each file
@@ -75,16 +75,17 @@ async def on_message(message):
             await attachment.save(download_path)
             # try to process images that are not png
             if folder == 'images':
-                try:
+                #try:
                     # process the image
-                    discordo.process_notpng(download_path)
+                discordo.process_notpng(download_path)
                     # send the message
-                    files_messages.append(f'> ${file_hash}')
+                files_messages.append(f'> ${file_hash}')
                     # and regist the update for images
-                    update[folder] += [file_hash]
-                except:
+                update[folder] += [file_hash]
+                #except Exception as e:
+                    #print(e, 'error')
                     # send an error message
-                    files_messages.append(f'> Error procesando imagen: {original_filename}')
+                    #files_messages.append(f'> Error procesando imagen: {original_filename}')
                 continue
 
             # save the messages to send them
@@ -93,7 +94,7 @@ async def on_message(message):
             update[folder] += [file_hash]
 
     # after the download of the files, send the hashes
-    if saved_paths:
+    if files_messages:
         # save the files in the db
         # first get the user images        
         images_db = discordo.db_request('GET', '/members', {
@@ -102,7 +103,7 @@ async def on_message(message):
         })['answer']
         # add the update to the get data
         for key in update.keys():
-            images_db[key] += update[keys]
+            images_db[key] += update[key]
         # and then append the uploads
         discordo.db_request('PUT', '/members', {
             "db": "images",
@@ -110,8 +111,8 @@ async def on_message(message):
             "data": images_db
         })
         # create the text
-        hashes_message = '\n'.join(hashes_message)
-        await message.channel.send(f"> **Tus archivos están disponibles como**:\n{hashes_message}")
+        msg = '\n'.join(files_messages)
+        await message.channel.send(f"> **Tus archivos están disponibles como**:\n{msg}")
 
 
 ###########################################################################################
