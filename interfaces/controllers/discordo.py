@@ -84,7 +84,7 @@ def process_notpng(input_path: str):
     new_img = Image.new("RGB", desired_size, (255, 255, 255))
     new_img.paste(img, ((desired_size[0] - img_size[0]) // 2, (desired_size[1] - img_size[1]) // 2))
     # Save the processed image as a PNG file
-    new_img.save(output_path, "PNG")
+    new_img.save(output_path+'.png', "PNG")
 
 
 

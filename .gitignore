@@ -23,6 +23,8 @@ db/data/images
 db/data/log
 db/data/members
 db/data/servers
+# lambdrive and backups
+lambdrive
 backups
 
 # Ignore Mac system files
