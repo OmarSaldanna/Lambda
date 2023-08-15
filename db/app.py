@@ -176,10 +176,10 @@ async def errors():
 	# post to add info
 	if request.method == 'POST':
 		# use the controller
-		ans = controllers.add_to_errors(data)
+		ans, error_hash = controllers.add_to_errors(data)
 		# use telegram bot to notify
-		chat = os.getenv('alert_chat') # get the chat id
-		telegram_message(f"Call: {data['call']}\n{data['code']}\nUser: {data['member']}\nServer: {data['server']}")
+		telegram_message(f"Error on: {data['call']}")
+		telegram_message(f"Error id: {error_hash}")
 		# and return
 		return jsonify({'answer': ans})
 

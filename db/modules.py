@@ -131,5 +131,6 @@ def generate_hash(string: str):
 # send telegram messages to the chat
 # using system
 def telegram_message(message: str):
-  command = f"""curl -X POST "https://api.telegram.org/bot$TELEGRAM/sendMessage" -d "chat_id=$alert_chat&text={message}"""
+  command = f"""curl -X POST "https://api.telegram.org/bot$TELEGRAM/sendMessage" -d "chat_id=$alert_chat&text={message}" """
+  # print(command)
   os.system(command)

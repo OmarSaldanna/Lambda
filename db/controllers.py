@@ -171,7 +171,7 @@ def add_to_errors(data: dict):
 		# and write the memory
 		mem.write()
 		# return a message
-		return 'ok'
+		return 'ok', error_hash
 	# the user has no file
 	except:
 		# then create one based on the prototype
@@ -184,4 +184,4 @@ def add_to_errors(data: dict):
 		# and write changes
 		mem.write()
 		# once created the memory, return the new data
-		return 'ok'
+		return 'ok', error_hash
