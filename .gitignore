@@ -2,7 +2,6 @@
 etc
 include
 lib
-music
 share
 __pycache__
 
@@ -24,7 +23,10 @@ db/data/log
 db/data/members
 db/data/servers
 # lambdrive and backups
-lambdrive
+lambdrive/audios
+lambdrive/images
+lambdrive/documents
+lambdrive/qrs
 backups
 
 # Ignore Mac system files
