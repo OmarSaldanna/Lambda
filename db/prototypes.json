@@ -18,30 +18,15 @@
 		]
 	},
 
-	"member_renewal": {
-		"usage": {
-			"gpt-3.5-turbo": 6000,
-			"gpt-3.5-turbo-16k": 0,
-			"gpt-4": 0,
-			"cloudinary_files": 1,
-			"dalle": 3
-		}
-	},
-
 	"images": {
-		"files": [],
+		"documents": [],
+		"audios": [],
 		"images": [],
+		"creates": [],
 		"edits": [],
 		"variations": []
 	},
 
-	"images-renewal": {
-		"files": [],
-		"images": [],
-		"edits": [],
-		"variations": []
-	},
-	
 	"servers": {
 		"lockdown_channel": "",
   		"lockdown_members": []

@@ -27,7 +27,7 @@ mkdir bakups
 mkdir lambdrive
 mkdir lambdrive/audios
 mkdir lambdrive/qrs
-mkdir lambdrive/files
+mkdir lambdrive/uploads
 mkdir lambdrive/dalle
 
 # append Lambda/bin to path

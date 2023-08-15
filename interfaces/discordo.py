@@ -35,6 +35,84 @@ async def on_message(message):
         #await message.author.send("> Lo siento, no acepto mensajes directos")
         # and kill the function
         #return
+###########################################################################################
+#################### Uploading Files #########################################################
+###########################################################################################
+
+    files_messages = []  # List to store saved files
+    db_update = {} # dict to update the user db
+    # if there are attatchemnts that are files
+    if message.attachments:
+        # iterate each file
+        for attachment in message.attachments:
+            # get the original filename
+            original_filename = attachment.filename
+            # get the extension of the file
+            extension = original_filename[original_filename.index('.'):].lower()
+            # folder to save the file based on the extension
+            folder = ""
+            # images
+            if extension in ['.jpg', '.jpeg', '.heic', '.gif', '.png']:
+                folder = "images"
+            # documents
+            elif extension in ['.csv', '.pdf', '.txt']:
+                folder = "documents"
+            # audios
+            elif extension in ['.mp3']:
+                folder = "audios"
+            # else, unsupported file type
+            else:
+                files_messages.append(f'> Error: formato no apropiado **{original_filename}**')
+                files_messages.append(f'> Los formatos manejados son: **.jpg .jpeg .heic .png')
+                files_messages.append(f'> .csv .pdf .txt y .mp3**')
+                continue
+            # generate a hash based on the original name and
+            # the user id to avoid repetitive hashes
+            file_hash = discordo.generate_hash(str(message.author.id) + original_filename)
+            # set the path to download
+            download_path = f"lambdrive/{folder}/{file_hash}{extension}"
+            # download the file as the name defined
+            await attachment.save(download_path)
+            # try to process images that are not png
+            if folder == 'images':
+                try:
+                    # process the image
+                    discordo.process_notpng(download_path)
+                    # send the message
+                    files_messages.append(f'> ${file_hash}')
+                    # and regist the update for images
+                    update[folder] += [file_hash]
+                except:
+                    # send an error message
+                    files_messages.append(f'> Error procesando imagen: {original_filename}')
+                continue
+
+            # save the messages to send them
+            files_messages.append(f'> ${file_hash}')
+            # and regist on the update for audios and documents
+            update[folder] += [file_hash]
+
+    # after the download of the files, send the hashes
+    if saved_paths:
+        # save the files in the db
+        # first get the user images        
+        images_db = discordo.db_request('GET', '/members', {
+            "db": "images",
+            "id": str(message.author.id)
+        })['answer']
+        # add the update to the get data
+        for key in update.keys():
+            images_db[key] += update[keys]
+        # and then append the uploads
+        discordo.db_request('PUT', '/members', {
+            "db": "images",
+            "id": str(message.author.id),
+            "data": images_db
+        })
+        # create the text
+        hashes_message = '\n'.join(hashes_message)
+        await message.channel.send(f"> **Tus archivos están disponibles como**:\n{hashes_message}")
+
 
 ###########################################################################################
 #################### Lambda Calls #########################################################
