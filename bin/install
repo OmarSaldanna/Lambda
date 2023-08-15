@@ -27,8 +27,8 @@ mkdir bakups
 mkdir lambdrive
 mkdir lambdrive/audios
 mkdir lambdrive/qrs
-mkdir lambdrive/uploads
-mkdir lambdrive/dalle
+mkdir lambdrive/images
+mkdir lambdrive/documents
 
 # append Lambda/bin to path
 echo "export PATH=/home/omarsaldanna/Lambda/bin:$PATH" >> ~/.bashrc
