@@ -27,5 +27,7 @@ def alphabeta():
 			print(e)
 			return jsonify({'content': 'error'})
 
+# detect dev mode
+#dev = True if os.getenv("dev") == 'yes' else False
 # run the app, on localhost only
 app.run(port=8091, host="0.0.0.0", debug=True)

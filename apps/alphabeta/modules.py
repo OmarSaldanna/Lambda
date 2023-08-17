@@ -42,7 +42,7 @@ def text_to_audio(text, voice_id='r6uwdk8KbFRUhkvaThgv'):
 	headers = {
 	  "Accept": "audio/mpeg",
 	  "Content-Type": "application/json",
-	  "xi-api-key": info['elevenlabs']
+	  "xi-api-key": os.environ["ELEVENLABS"]
 	}
 
 	data = {
