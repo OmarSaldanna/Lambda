@@ -24,7 +24,7 @@ def alphabeta():
 				# 
 				return jsonify({'content': file_path})
 		except Exception as e:
-			return jsonify({'content': 'error', 'details': e})
+			return jsonify({'content': 'error'})
 
 # run the app, on localhost only
 app.run(port=8091, host="0.0.0.0", debug=True)
