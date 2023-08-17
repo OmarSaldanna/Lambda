@@ -68,7 +68,9 @@ def text_to_audio(text, voice_id='r6uwdk8KbFRUhkvaThgv'):
 def talk(message: str):
 	# call lambda on conversation
 	answer = call_lambda(message, "alphabeta", "0", mode="chat")["answer"][0]['content']
+	print(answer)
 	# convert the answer to audio
 	audio_file = text_to_audio(answer[0])
+	print(audio_file)
 	# return the audio file
 	return audio_file
