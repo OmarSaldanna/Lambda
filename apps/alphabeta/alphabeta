@@ -1,5 +1,4 @@
 #!/bin/bash
 
-ls -la | grep env
 source .env
 python3 apps/alphabeta/server.py

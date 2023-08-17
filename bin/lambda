@@ -7,7 +7,7 @@ memory=$route/db/data
 # log file
 log_file=$memory/log/bin.txt
 # preprocess command
-pre="cd $route && source .env && source venv/bin/activate" 
+pre="cd $route && source .env && source venv/bin/activate"
 
 # colors
 RED='\033[0;31m'
@@ -130,7 +130,7 @@ case $1 in
 		# locate the app
 		app="apps/$2/$2"
 		# and run the app
-		tmux new-session -d -s $2 "cd $route && sh $app"
+		tmux new-session -d -s $2 "$pre && sh $app"
 		# append to log
 		echo "lambda app $2 ran at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# wait to errors
