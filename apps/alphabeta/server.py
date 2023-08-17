@@ -9,15 +9,16 @@ app = Flask(__name__)
 CORS(app)
 
 # lambda conversation
-@app.route('/lambda/talk', methods=['GET'])
-def lambda_conversation():
+@app.route('/alphabeta', methods=['GET'])
+def alphabeta():
 	if request.method == 'GET':
 		try:
 			# extract the message from the request
-			message = request.headers.get('message')
-			author = request.headers.get('author')
-			# use the talk
-			if author == "717071120175595631":
+			message = request.json.get('message')
+			author = request.json.get('author')
+			server = request.json.get('server')
+			# use the fast conversation module
+			if author == "alphabeta" and server == "0":
 				# get the audio file
 				file_path = modules.talk(message)
 				# 

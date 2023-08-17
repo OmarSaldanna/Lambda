@@ -3,35 +3,35 @@ import openai
 import requests
 from elevenlabs import set_api_key
 
-info = {}
-
-# read memory
-with open("memory/info.json", "r") as json_file:
-    # Load the JSON data from the file
-    info = json.load(json_file)
-
-# set the keys
-openai.api_key = info['openai']
-set_api_key(info['elevenlabs'])
+# set elevenlabs api key
+set_api_key(os.environ("ELEVENLABS"))
 
 # voices:
 voices = {
 	'emidraw': 'r6uwdk8KbFRUhkvaThgv'
 }
 
+# general function to use lambda, is the same used in discord
+def call_lambda(message: str, author: str, server: str, mode=""):
+	# default lambda url for calls
+	lambda_url = 'http://127.0.0.1:8080/lambda'
+	# if it was a conversation request
+	if mode == "chat":
+		lambda_url = 'http://127.0.0.1:8080/lambda/chat'
+	elif mode == "fast":
+		lambda_url = 'http://127.0.0.1:8080/lambda/fast'
 
-# call lambda api
-def call_lambda_conversation(message: str, usr="717071120175595631"):
-	lambda_url = 'http://127.0.0.1:8080/lambda/conversation'
 	# call lambda api
 	answer = requests.get(
 		lambda_url,
-		headers={
+		json={
 			"message": message,
-			"author": usr
+			"author": author,
+			"server": server
 		}
 	)
-	return answer.json()['content']
+	return answer.json()
+
 
 # convert the answer into a voice
 def text_to_audio(text, voice_id='r6uwdk8KbFRUhkvaThgv'):
@@ -66,7 +66,7 @@ def text_to_audio(text, voice_id='r6uwdk8KbFRUhkvaThgv'):
 
 def talk(message: str):
 	# call lambda on conversation
-	answer = call_lambda_conversation(message)
+	answer = call_lambda(message, "alphabeta", "0", mode="chat")["answer"][0]['content']
 	# convert the answer to audio
 	audio_file = text_to_audio(answer[0])
 	# return the audio file
