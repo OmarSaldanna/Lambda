@@ -5,7 +5,7 @@ import requests
 from elevenlabs import set_api_key
 
 # set elevenlabs api key
-set_api_key(os.environ("ELEVENLABS"))
+set_api_key(os.environ["ELEVENLABS"])
 
 # voices:
 voices = {

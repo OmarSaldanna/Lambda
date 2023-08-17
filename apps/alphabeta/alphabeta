@@ -1,4 +1,5 @@
 #!/bin/bash
 
-source ~/Lambda/.env
+ls -la | grep env
+source .env
 python3 apps/alphabeta/server.py
