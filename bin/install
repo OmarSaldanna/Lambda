@@ -29,6 +29,7 @@ mkdir lambdrive/audios
 mkdir lambdrive/qrs
 mkdir lambdrive/images
 mkdir lambdrive/documents
+mkdir lambdrive/dalle
 
 # append Lambda/bin to path
 echo "export PATH=/home/omarsaldanna/Lambda/bin:$PATH" >> ~/.bashrc

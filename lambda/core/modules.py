@@ -15,12 +15,15 @@ import cloudinary.uploader
 ##########################################################################
 
 # download images, linux only
-def download_image(img_link: str, name: str, extension='.png', where="lambdrive/images/"):
+def download_image(img_link: str, name: str, extension='.png', where="lambdrive/images/", dalle_type: ""):
 	# Create the wget command
 	wget_command = f'wget "{img_link}" -O "{where}{name}{extension}"'
 	# Execute the wget command
 	if os.getenv("dev") != "yes":
+		# download the img
 		os.system(wget_command)
+		# and copy it to dalle
+		os.system(f"cp {where}{name}{extension} lambdrive/dalle/{dalle_type}_{name}{extension}")
 	# return the image path
 	return f"{where}{name}{extension}"
 
@@ -305,7 +308,7 @@ class OpenAI:
 		else:
 			# this will be lower, since to keep the
 			# conversations cheap, may be change in the future
-			return 2000
+			return 1000
 
 	# create a context for a user once the context has gone full
 	# only called in cases, BEFORE THE ANSWER
@@ -460,7 +463,7 @@ class OpenAI:
 		for url in urls:
 			name = str(generate_hash(url))
 			# download the image and save the path
-			images_paths.append(download_image(url, name))
+			images_paths.append(download_image(url, name, dalle_type=image_type))
 			# save the name
 			hashes.append(name)
 		# get the actual images
