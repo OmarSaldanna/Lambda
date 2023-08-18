@@ -15,7 +15,7 @@ import cloudinary.uploader
 ##########################################################################
 
 # download images, linux only
-def download_image(img_link: str, name: str, extension='.png', where="lambdrive/images/", dalle_type: ""):
+def download_image(img_link: str, name: str, extension='.png', where="lambdrive/images/", dalle_type= ""):
 	# Create the wget command
 	wget_command = f'wget "{img_link}" -O "{where}{name}{extension}"'
 	# Execute the wget command
