@@ -33,6 +33,12 @@ def call_lambda(message: str, author: str, server: str, mode=""):
 	)
 	return answer.json()
 
+# function to generate hashes, it must not be used to security operations
+def generate_hash(data: str):
+	# generate a numerical hash with python
+    # convert it to hexadecimal
+    return hex(hash(data) & 0xFFFFFFFFFFFFFFFF)[2:].zfill(16)
+
 
 # convert the answer into a voice
 def text_to_audio(text, voice_id='r6uwdk8KbFRUhkvaThgv'):
@@ -54,7 +60,7 @@ def text_to_audio(text, voice_id='r6uwdk8KbFRUhkvaThgv'):
 	  }
 	}
 
-	file_name = f'lambdrive/audios/{hash(text)}.mp3'
+	file_name = f'lambdrive/audios/{generate_hash(text)}.mp3'
 
 	response = requests.post(url, json=data, headers=headers)
 	with open(file_name, 'wb') as f:
