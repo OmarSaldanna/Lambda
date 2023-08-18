@@ -23,7 +23,7 @@ mkdir db/data/log
 mkdir db/data/members
 mkdir db/data/servers
 # other folders
-mkdir bakups
+mkdir backups
 mkdir lambdrive
 mkdir lambdrive/audios
 mkdir lambdrive/qrs
