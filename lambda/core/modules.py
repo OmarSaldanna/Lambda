@@ -15,7 +15,7 @@ import cloudinary.uploader
 ##########################################################################
 
 # download images, linux only
-def download_image(img_link: str, name: str, extension='.png', where="lambdrive/dalle/"):
+def download_image(img_link: str, name: str, extension='.png', where="lambdrive/images/"):
 	# Create the wget command
 	wget_command = f'wget "{img_link}" -O "{where}{name}{extension}"'
 	# Execute the wget command
@@ -305,7 +305,7 @@ class OpenAI:
 		else:
 			# this will be lower, since to keep the
 			# conversations cheap, may be change in the future
-			return 1000
+			return 2000
 
 	# create a context for a user once the context has gone full
 	# only called in cases, BEFORE THE ANSWER
@@ -369,13 +369,12 @@ class OpenAI:
 		# here is the part of recreate context, only here
 		# so, count the tokens on the message
 		text_len = self.token_counter(text)
-		# if the answer + the context is larger than the limit: recreate the context
+		# if the question + the context is larger than the limit: recreate the context
 		if text_len + self.user_data['context_len'] > self.__get_token_limit(model):
-			# recreate the context
+			# recreate the context only if it surpasses the limit 
 			self.__recreate_context()
-		# the answer is just added to the current log
-		else:
-			self.user_data['context'] += [{'role': 'user', 'content': text}]
+		# finally add the incoming message to the context
+		self.user_data['context'] += [{'role': 'user', 'content': text}]
 
 
 	########################### GPT usage function ###########################
