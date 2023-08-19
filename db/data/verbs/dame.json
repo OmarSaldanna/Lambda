@@ -3,5 +3,5 @@
 	"error": "error_tester",
 	"imagen": "generate_dalle",
     "qr": "generate_qr"
-    "variaciones": "variate_dalle"
+    "variacion": "variate_dalle"
 }
