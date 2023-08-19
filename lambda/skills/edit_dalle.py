@@ -33,6 +33,6 @@ def main(params: tuple):
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
 	# use dalle to edith the image
-	answer = openai.create_image(img_path, prompt, quantity)
+	answer = openai.edit_image(img_path, prompt, quantity)
 	# return all the image links
 	return answer
