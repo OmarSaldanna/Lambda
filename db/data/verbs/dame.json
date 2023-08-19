@@ -3,7 +3,5 @@
 	"error": "error_tester",
 	"imagen": "generate_dalle",
     "qr": "generate_qr"
-    "edicion": "edit_dalle",
-    "edit": "edit_dalle",
     "variaciones": "variate_dalle"
 }
