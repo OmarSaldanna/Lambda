@@ -588,9 +588,12 @@ class OpenAI:
 		available, remaining = self.__dalle_availability(n)
 		# if there are images available
 		if available:
+			# pre process
+			pre = self.__preprocess_image(image_path)
 			# generate the images
 			response = openai.Image.create_edit(
-				image=self.__preprocess_image(image_path),
+				image=pre,
+				mask=pre,
 			  	prompt=prompt,
 			  	n=n,
 			  	size="1024x1024"
