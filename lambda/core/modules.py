@@ -593,7 +593,7 @@ class OpenAI:
 			# generate the images
 			response = openai.Image.create_edit(
 				image=pre,
-				mask=pre,
+				mask=open("full_mask.png"),
 			  	prompt=prompt,
 			  	n=n,
 			  	size="1024x1024"

@@ -8,7 +8,6 @@ __pycache__
 # files from lambdrive
 *.tar.gz
 *.mp3
-*.png
 
 # credentials
 .env
