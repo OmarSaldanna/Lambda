@@ -286,7 +286,7 @@ async def on_message(message):
         # get the server info
         server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
-        })
+        })['answer']
 
         # if the author is not in a voice channel
         if message.author.voice is None:
@@ -322,7 +322,7 @@ async def on_message(message):
         # get the server info
         server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
-        })
+        })['answer']
         # check if the user is in the list
         if str(message.author.id) in server_db['lockdown_members']:
             # get the message str
@@ -350,7 +350,7 @@ async def on_message(message):
         # get the server info
         server_db = discordo.db_request('GET', '/servers', {
             "id": str(message.guild.id)
-        })
+        })['answer']
         # check if the user is in the list
         if str(message.author.id) in server_db['lockdown_members']:
             # get the message str
@@ -453,7 +453,7 @@ async def on_voice_state_update(member: discord.Member, before, after):
     # get the server info
     server_db = discordo.db_request('GET', '/servers', {
         "id": str(member.guild.id)
-    })
+    })['answer']
 
     # Check if member is in a voice channel
     if member.voice is not None and member.voice.channel is not None:
