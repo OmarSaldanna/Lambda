@@ -642,7 +642,7 @@ class OpenAI:
 		if available:
 			# generate the images
 			response = openai.Image.create_variation(
-				image=open(image_path, "rb"),
+				image=self.__preprocess_image(image_path),
 			  	n=n,
 			  	size="1024x1024"
 			)
