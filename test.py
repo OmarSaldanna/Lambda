@@ -11,9 +11,10 @@ data={
 	#"message": "crea un qr de www.google.com",
 	#"message": "crea una imagen de photo of a christmas cat",
 	#"message": "cual es la capital de Alemania",
-	"message": "dame un error de caramón camarelo",
-	"server": "1110291",
-	"author": "11"
+	#"message": "dame un error de caramón camarelo",
+	"message": "edita una imagen de $0kf con change the sky to night, add fireflies and people in a festival",
+	"server": "0",
+	"author": "alphabeta"
 }
 
 try:

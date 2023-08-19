@@ -9,6 +9,10 @@ import tiktoken
 # cloduinary
 import cloudinary
 import cloudinary.uploader
+# image processing
+from io import BytesIO
+from PIL import Image
+
 
 ##########################################################################
 ############################### Functions ################################
@@ -24,6 +28,9 @@ def download_image(img_link: str, name: str, extension='.png', where="lambdrive/
 		os.system(wget_command)
 		# and copy it to dalle
 		os.system(f"cp {where}{name}{extension} lambdrive/dalle/{dalle_type}_{name}{extension}")
+	# else, just print the variables
+	else:
+		print(img_link)
 	# return the image path
 	return f"{where}{name}{extension}"
 
@@ -509,6 +516,20 @@ class OpenAI:
 			"usage": self.user_data['usage']
 		})
 
+	# function to pre process images to use dalle edit and variation
+	def __preprocess_image (self, image_path: str):
+		# Read the image file from disk and resize it
+		image = Image.open(image_path)
+		image = image.resize((1024, 1024))
+		# convert to RGBA format to solve an error
+		image = image.convert('RGBA')
+
+		# Convert the image to a BytesIO object
+		byte_stream = BytesIO()
+		image.save(byte_stream, format='PNG')
+		byte_array = byte_stream.getvalue()
+		return byte_array
+
 	########################### DALL-E functions ###########################
 
 	# DALL-E function to create images
@@ -569,7 +590,7 @@ class OpenAI:
 		if available:
 			# generate the images
 			response = openai.Image.create_edit(
-				image=open(image_path, "rb"),
+				image=self.__preprocess_image(image_path),
 			  	prompt=prompt,
 			  	n=n,
 			  	size="1024x1024"

@@ -56,6 +56,9 @@ class AI:
       return main_module.main(params)
     # if the skill doesn't work, then use the error report
     except Exception as e:
+      # if is on dev
+      if os.getenv("dev") == "yes":
+        print(str(e))
       # use the report
       self.__error_report(str(e), params)
       # now throw a simple message
