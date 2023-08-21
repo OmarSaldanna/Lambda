@@ -2,6 +2,6 @@
 	"type": "multi",
 	"error": "error_tester",
 	"imagen": "generate_dalle",
-    "qr": "generate_qr"
+    "qr": "generate_qr",
     "variacion": "variate_dalle"
 }
