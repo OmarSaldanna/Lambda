@@ -406,7 +406,7 @@ class OpenAI:
 			# format: a list of dicts per message
 			return [{
 				"type": "error",
-				"content": f"Lo siento <@{self.user_id}> se te acabaron los tokens de conversación"
+				"content": f"Lo siento <@{self.user_id}> se te acabaron los tokens de conversación de {model}."
 			}]
 		# at this point the user has tokens to use yet. Then add the
 		# incoming message to the context only if the context is enabled

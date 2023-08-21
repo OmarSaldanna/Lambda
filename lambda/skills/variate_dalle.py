@@ -31,3 +31,15 @@ def main(params: tuple):
 	answer = openai.variate_image(img_path, quantity)
 	# return all the image links
 	return answer
+
+
+# info about the skill
+info = """
+### Image Variation
+Esta función sirve para generar variaciones (NO EDICIONES) de imágenes, por inteligencia artificial. Básicamente hace pequeños cambios en las imágenes. La imagen para variar debe ser proporcionada con una ID, incluyendo el símbolo de "_$_".
+> **Comando 1:** Lambda [crea, genera, dame] [una. dos o tres] [variación o variaciones] de $ID
+> **Comando 2:** Lambda varía [una. dos o tres] [imagen o imágenes] de $ID
+> **Ejemplo:** lambda crea dos variaciones de $000000
+> **Ejemplo:** Lambda varía una imagen de $000000
+
+"""

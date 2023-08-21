@@ -22,3 +22,14 @@ def main(params: tuple):
 		"type": "file",
 		"content": f"lambdrive/qrs/{h}.png"
 	}]
+
+
+
+# info about the skill
+info = """
+### QR Generator
+Esta función se encarga de generar códigos QR de links o de textos.
+> **Comando:** Lambda [crea, genera o dame] un [QR o qr] de ...
+> **Ejemplo:** lambda crea un qr de larasa.me
+
+"""

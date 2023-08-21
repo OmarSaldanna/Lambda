@@ -10,3 +10,12 @@ def main(params: tuple):
 	error_msg = " ".join(error_msg).strip()
 	# raise error with the message
 	raise ValueError(error_msg)
+
+# info about the skill
+info = """
+### Error Tester
+This function is for development purposes. Directly throws an error with a message.
+> **Comando:** Lambda dame un error de ...
+> **Ejemplo:** lambda dame un error de caramón camarelo
+
+"""

@@ -26,3 +26,14 @@ def main(params: tuple):
 	answer = openai.create_image(prompt, quantity)
 	# return all the image links
 	return answer
+
+
+# info about the skill
+info = """
+### Image Generator
+Esta función es la que crea imágenes con DALL-E 2. Preferentemente las descripciones de las imágenes deben de ser en inglés, esto hará que el resultado sea más preciso.
+> **Comando:** Lambda [crea, genera o dame] [una. dos o tres] [imagen o imágenes] de ...
+> **Ejemplo:** lambda crea dos imágenes de Porsche Origami
+> **Ejemplo:** Lambda genera una imagen de gato en la sala, al lado de la chimenea al atardecer, nevando, casa de madera, foto casera en navidad
+
+"""
