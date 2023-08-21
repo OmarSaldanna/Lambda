@@ -180,6 +180,7 @@ async def errors():
 		# use telegram bot to notify
 		telegram_message(f"Error on: {data['call']}")
 		telegram_message(f"Error id: {error_hash}")
+		telegram_message(f"Error: {data['code']}")
 		# and return
 		return jsonify({'answer': ans})
 
