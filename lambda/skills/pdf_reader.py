@@ -46,7 +46,15 @@ def main(params: tuple):
   # catch the question
   question = ' '.join(message.split(' ')[:5])
   # call OpenAI with an inicial message.
-  return openai.gpt(question, model="gpt-3.5-turbo-16k", context=False, system=pdf_text)
+  ans = openai.gpt(question, model="gpt-3.5-turbo-16k", context=False, system=pdf_text)
+  ans.append({
+    "type": "error",
+    "content": f"question: {question}"
+  })
+  ans.append({
+    "type": "error",
+    "content": f"text: {pdf_text}"
+  })
 
 
 # info about the skill
