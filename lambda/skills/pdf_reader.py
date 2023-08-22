@@ -55,6 +55,7 @@ def main(params: tuple):
     "type": "error",
     "content": f"text: {pdf_text}"
   })
+  return ans
 
 
 # info about the skill
