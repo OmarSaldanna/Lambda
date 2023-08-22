@@ -44,7 +44,7 @@ def main(params: tuple):
     }]
   # then the file has an acceptable size
   # catch the question
-  question = ' '.join(message.split(' ')[:5])
+  question = ' '.join(message.split(' ')[5:])
   # call OpenAI with an inicial message.
   ans = openai.gpt(question, model="gpt-3.5-turbo-16k", context=False, system=pdf_text)
   ans.append({
