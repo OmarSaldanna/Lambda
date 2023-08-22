@@ -32,7 +32,7 @@ def main(params: tuple):
   # get the file path
   file_path = f'lambdrive/documents/{file_id}.pdf'
   # set a little context
-  pdf_text = "Responde a las preguntas basándote en la siguiente información:\n"
+  pdf_text = "Eres un asistente inteligente, respone basado en el contenido del archivo:\n"
   # extract the text
   pdf_text += get_text_from_pdf(file_path)
   # check the text to have less tokens than 15,000. Since the question.
