@@ -1,6 +1,7 @@
 import PyPDF2
 from core.modules import OpenAI
 
+
 def get_text_from_pdf(pdf_path: str):
   # create the PdfReader object
   pdf_file = PyPDF2.PdfReader(open(pdf_path, "rb"))
@@ -46,16 +47,7 @@ def main(params: tuple):
   # catch the question
   question = ' '.join(message.split(' ')[5:])
   # call OpenAI with an inicial message.
-  ans = openai.gpt(question, model="gpt-3.5-turbo-16k", context=False, system=pdf_text)
-  ans.append({
-    "type": "error",
-    "content": f"question: {question}"
-  })
-  ans.append({
-    "type": "error",
-    "content": f"text: {pdf_text}"
-  })
-  return ans
+  return openai.gpt(question, model="gpt-3.5-turbo-16k", context=False, system=pdf_text)
 
 
 # info about the skill
