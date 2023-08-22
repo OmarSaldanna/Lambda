@@ -36,7 +36,7 @@ def main(params: tuple):
   # extract the text
   pdf_text += get_text_from_pdf(file_path)
   # check the text to have less tokens than 15,000. Since the question.
-  if OpenAI.token_counter(pdf_text) > 15500:
+  if openai.token_counter(pdf_text) > 15500:
     # then trow a warning that the text is too long
     return [{
       "type": "error",
