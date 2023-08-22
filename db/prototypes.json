@@ -5,9 +5,9 @@
 		"servers": [],
 		"role": "user",
 		"usage": {
-			"gpt-3.5-turbo": 20000,
-			"gpt-3.5-turbo-16k": 0,
-			"gpt-4": 0,
+			"gpt-3.5-turbo": 40000,
+			"gpt-3.5-turbo-16k": 100000,
+			"gpt-4": 20000,
 			"cloudinary_files": 3,
 			"dalle": 20
 		},
