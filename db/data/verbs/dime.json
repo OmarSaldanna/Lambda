@@ -1,5 +1,7 @@
 {
 	"type": "multi",
 	"sobre": "conversation",
-	"acerca": "conversation"
+	"acerca": "conversation",
+	"cuatro": "gpt4_question",
+	"traduccion": "translate"
 }

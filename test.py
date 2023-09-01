@@ -12,7 +12,7 @@ data={
 	#"message": "crea una imagen de photo of a christmas cat",
 	#"message": "cual es la capital de Alemania",
 	#"message": "dame un error de caramón camarelo",
-	"message": "edita una imagen de $0kf con add neon colors like a music festival",
+	"message": "dime con cuatro que es la radiación de hawking",
 	"server": "0",
 	"author": "alphabeta"
 }
