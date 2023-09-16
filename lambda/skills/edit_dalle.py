@@ -29,12 +29,13 @@ def main(params: tuple):
 	mask_path = f"lambdrive/images/{mask_id}.png"
 	
 	# get the prompt
-	prompt = ' '.join(words[8])
+	prompt = ' '.join(words[8])	
 
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
 	# use dalle to edit the image
 	answer = openai.edit_image(img_path, mask_path, prompt, n=quantity)
+	answer.append({'type': 'error', 'content': prompt})
 	# return all the image links
 	return answer
 
