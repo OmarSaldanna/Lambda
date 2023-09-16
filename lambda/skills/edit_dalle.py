@@ -6,9 +6,10 @@ from core.modules import OpenAI
 def main(params: tuple):
 	# catch params
 	message, author, server = params
+	words = message.split(' ')
 	
 	# second word is the number of images
-	second_word = message.split(' ')[1]
+	second_word = words[1]
 	# count the number of images
 	quantity = 1
 	# una was skipped
@@ -18,19 +19,22 @@ def main(params: tuple):
 		quantity = 3
 
 	# catch the img id
-	img_id = message.split(' ')[4][1:]
+	img_id = words[4][1:]
 	# then get the image path
 	img_path = f"lambdrive/images/{img_id}.png"
 
 	# catch the mask
-	mask_id = message.split(' ')[6][1:]
+	mask_id = words[6][1:]
 	# then get the image path
 	mask_path = f"lambdrive/images/{mask_id}.png"
 	
+	# get the prompt
+	prompt = ' '.join(words[8])
+
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
 	# use dalle to edit the image
-	answer = openai.edit_image(img_path, mask_path, quantity)
+	answer = openai.edit_image(img_path, mask_path, prompt, n=quantity)
 	# return all the image links
 	return answer
 
