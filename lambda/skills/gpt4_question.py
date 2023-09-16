@@ -8,12 +8,15 @@ from core.modules import OpenAI
 def main(params: tuple):
   # extract the params
   message, member, server = params
+  # get only the message content
+  words = message.split(' ')[3:]
+  cut_message = ' '.join(words)
   # instance openai module
   openai = OpenAI(member, server)
   # try to make the answer shorter as possible
   message += ". Que tu respuesta sea concisa."
   # now call gpt
-  return openai.gpt(message, model="gpt-4")
+  return openai.gpt(cut_message, model="gpt-4")
 
 
 # info about the skill

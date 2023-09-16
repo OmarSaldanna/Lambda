@@ -583,7 +583,7 @@ class OpenAI:
 			}]
 
 	# DALL-E function to edit images
-	def edit_image (self, image_path: str, prompt:str, n=1):
+	def edit_image (self, image_path: str, mask_path:str, prompt:str, n=1):
 		# first check availability for the requested images
 		available, remaining = self.__dalle_availability(n)
 		# if there are images available
@@ -591,7 +591,7 @@ class OpenAI:
 			# generate the images
 			response = openai.Image.create_edit(
 				image=self.__preprocess_image(image_path),
-				mask=self.__preprocess_image("full_mask.png"),
+				mask=self.__preprocess_image(mask_path),
 			  	prompt=prompt,
 			  	n=n,
 			  	size="1024x1024"
