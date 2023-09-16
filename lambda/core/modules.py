@@ -590,8 +590,8 @@ class OpenAI:
 		if available:
 			# generate the images
 			response = openai.Image.create_edit(
-				image=open(image_path, 'rb'),
-				mask=open(mask_path, 'rb'),
+				image=self.__preprocess_image(image_path),
+				mask=self.__preprocess_image(mask_path),
 			  	prompt=prompt,
 			  	n=n,
 			  	size="1024x1024"
