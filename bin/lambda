@@ -84,13 +84,18 @@ case $1 in
 
 	# used to install new python requirements
 	reqinstall)
-		echo "Reqinstalling Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo "Requrements installed at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 		# stop lambda
 		$0 stop
 		# install requirements
 		pip3 install -r requirements.txt
-		# run lambda again
-		$1 start
+	;;
+
+	requpdate)
+		# apppend something on the log
+		echo "Requrements updated at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		# update the requirements file
+		pip3 freeze > requirements.txt
 	;;
 
 	# backup from all the memory files, actually db/data
@@ -145,6 +150,17 @@ case $1 in
 		tmux kill-session -t $2
 		# append to log
 		echo "lambda app $2 killed at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+	;;
+
+	# daily scripts
+	daily)
+		# for each file in daily scripts
+		for file in daily/scripts/*.py; do
+			# execute the script
+		    python3 "$file"
+		done
+		# append to log
+		echo "lambda daily scripts ran at $(date +"[%Y-%m-%d - %T]")" >> $log_file
 	;;
 
 	*)

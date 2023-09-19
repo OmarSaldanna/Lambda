@@ -27,6 +27,7 @@ lambdrive/images
 lambdrive/documents
 lambdrive/qrs
 backups
+daily/data
 
 # Ignore Mac system files
 *.DS_Store
