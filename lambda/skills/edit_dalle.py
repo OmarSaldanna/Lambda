@@ -36,6 +36,8 @@ def main(params: tuple):
 	# use dalle to edit the image
 	answer = openai.edit_image(img_path, mask_path, prompt, n=quantity)
 	answer.append({'type': 'error', 'content': prompt})
+	answer.append({'type': 'error', 'content': "img path: " + img_path})
+	answer.append({'type': 'error', 'content': "mask path: " + mask_path})
 	# return all the image links
 	return answer
 
