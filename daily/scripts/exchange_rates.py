@@ -1,6 +1,8 @@
 from forex_python.converter import CurrencyRates
 import os
 
+path = "/home/omarsaldanna/Lambda/daily/data/"
+
 def get_rounded_exchange_rates():
   # Create an instance of CurrencyRates
   c = CurrencyRates()
@@ -30,9 +32,9 @@ def get_rounded_exchange_rates():
 rounded_rates = get_rounded_exchange_rates()
 
 # clear the txt file
-os.system('echo "" > daily/data/exchange_rates.txt')
+os.system(f'echo "" > {path}exchange_rates.txt')
 
 # Print the rounded exchange rates
 for currency, rate in rounded_rates.items():
   # print them inside an txt
-  os.system(f'echo "{currency}:{rate}" >> daily/data/exchange_rates.txt')
+  os.system(f'echo "{currency}:{rate}" >> {path}exchange_rates.txt')

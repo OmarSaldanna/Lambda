@@ -156,7 +156,7 @@ case $1 in
 	daily)
 		cd $HOME
 		# for each file in daily scripts
-		for file in daily/scripts/*.py; do
+		for file in $route/daily/scripts/*.py; do
 			# execute the script
 		    python3 "$file"
 		done
