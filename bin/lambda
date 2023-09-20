@@ -159,7 +159,7 @@ case $1 in
 		for file in $route/daily/scripts/*.py; do
 			# execute the script
 			echo running $file...
-		    python3 "$file"
+		    python3 $file
 		done
 		# append to log
 		echo "lambda daily scripts ran at $(date +"[%Y-%m-%d - %T]")" >> $log_file
