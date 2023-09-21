@@ -14,7 +14,7 @@ def main(params: tuple):
   # try to make the answer shorter as possible
   message += f". Responde UNICAMENTE con el resultado, El tipo de cambio actual en EUROS es: {rates}."
   # now call gpt
-  return openai.gpt(message, system="Eres una IA capaz de hacer cálculos, si solamente escribo 'pesos' me refiero a pesos mexicanos.", context=False)
+  return openai.gpt(message, system="Eres una IA capaz de hacer cálculos, si solamente escribo 'pesos' me refiero a pesos mexicanos.", context=False, model="gpt-4")
 
 
 # info about the skill
