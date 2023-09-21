@@ -11,7 +11,7 @@ def main(params: tuple):
   # try to make the answer shorter as possible
   message += ". Responde únicamente con el resultado."
   # now call gpt
-  return openai.gpt(message, system="Eres una IA capaz de hacer cálculos", message)
+  return openai.gpt(message, system="Eres una IA capaz de hacer cálculos")
 
 
 # info about the skill
