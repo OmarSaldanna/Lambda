@@ -154,6 +154,10 @@ case $1 in
 
 	# daily scripts
 	daily)
+		# open Lambda
+		cd $HOME
+		# load the keys
+		source .env
 		# for each file in daily scripts
 		for file in $route/daily/scripts/*.py; do
 			# execute the script
