@@ -155,7 +155,7 @@ case $1 in
 	# daily scripts
 	daily)
 		# open Lambda
-		cd $HOME
+		cd $route
 		# load the keys
 		source .env
 		# for each file in daily scripts
