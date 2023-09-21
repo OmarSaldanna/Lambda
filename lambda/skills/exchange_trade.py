@@ -12,9 +12,9 @@ def main(params: tuple):
   # instance openai module
   openai = OpenAI(member, server)
   # try to make the answer shorter as possible
-  message += f". Responde únicamente con el resultado, El tipo de cambio actual es:{rates}."
+  message += f". Responde UNICAMENTE con el resultado, El tipo de cambio actual es:{rates}."
   # now call gpt
-  return openai.gpt(message, system="Eres una IA capaz de hacer cálculos, considera que estás en México")
+  return openai.gpt(message, system="Eres una IA capaz de hacer cálculos, si solamente escribo 'pesos' me refiero a pesos mexicanos.")
 
 
 # info about the skill
