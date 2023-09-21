@@ -24,3 +24,7 @@ for rate in data['rates'].keys():
     # print them inside an txt
     value = data['rates'][rate]
     os.system(f'echo "{rate}:{value}" >> {path}exchange_rates.txt')
+
+
+# remove the .json file
+os.system(f"rm {path}rates.json")
