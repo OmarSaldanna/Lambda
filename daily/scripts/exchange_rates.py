@@ -13,7 +13,6 @@ os.system(f'echo "" > {path}exchange_rates.txt')
 # enable the api key
 # and run the request and save it in a json
 os.system(f"source {env_path} && curl http://api.exchangeratesapi.io/v1/latest?access_key=$exchangeapi > {path}rates.json")
-print(f"source {env_path} && curl http://api.exchangeratesapi.io/v1/latest?access_key=$exchangeapi > {path}rates.json")
 # open the .json file
 data = json.load(open(f'{path}rates.json'))
 

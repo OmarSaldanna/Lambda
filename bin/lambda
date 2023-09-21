@@ -154,11 +154,9 @@ case $1 in
 
 	# daily scripts
 	daily)
-		cd $HOME
 		# for each file in daily scripts
 		for file in $route/daily/scripts/*.py; do
 			# execute the script
-			echo running $file...
 		    python3 $file
 		done
 		# append to log
