@@ -6,7 +6,7 @@ path = "/home/omarsaldanna/Lambda/daily/data/"
 # env path
 env_path = "/home/omarsaldanna/Lambda/.env"
 # admited exchange rates
-exchange_rates = ["MXN","CAD","USD","EUR","JPY","KRW","ARS","BRL","CLP","COP","PEN","UYU","CNY"]
+exchange_rates = ["MXN","CAD","USD","EUR","JPY","ARS","BRL","CLP","COP","PEN","UYU","CNY"]
 
 # clear the txt file
 os.system(f'echo "" > {path}exchange_rates.txt')
@@ -22,7 +22,7 @@ for rate in data['rates'].keys():
   if rate in exchange_rates:  
     # print them inside an txt
     value = data['rates'][rate]
-    os.system(f'echo "{rate}:{value}" >> {path}exchange_rates.txt')
+    os.system(f'echo "{rate}:{round(value,2)}" >> {path}exchange_rates.txt')
 
 
 # remove the .json file
