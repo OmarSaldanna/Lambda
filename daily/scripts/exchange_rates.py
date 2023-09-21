@@ -24,6 +24,3 @@ for rate in data['rates'].keys():
     # print them inside an txt
     value = data['rates'][rate]
     os.system(f'echo "{rate}:{value}" >> {path}exchange_rates.txt')
-
-
-source /home/omarsaldanna/Lambda/.env && curl http://api.exchangeratesapi.io/v1/latest?access_key=$exchangeapi > {path}rates.json
