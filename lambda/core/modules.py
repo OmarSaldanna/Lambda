@@ -276,6 +276,10 @@ class OpenAI:
 		})['answer']
 		return ans
 
+	# new function to publicly allow set user data
+	def set_user_data (self, update: dict):
+		return self.__set_user_data(update)
+
 	########################### availability checking functions ###########################
 
 	# checks if the current model has tokens yet to answer the question

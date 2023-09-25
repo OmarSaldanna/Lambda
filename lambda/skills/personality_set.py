@@ -25,7 +25,7 @@ def main(params: tuple):
 	# also set the context size to 0
 	openai.user_data['context_len'] = 0
 	# finally save changes
-	openai.__set_user_data({
+	openai.set_user_data({
 		"context_len": openai.user_data['context_len'],
 		"context": openai.user_data['context'],
 		"personality": openai.user_data['personality'],
