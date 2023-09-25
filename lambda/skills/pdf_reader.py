@@ -41,7 +41,7 @@ def main(params: tuple):
     # then trow a warning that the text is too long
     return [{
       "type": "error",
-      "content": f"Lo siento <@{member}> tu archivo excede el límite de palabras."
+      "content": f"Lo siento <@{member}> tu archivo excede el límite de palabras. Tu texto tiene {openai.token_counter(pdf_text)} tokens."
     }]
   # then the file has an acceptable size
   # catch the question
