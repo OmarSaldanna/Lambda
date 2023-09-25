@@ -3,5 +3,8 @@
 	"sobre": "conversation",
 	"acerca": "conversation",
 	"cuatro": "gpt4_question",
-	"traduccion": "translate"
+	"traduccion": "translate",
+	"uso": "show_usage",
+    "recursos": "show_usage",
+    "disponibilidad": "show_usage"
 }
