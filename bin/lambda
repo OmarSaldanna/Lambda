@@ -21,7 +21,7 @@ case $1 in
 	start)
 		echo -e "${GREEN}Starting Lambda λ${NC}"
 		# append to log
-		echo "Started Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo Started Lambda at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# run lambda
 		tmux new-session -d -s db "$pre && python3 db/app.py"
 		tmux new-session -d -s lambda "$pre && python3 lambda/app.py"
@@ -35,7 +35,7 @@ case $1 in
 	stop)
 		echo -e "${RED}Stopping Lambda λ${NC}"
 		# append to log
-		echo "Stopped Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo Stopped Lambda at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# stop lambda
 		tmux kill-session -t db
 		tmux kill-session -t lambda
@@ -46,7 +46,7 @@ case $1 in
 		cd $route
 		echo -e "${BLUE}Updating Lambda λ${NC}"
 		# append to log
-		echo "Updated Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo Updated Lambda at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# set lambda key
 		eval "$(ssh-agent -s)"
 		ssh-add ~/.ssh/lambda-git-key
@@ -57,7 +57,7 @@ case $1 in
 	restart)
 		echo -e "${GREEN}Restarting Lambda λ${NC}"
 		# append to log
-		echo "Restarted Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo Restarted Lambda at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# stop lambda
 	    $0 stop
 	    sleep 1
@@ -70,7 +70,7 @@ case $1 in
 		cd $route
 		echo -e "${GREEN}Rupdating Lambda λ${NC}"
 		# append to log
-		echo "Rupdating Lambda at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo Rupdating Lambda at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# kill lambda
 		$0 stop
 		# set lambda key
@@ -84,7 +84,7 @@ case $1 in
 
 	# used to install new python requirements
 	reqinstall)
-		echo "Requrements installed at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo Requrements installed at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# stop lambda
 		$0 stop
 		# install requirements
@@ -93,7 +93,7 @@ case $1 in
 
 	requpdate)
 		# apppend something on the log
-		echo "Requrements updated at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo Requrements updated at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# update the requirements file
 		pip3 freeze > requirements.txt
 	;;
@@ -103,7 +103,7 @@ case $1 in
 		cd $route
 		echo -e "${BLUE}Making Lambda Backup λ${NC}"
 		# append to log
-		echo "lambda backup at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo lambda backup at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# date label to name the file
 		date=$(date +%m-%d-%Y)
 		# create the folder for the files called backup
@@ -121,7 +121,7 @@ case $1 in
 
 	full-backup)
 		# append to log
-		echo "lambda full backup at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo lambda full backup at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# open home dir
 		cd $HOME
 		# date label to name the file
@@ -137,7 +137,7 @@ case $1 in
 		# and run the app
 		tmux new-session -d -s $2 "$pre && sh $app"
 		# append to log
-		echo "lambda app $2 ran at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo lambda app $2 ran at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# wait to errors
 		sleep 1
 		# and see results
@@ -149,7 +149,7 @@ case $1 in
 		# kill the app session
 		tmux kill-session -t $2
 		# append to log
-		echo "lambda app $2 killed at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo lambda app $2 killed at $(date +"[%Y-%m-%d - %T]") >> $log_file
 	;;
 
 	# daily scripts
@@ -164,7 +164,7 @@ case $1 in
 		    python3 $file
 		done
 		# append to log
-		echo "lambda daily scripts ran at $(date +"[%Y-%m-%d - %T]")" >> $log_file
+		echo lambda daily scripts ran at $(date +"[%Y-%m-%d - %T]") >> $log_file
 	;;
 
 	*)
