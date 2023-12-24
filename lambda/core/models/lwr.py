@@ -1,7 +1,8 @@
-# Lambda Word Recognizer V2
+# Lambda Word Recognizer V3
 # internal lambda model for recognize words. Compares a given word
 # with other words given in a list, this list of known words will
 # be on the memory.
+# Now LWR includes numbers and doesn't throw error on symbols
 import numpy as np
 from unidecode import unidecode
 
@@ -9,7 +10,12 @@ from unidecode import unidecode
 class Lambda_Word_Recognizer:
   def __init__(self):
     # replace char
-    self.starting_ord = ord('a')
+    self.ord_values = {
+    'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7, 'i': 8, 'j': 9,
+    'k': 10, 'l': 11, 'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17, 's': 18, 't': 19,
+    'u': 20, 'v': 21, 'w': 22, 'x': 23, 'y': 24, 'z': 25, '0': 26, '1': 27, '2': 28, '3': 29,
+    '4': 30, '5': 31, '6': 32, '7': 33, '8': 34, '9': 35
+  }
 
   def __pre_process_word(self, word):
     # unidecode
@@ -32,15 +38,19 @@ class Lambda_Word_Recognizer:
   def word_to_vector(self, word: str):
     # generate a zeros vector
     # each dimension is for each letter
-    word_vector = [0 for _ in range(27)]
+    word_vector = np.zeros((len(self.ord_values.keys())))
     # and add the letters in the word
     for letter in word:
-      # get the idx
-      idx =  ord(letter) - self.starting_ord
-      # sum 1 where the letter
-      word_vector[idx] += 1
+      # this try is in case of symbols
+      try:
+        # get the idx
+        idx = self.ord_values[letter]
+        # sum 1 where the letter
+        word_vector[idx] += 1
+      except:
+        pass
     # return as a numpy array
-    return np.array(word_vector)
+    return word_vector
 
   def __distances(self, vector: np.array, vector_list: np.array):
     distances = []
