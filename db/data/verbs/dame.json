@@ -11,5 +11,6 @@
     "algoritmo": "programmer",
     "uso": "show_usage",
     "recursos": "show_usage",
-    "disponibilidad": "show_usage"
+    "disponibilidad": "show_usage",
+    "id": "get_id"
 }
