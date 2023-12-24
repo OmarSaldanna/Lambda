@@ -38,4 +38,4 @@ __init__.py
 __init__.pyc
 
 # the tester file
-tester.py
+test.py
