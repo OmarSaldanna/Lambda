@@ -1,3 +1,0 @@
-#!/bin/bash
-
-python3 apps/bchat/server.py
