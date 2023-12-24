@@ -5,9 +5,9 @@
 		"servers": [],
 		"role": "user",
 		"usage": {
-			"gpt-3.5-turbo": 40000,
+			"gpt-3.5-turbo": 100000,
 			"gpt-3.5-turbo-16k": 100000,
-			"gpt-4": 20000,
+			"gpt-4": 50000,
 			"cloudinary_files": 3,
 			"dalle": 20
 		},
@@ -38,9 +38,5 @@
 		"servers": [],
 		"members": [],
 		"calls": []
-	},
-
-	"__comment__": "this structure contains the vocabulary functions, that will be defined when are created, actually this strcuct is not used",
-	
-	"verbs": {}
+	}
 }
