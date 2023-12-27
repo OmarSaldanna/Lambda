@@ -19,7 +19,10 @@ def main(params: tuple):
   	# or return something
 	return [{
 		"type": "text",
-		"content": "Mensaje Enviado"
+		"content": "Mensaje Enviado:"
+	}, {
+		"type": "text",
+		"content": str(content)
 	}]
 
 
