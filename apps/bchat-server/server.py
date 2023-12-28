@@ -96,8 +96,8 @@ def handle_client(client_socket, client_address):
                 try:
                     # select the receiver's socket
                     receiver_socket = clients[receiver]
-                    # and send the content
-                    receiver_socket.send(content.encode())
+                    # and send the whole message
+                    receiver_socket.send(message.encode())
                 except:
                     pass
 

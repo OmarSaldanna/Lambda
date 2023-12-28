@@ -41,7 +41,6 @@ async def bchat():
     data = request.json
     # post to add info
     if request.method == 'POST':
-        print('posteado')
         # then struct the message
         message = struct_message(data)
         # encrypt the message
