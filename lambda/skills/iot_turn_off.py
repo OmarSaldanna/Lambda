@@ -23,7 +23,7 @@ def main(params: tuple):
 		json=message_content
 	)
 	# wait some time
-	time.sleep(3)
+	time.sleep(2)
 	# set the initial answer
 	answer = "Ups, algo salió mal"
 	# read the last five receipts
