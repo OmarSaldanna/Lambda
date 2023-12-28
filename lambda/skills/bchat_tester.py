@@ -28,7 +28,7 @@ def main(params: tuple):
 		"content": str(content)
 	}, {
 		"type": "text",
-		"content": receipt,
+		"content": receipt
 	}]
 
 
