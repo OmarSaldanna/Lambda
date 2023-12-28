@@ -28,6 +28,8 @@ def main(params: tuple):
 	answer = "Ups, algo salió mal"
 	# read the last five receipts
 	receipts = os.popen("tail -n 5 db/data/log/bchat-receipts.txt").read().split('\n')
+	# delete the last one, since its a ''
+	receipts.pop()
 	# find the one that belongs to the user
 	for receipt in receipts[::-1]: # starting from the last one
 		# get the content info
