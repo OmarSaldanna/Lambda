@@ -20,7 +20,7 @@ def main(params: tuple):
 	# send it to the lambda bchat api
 	requests.post('http://127.0.0.1:8092/bchat', json=json.loads(content))
 	# wait some time
-	time.sleep(4)
+	time.sleep(3)
 	# read the logs
 	receipt = os.popen("tail -n 1 db/data/log/bchat-receipts.txt").read()
   	# or return something
