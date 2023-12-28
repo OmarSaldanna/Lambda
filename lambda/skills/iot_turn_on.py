@@ -10,7 +10,8 @@ def main(params: tuple):
 	# catch params
 	message, author, server = params
 	# get the device alias
-	alias = message.split(' ')[3:]
+	alias = message.split(' ')[2:]
+	alias = ' '.join(alias)
 	# set the message content
 	message_content = {
 		"from": "lambda", "to": author, "type": "output",
