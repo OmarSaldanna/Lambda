@@ -32,7 +32,7 @@ def main(params: tuple):
 	# find the one that belongs to the user
 	for receipt in receipts[::-1]: # starting from the last one
 		# get the content info
-		owner, _, message, _ = receipt.split('-')
+		owner, _, message, _,_,_,_ = receipt.split('-')
 		# and check the owner
 		if owner == author:
 			# save the answer
