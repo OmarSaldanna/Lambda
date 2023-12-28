@@ -58,7 +58,7 @@ def handle_client(client_socket, client_address):
             # select the id
             name = message[1:]
             # a little verification for lambda user
-            if name == 'lambda' and getpeername()[0] != '127.0.0.1':
+            if name == 'lambda' and client_socket.getpeername()[0] != '127.0.0.1':
                 # save a log to see that it happened
                 save_log(f"[attack] lambda login from: {client_address}", db="bchat-errors")
                 # and ignore it
@@ -79,7 +79,7 @@ def handle_client(client_socket, client_address):
             # extract the data
             _, sender, receiver, content = message.split('-')
             # security verification: messages from lambda came from 127.0.0.1
-            if sender == 'lambda' and getpeername()[0] != '127.0.0.1':
+            if sender == 'lambda' and client_socket.getpeername()[0] != '127.0.0.1':
                 # save a log to see that it happened
                 save_log(f"[attack] lambda login from: {client_address}, to: {receiver}, content: {content} ", db="bchat-errors")
                 # and ignore it
