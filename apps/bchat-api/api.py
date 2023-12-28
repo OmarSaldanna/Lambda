@@ -34,7 +34,7 @@ def encrypt_message(message: str):
 #   alias: device alias,
 #   value: info,
 # }
-# sample {"from": "lambda", "to": "717071120175595631", "type": "output", "alias": "led rojo", "value": "on"}
+# sample {"from": "lambda", "to": "717071120175595631", "type": "output", "alias": "led rojo", "value": "255"}
 @app.route('/bchat', methods=['POST'])
 async def bchat():
     # get the json content
