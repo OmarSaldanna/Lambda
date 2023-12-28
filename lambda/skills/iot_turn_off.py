@@ -13,7 +13,7 @@ def main(params: tuple):
 	# set the message content
 	message_content = {
 		"from": "lambda", "to": author, "type": "output",
-		"alias": alias, "value": "0";
+		"alias": alias, "value": "0"
 	}
 
 	# send it to the lambda bchat api
