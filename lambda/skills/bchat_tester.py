@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 # in case of use openai module
 # from core.modules import OpenAI
 
@@ -16,6 +17,8 @@ def main(params: tuple):
 	content = ' '.join(content_list)
 	# send it to the lambda bchat api
 	requests.post('http://127.0.0.1:8092/bchat', json=json.loads(content))
+	# read the logs
+	receipt = os.popen("tail -n 1 db/data/log/bchat-receipts.txt").read()
   	# or return something
 	return [{
 		"type": "text",
@@ -23,6 +26,9 @@ def main(params: tuple):
 	}, {
 		"type": "text",
 		"content": str(content)
+	}, {
+		"type": "text",
+		"content": receipt,
 	}]
 
 
