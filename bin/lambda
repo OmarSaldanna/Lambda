@@ -181,6 +181,9 @@ case $1 in
 				sleep 2
 				$0 app-kill bchat-api
 			;;
+			*)
+				echo Available options: start, stop
+			;;
 		esac
 	;;
 
