@@ -173,12 +173,10 @@ case $1 in
 		case $2 in
 			start)
 				$0 app bchat-server
-				sleep 2
 				$0 app bchat-api
 			;;
 			stop)
 				$0 app-kill bchat-server
-				sleep 2
 				$0 app-kill bchat-api
 			;;
 			*)
