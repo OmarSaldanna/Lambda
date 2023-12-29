@@ -140,7 +140,7 @@ Como fue previamente mencionado, ahora la mayoría de funciones de Lambda puden 
 def lambda_cli(message):
 	commands = message.content[2:]
     # if the admin run an update
-	if commands.startswith('lambda'):
+	if commands.startswith('lambda rupdate'):
     	# the command will be executed in the discord app.py
 		command = f'tmux new-session -d -s lambda_command "cd $HOME/Lambda && {commands} && tmux kill-session -t rupdate"'
       	# doesn't return nothing
