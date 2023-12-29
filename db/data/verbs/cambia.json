@@ -1,4 +1,8 @@
 {
 	"type": "multi",
-	"personalidad": "personality_set"
+	"personalidad": "personality_set",
+	"valor": "iot_message",
+	"estado": "iot_message",
+	"mensaje": "iot_message",
+	"brillo": "iot_message"
 }

@@ -3,19 +3,23 @@ import time
 import os
 
 
-# Lambda prende el ...
-# Lambda activa el ...
-# Lambda enciende el ...
+# Lambda manda el valor del [device] a [value]
+# Lambda manda el estado del [device] a [value]
+# Lambda manda el mensaje del [device] a [value]
+# Lambda manda el brillo del [device] a [value]
+# same for verbs: cambia, envia, ajusta
 def main(params: tuple):
 	# catch params
 	message, author, server = params
+	# first split device, value
+	alias_container, value = message.split(' a ')
 	# get the device alias
-	alias = message.split(' ')[2:]
+	alias = alias_container.split(' ')[5:]
 	alias = ' '.join(alias)
 	# set the message content
 	message_content = {
 		"from": "lambda", "to": author, "type": "output",
-		"alias": alias, "value": "255"
+		"alias": alias, "value": value
 	}
 
 	# send it to the lambda bchat api

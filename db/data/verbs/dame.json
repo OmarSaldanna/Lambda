@@ -12,5 +12,9 @@
     "uso": "show_usage",
     "recursos": "show_usage",
     "disponibilidad": "show_usage",
-    "id": "get_id"
+    "id": "get_id",
+    "valor": "iot_read",
+    "humedad": "iot_read",
+    "temperatura": "iot_read",
+    "medida": "iot_read"
 }

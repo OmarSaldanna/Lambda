@@ -51,7 +51,7 @@ def main(params: tuple):
 # info about the skill
 info = """
 ### Lambda IoT Turn Off
-This skill makes Lambda able to communicate with the BChat and through it **turn on devices with Arduinos connected to internet all over the world**. This skill is **only to turning off devices**, there's other one that allows to turn on.
+Esta Skill permite apagar dispositivos conectados a la red de dispositios de Lambda para IoT. Para más información consulta [este tutorial](https://github.com/OmarSaldanna/lambda-iot-client).
 > **Comando: Lambda [apaga, desactiva] el [device alias]
 > **Ejemplo: Lambda desactiva el led rojo
 > **Ejemplo: lambda apaga la luz del estudio
