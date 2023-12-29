@@ -1,4 +1,4 @@
 {
 	"type": "general",
-	"function": "iot_turn_on"
+	"function": "iot_turn_off"
 }
