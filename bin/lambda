@@ -167,6 +167,23 @@ case $1 in
 		echo lambda daily scripts ran at $(date +"[%Y-%m-%d - %T]") >> $log_file
 	;;
 
+	# iot start or stop
+	iot)
+		# a switch to start or stop the process
+		case $2 in
+			start)
+				$0 app bchat-server
+				sleep 2
+				$0 app bchat-api
+			;;
+			stop)
+				$0 app-kill bchat-server
+				sleep 2
+				$0 app-kill bchat-api
+			;;
+		esac
+	;;
+
 	*)
 		echo Unknown Command λ
 		echo lambda "[start|stop|update|restart|rupdate|reqinstall|backup|app|app-kill]"
