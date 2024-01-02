@@ -125,7 +125,7 @@ def handle_client(client_socket, client_address):
                 "db": "members",
                 "id": name,
                 "data": {
-                    "devices": devices
+                    "devices": json.dumps(devices)
                 }
             })
             # save a message on the log
