@@ -20,7 +20,7 @@ def main(params: tuple):
 	# first read the user data
 	user_devices = requests.get("http://127.0.0.1:8081/members", json={
 		"id": author,
-		"db": members
+		"db": "members"
 	}).json()["answer"]["devices"]
 	# train a lwr with the devices
 	dev_recognizer = LWR()
