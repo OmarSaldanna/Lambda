@@ -128,7 +128,7 @@ def handle_client(client_socket, client_address):
                 }
             })
             # save a message on the log
-            save_log(f"[devices from {sender}] {devices}", db="bchat")
+            save_log(f"[devices from {name}] {devices}", db="bchat")
 
 
         # 
