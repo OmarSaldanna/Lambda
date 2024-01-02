@@ -26,10 +26,10 @@ case $1 in
 		tmux new-session -d -s db "$pre && python3 db/app.py"
 		tmux new-session -d -s lambda "$pre && python3 lambda/app.py"
 		tmux new-session -d -s discordo "$pre && python3 interfaces/discordo.py"
-		sleep 3
+		sleep 2
 		# iot stuff
-		tmux new-session -d -s bchat-server "$pre && python3 apps/bchat-server/server.py"
-		tmux new-session -d -s bchat-api "$pre && python3 apps/bchat-api/api.py"
+		$0 app bchat-server
+		$0 app bchat-api
         # see tmux active sessions
         tmux ls
 	;;
