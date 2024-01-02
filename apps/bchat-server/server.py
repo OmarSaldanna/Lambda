@@ -117,16 +117,13 @@ def handle_client(client_socket, client_address):
             except:
                 save_log(f"[Error on message extract] {message}", db="bchat-errors")
                 continue
-            # then read the devices as a dict
-            # devices = json.loads(devices)
-            print("received devices:", devices)
             # send the devices to the db to update them
             requests.put("http://127.0.0.1:8081/members", json={
                 "db": "members",
                 "id": name,
-                "data": {
-                    "devices": json.dumps(devices)
-                }
+                "data": json.dumps({
+                    "devices": devices
+                })
             })
             # save a message on the log
             save_log(f"[devices from {name}] {devices}", db="bchat")
