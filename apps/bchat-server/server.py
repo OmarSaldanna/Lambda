@@ -44,7 +44,7 @@ def handle_client(client_socket, client_address):
 
     while True:
         # Receive a message from the client
-        message = client_socket.recv(1024).decode()
+        message = client_socket.recv(1024).decode('utf-8')
 
         # if the message is empty
         if not message:
@@ -103,7 +103,7 @@ def handle_client(client_socket, client_address):
                     # select the receiver's socket
                     receiver_socket = clients[receiver]
                     # and send the whole message
-                    receiver_socket.send(message.encode())
+                    receiver_socket.send(message.encode('utf-8'))
                 except:
                     pass
 

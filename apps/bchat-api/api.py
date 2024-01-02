@@ -12,7 +12,7 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(("127.0.0.1", 31416))
 # once connected, send the name
 # the format is ~name
-client_socket.send('+lambda'.encode())
+client_socket.send('+lambda'.encode('utf-8'))
 
 # now the flask app
 app = Flask(__name__)
@@ -46,7 +46,7 @@ async def bchat():
         # encrypt the message
         message = encrypt_message(message)
         # send it
-        client_socket.send(message.encode())
+        client_socket.send(message.encode('utf-8'))
         # and return something
         return jsonify({'answer': 'ok'})
 
