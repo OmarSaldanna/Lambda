@@ -11,6 +11,19 @@ def main(params: tuple):
 	# get the device alias
 	alias = message.split(' ')[2:]
 	alias = ' '.join(alias)
+
+	# recognize the alias among all the registered devices
+	# first read the user data
+	user_devices = requests.get("http://127.0.0.1:8081/members", json={
+		"id": author,
+		"db": "members"
+	}).json()["answer"]["devices"]
+	# train a lwr with the devices
+	dev_recognizer = LWR()
+	dev_recognizer.train(list(user_devices.keys()))
+	# and recognize the alias
+	alias = dev_recognizer(alias)
+
 	# set the message content
 	message_content = {
 		"from": "lambda", "to": author, "type": "output",
