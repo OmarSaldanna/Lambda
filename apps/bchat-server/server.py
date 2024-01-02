@@ -1,3 +1,4 @@
+import json
 import socket
 import requests
 import threading
@@ -54,7 +55,7 @@ def handle_client(client_socket, client_address):
 
         # if the message is to regist the user
         # message: +[id]
-        if message[0] == '+':
+        elif message[0] == '+':
             # select the id
             name = message[1:]
             # a little verification for lambda user
@@ -75,9 +76,14 @@ def handle_client(client_socket, client_address):
 
         # if the message is for broadcast
         # message: -[from]-[to]-[content]
-        if message[0] == '-':
-            # extract the data
-            _, sender, receiver, content = message.split('-')
+        elif message[0] == '-':
+            # try extract the data
+            try:
+                _, sender, receiver, content = message.split('-')
+            except:
+                 save_log(f"[Error on message extract] {message}", db="bchat-errors")
+                 continue
+
             # security verification: messages from lambda came from 127.0.0.1
             if sender == 'lambda' and client_socket.getpeername()[0] != '127.0.0.1':
                 # save a log to see that it happened
@@ -100,6 +106,30 @@ def handle_client(client_socket, client_address):
                     receiver_socket.send(message.encode())
                 except:
                     pass
+
+        # configuration messages, set user devices
+        # *id*json devices
+        elif message[0] == '*':
+            # read the message
+            try:
+                # extract the data from the message
+                _, name, devices = message.split('*')
+            except:
+                save_log(f"[Error on message extract] {message}", db="bchat-errors")
+                continue
+            # then read the devices as a dict
+            devices = json.loads(devices)
+            # send the devices to the db to update them
+            requests.put("http://127.0.0.1:8081/members", json={
+                "db": "members",
+                "id": name,
+                "data": {
+                    "devices": devices
+                }
+            })
+            # save a message on the log
+            save_log(f"[devices from {sender}] {devices}", db="bchat")
+
 
         # 
         print(message)

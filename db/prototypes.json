@@ -11,6 +11,7 @@
 			"cloudinary_files": 3,
 			"dalle": 20
 		},
+		"devices": {},
 		"personality": "Eres alguien inteligente",
 		"context_len": 0,
 		"context": [
