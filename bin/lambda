@@ -26,8 +26,10 @@ case $1 in
 		tmux new-session -d -s db "$pre && python3 db/app.py"
 		tmux new-session -d -s lambda "$pre && python3 lambda/app.py"
 		tmux new-session -d -s discordo "$pre && python3 interfaces/discordo.py"
-		# sleep and wait to errors
-        sleep 1
+		# iot stuff
+		tmux new-session -d -s bchat-server "$pre && python3 apps/bchat-server/server.py"
+		sleep 1
+		tmux new-session -d -s bchat-api "$pre && python3 apps/bchat-api/api.py"
         # see tmux active sessions
         tmux ls
 	;;
@@ -40,6 +42,8 @@ case $1 in
 		tmux kill-session -t db
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
+		tmux kill-session -t bchat-api
+		tmux kill-session -t bchat-server
 	;;
 
 	update)
