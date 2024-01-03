@@ -343,8 +343,8 @@ class OpenAI:
 	# used to count the tokens on th
 	def __token_recount (self, usage: dict, model: str, context: bool):
   		# so, assign the variables
-  		tokens_in = usage['prompt_tokens']
-  		tokens_out = usage['completion_tokens']
+  		tokens_in = usage.prompt_tokens
+  		tokens_out = usage.completion_tokens
   		# calculate the adjusted based on the model
   		adjusted = int(tokens_out * 1.3) if model != "gpt-4" else int(tokens_out * 2)
   		# calculate the total = tokens_in + adjusted
