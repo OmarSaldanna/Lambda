@@ -435,7 +435,7 @@ class OpenAI:
 			messages=self.user_data['context'] if context else prompt_call,
 			temperature=temp
 		))
-		print(res)
+		return res
 		# make recount of the tokens used, in the response are the
 		# tokens used, tokens in and tokens out, this function
 		tokens_in, tokens_out, adjusted, total_tokens = self.__token_recount(res.usage, model, context)
