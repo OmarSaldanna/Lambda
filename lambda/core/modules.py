@@ -3,7 +3,7 @@ import os
 import json
 import requests
 # open ai
-from openai import OpenAI
+from openai import OpenAI as OAI
 # and tokenizer
 import tiktoken
 # cloduinary
@@ -263,7 +263,7 @@ class OpenAI:
 			"server": server
 		})['answer']
 		# instance openAI
-		self.client = OpenAI()
+		self.client = OAI()
 
 
 	########################### database functions ###########################
