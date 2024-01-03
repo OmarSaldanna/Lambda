@@ -433,8 +433,7 @@ class OpenAI:
 			# here also, if the context is required, call gpt with the
 			# prompt and context, else just use the prompt
 			messages=self.user_data['context'] if context else prompt_call,
-			temperature=temp,
-			response_format={ "type": "json_object" }
+			temperature=temp
 		))
 		print(res)
 		# make recount of the tokens used, in the response are the
