@@ -263,7 +263,7 @@ class OpenAI:
 			"server": server
 		})['answer']
 		# instance openAI
-		self.client = OAI(os.getenv("OPENAI"))
+		self.client = OAI()
 
 
 	########################### database functions ###########################
