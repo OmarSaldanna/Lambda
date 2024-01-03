@@ -3,7 +3,7 @@ import os
 import json
 import requests
 # open ai
-import openai
+from openai import OpenAI
 # and tokenizer
 import tiktoken
 # cloduinary
@@ -262,6 +262,8 @@ class OpenAI:
 			"db": "members",
 			"server": server
 		})['answer']
+		# instance openAI
+		self.client = openAI()
 
 
 	########################### database functions ###########################
@@ -426,7 +428,7 @@ class OpenAI:
 				{"role": "user", "content": prompt}
 			]
 		# so use gpt with the available model
-		res = openai.ChatCompletion.create(
+		res = self.client.chat.completions.create(
 			model=model,
 			# here also, if the context is required, call gpt with the
 			# prompt and context, else just use the prompt
@@ -543,10 +545,12 @@ class OpenAI:
 		# if there are images available
 		if available:
 			# generate the images
-			response = openai.Image.create(
+			response = self.client.images.generate(
+				model="dall-e-3",
 				prompt=prompt,
 				n=n,
-				size="1024x1024"
+				size="1024x1792",
+				quality="hd"
 			)
 			# regist on the logs
 			self.db.post("/logs", {
@@ -593,7 +597,7 @@ class OpenAI:
 		# if there are images available
 		if available:
 			# generate the images
-			response = openai.Image.create_edit(
+			response = self.client.images.edit(
 				image=self.__preprocess_image(image_path),
 				mask=self.__preprocess_image(mask_path),
 			  	prompt=prompt,
@@ -645,7 +649,7 @@ class OpenAI:
 		# if there are images available
 		if available:
 			# generate the images
-			response = openai.Image.create_variation(
+			response = self.client.images.create_variation(
 				image=self.__preprocess_image(image_path),
 			  	n=n,
 			  	size="1024x1024"
