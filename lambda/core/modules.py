@@ -591,7 +591,7 @@ class OpenAI:
 			}]
 
 	# DALL-E function to edit images
-	def edit_image (self, image_path: str, mask_path:str, prompt:str, n=1):
+	def edit_image (self, image_path: str, mask_path:str, prompt:str, n=1, size="1024x1024"):
 		# first check availability for the requested images
 		available, remaining = self.__dalle_availability(n)
 		# if there are images available
@@ -602,7 +602,7 @@ class OpenAI:
 				mask=self.__preprocess_image(mask_path),
 			  	prompt=prompt,
 			  	n=n,
-			  	size="1024x1024"
+			  	size=size
 			)
 			# regist on the logs
 			self.db.post("/logs", {
