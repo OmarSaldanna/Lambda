@@ -1,6 +1,7 @@
 # modules
 from core.models.lwr import Lambda_Word_Recognizer as LWR
 # and librariesimport requests
+import requests
 import time
 import os
 
