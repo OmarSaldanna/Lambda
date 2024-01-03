@@ -341,10 +341,10 @@ class OpenAI:
 
 	# VERY IMPORTANT!
 	# used to count the tokens on th
-	def __token_recount (self, usage: dict, model: str, context: bool):
+	def __token_recount (self, usage, model: str, context: bool):
   		# so, assign the variables
-  		tokens_in = usage['prompt_tokens']
-  		tokens_out = usage['completion_tokens']
+  		tokens_in = usage.prompt_tokens
+  		tokens_out = usage.completion_tokens
   		# calculate the adjusted based on the model
   		adjusted = int(tokens_out * 1.3) if model != "gpt-4" else int(tokens_out * 2)
   		# calculate the total = tokens_in + adjusted
@@ -435,14 +435,13 @@ class OpenAI:
 			messages=self.user_data['context'] if context else prompt_call,
 			temperature=temp
 		)
-		return res
 		# make recount of the tokens used, in the response are the
 		# tokens used, tokens in and tokens out, this function
 		tokens_in, tokens_out, adjusted, total_tokens = self.__token_recount(res.usage, model, context)
 		# regist on the logs the answer
 		self.db.post("/logs", {
 			"db": "chat",
-			"data": f"[{self.user_id}] Q: {prompt}... A: {res['choices'][0]['message']['content']}"
+			"data": f"[{self.user_id}] Q: {prompt}... A: {res.choices[0].message.content}"
 		})
 		self.db.post("/logs", {
 			"db": "tokens",
@@ -452,13 +451,13 @@ class OpenAI:
 		# this function just appends the answer to the context (if context),
 		#  and saves changes on the database (context, usage and context len)
 		self.__handle_context(
-			res['choices'][0]['message']['content'], context
+			res.choices[0].message.content, context
 		)
 		# form the answer in the format
 		answer = [
 			{
 				"type": "text",
-				"content": res['choices'][0]['message']['content']
+				"content": res.choices[0].message.content
 			}
 		]
 		# finally return the answer
