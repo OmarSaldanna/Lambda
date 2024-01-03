@@ -433,16 +433,16 @@ class OpenAI:
 			# here also, if the context is required, call gpt with the
 			# prompt and context, else just use the prompt
 			messages=self.user_data['context'] if context else prompt_call,
-			temperature=temp
+			# temperature=temp
 		)
 		print(res)
 		# make recount of the tokens used, in the response are the
 		# tokens used, tokens in and tokens out, this function
-		tokens_in, tokens_out, adjusted, total_tokens = self.__token_recount(res['usage'], model, context)
+		tokens_in, tokens_out, adjusted, total_tokens = self.__token_recount(res.usage, model, context)
 		# regist on the logs the answer
 		self.db.post("/logs", {
 			"db": "chat",
-			"data": f"[{self.user_id}] Q: {prompt}... A: {res['choices'][0]['message']['content']}"
+			"data": f"[{self.user_id}] Q: {prompt}... A: {res.choices[0].message}"
 		})
 		self.db.post("/logs", {
 			"db": "tokens",
@@ -452,13 +452,13 @@ class OpenAI:
 		# this function just appends the answer to the context (if context),
 		#  and saves changes on the database (context, usage and context len)
 		self.__handle_context(
-			res['choices'][0]['message']['content'], context
+			res.choices[0].message, context
 		)
 		# form the answer in the format
 		answer = [
 			{
 				"type": "text",
-				"content": res['choices'][0]['message']['content']
+				"content": res.choices[0].message
 			}
 		]
 		# finally return the answer
