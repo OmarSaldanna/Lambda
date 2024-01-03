@@ -428,13 +428,13 @@ class OpenAI:
 				{"role": "user", "content": prompt}
 			]
 		# so use gpt with the available model
-		res = dict(self.client.chat.completions.create(
+		res = self.client.chat.completions.create(
 			model=model,
 			# here also, if the context is required, call gpt with the
 			# prompt and context, else just use the prompt
 			messages=self.user_data['context'] if context else prompt_call,
 			temperature=temp
-		))
+		)
 		return res
 		# make recount of the tokens used, in the response are the
 		# tokens used, tokens in and tokens out, this function
