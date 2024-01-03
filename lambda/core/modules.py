@@ -247,7 +247,7 @@ class OpenAI:
 		# set the user_id
 		self.user_id = user_id
 		# set the key
-		openai.api_key = os.getenv("OPENAI")
+		# openai.api_key = os.getenv("OPENAI")
 		# the instance of db
 		self.db = DB()
 		# the models, the order is by price - to +
@@ -263,7 +263,7 @@ class OpenAI:
 			"server": server
 		})['answer']
 		# instance openAI
-		self.client = openAI()
+		self.client = openAI(api_key=os.getenv("OPENAI"))
 
 
 	########################### database functions ###########################
