@@ -711,7 +711,7 @@ class OpenAI:
 		# then there's enough chars
 		# create a file path to save the audio
 		audio_hash = generate_hash(text)
-		audio_path = f"../lambdrive/audios/{audio_hash}.mp3"
+		audio_path = f"lambdrive/audios/{audio_hash}.mp3"
 		# os.system(f"touch {audio_path}")
 		# so create the audio
 		response = self.client.audio.speech.create(
