@@ -560,7 +560,7 @@ class OpenAI:
 			# get the urls
 			urls = []
 			for i in range(n):
-				urls.append(response['data'][i]['url'])
+				urls.append(response.data[i].url)
 			# download the images
 			paths, hashes = self.__download_images(urls, 'images')
 			# update the usage
@@ -612,7 +612,7 @@ class OpenAI:
 			# get the urls
 			urls = []
 			for i in range(n):
-				urls.append(response['data'][i]['url'])
+				urls.append(response.data[i].url)
 			# download the images
 			paths, hashes = self.__download_images(urls, 'images')
 			# update the usage
@@ -662,7 +662,7 @@ class OpenAI:
 			# get the urls
 			urls = []
 			for i in range(n):
-				urls.append(response['data'][i]['url'])
+				urls.append(response.data[i].url)
 			# download the images
 			paths, hashes = self.__download_images(urls, 'images')
 			# update the usage
