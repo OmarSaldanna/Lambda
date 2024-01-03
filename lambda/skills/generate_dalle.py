@@ -1,5 +1,5 @@
 from core.modules import OpenAI
-from core.models.lwr import LWR
+from core.models.lwr import Lambda_Word_Recognizer as LWR
 
 # crea|genera una imagen [horizontal|vertical|cuadrada] de ...                    
 def main(params: tuple):
