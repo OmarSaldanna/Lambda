@@ -8,11 +8,11 @@
 			"gpt-3.5-turbo": 20000,
 			"gpt-3.5-turbo-16k": 30000,
 			"gpt-4": 10000,
-			"cloudinary_files": 3,
+			"tts": 1000,
 			"dalle": 5
 		},
 		"devices": {
-			
+
 		},
 		"personality": "Eres alguien inteligente",
 		"context_len": 0,

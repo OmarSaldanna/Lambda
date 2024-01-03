@@ -6,5 +6,6 @@
     "codigo": "programmer",
     "script": "programmer",
     "programa": "programmer",
-    "algoritmo": "programmer"
+    "algoritmo": "programmer",
+    "audio": "generate_tts"
 }
