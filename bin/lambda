@@ -28,8 +28,8 @@ case $1 in
 		tmux new-session -d -s discordo "$pre && python3 interfaces/discordo.py"
 		sleep 2
 		# iot stuff
-		$0 app bchat-server
-		$0 app bchat-api
+		# $0 app bchat-server
+		# $0 app bchat-api
         # see tmux active sessions
         tmux ls
 	;;
