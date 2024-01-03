@@ -690,3 +690,50 @@ class OpenAI:
 				"type": "error",
 				"content": f"Lo siento <@{self.user_id}>, ya no te quedan más imágenes."
 			}]
+	
+	# used to create text to speech audios
+	def text_to_speech (self, text: str, voice="echo", model="tts-1-hd"):
+		# first count the characters in the text
+		chars = len(text)
+		# then check the availability
+		# if there's not enough tokens
+		if self.user_data['usage']['tts'] < chars:
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] no more tts chars left"
+			})
+			# send a message
+			return [{
+				"type": "error",
+				"content": f"Lo siento <@{self.user_id}>, solo te quedan {self.user_data['usage']['tts']} caracteres para audios, tu mensaje tiene {chars}."
+			}]
+		# then there's enough chars
+		# create a file path to save the audio
+		audio_hash = generate_hash(text)
+		audio_path = f"../lambdrive/audios/{audio_hash}.mp3"
+		# os.system(f"touch {audio_path}")
+		# so create the audio
+		response = self.client.audio.speech.create(
+		  model=model,
+		  voice=voice,
+		  input=text
+		)
+		# then save the audio in a file
+		response.stream_to_file(audio_path)
+		# regist on the logs
+		self.db.post("/logs", {
+			"db": "audios",
+			"data": f"[{self.user_id}] generated: {audio_hash}.mp3"
+		})
+		# discount the chars to the user_data
+		self.user_data['usage']['tts'] -= chars
+		# and save changes
+		self.__set_user_data({
+			"usage": self.user_data['usage']
+		})
+		# finally send the answer
+		return [
+			{"type": "file", "content": audio_path},
+			{"type": "error", "content": f"Audio disponible como ${audio_hash}"}
+		]
