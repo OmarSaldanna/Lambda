@@ -5,11 +5,11 @@
 		"servers": [],
 		"role": "user",
 		"usage": {
-			"gpt-3.5-turbo": 100000,
-			"gpt-3.5-turbo-16k": 100000,
-			"gpt-4": 50000,
+			"gpt-3.5-turbo": 20000,
+			"gpt-3.5-turbo-16k": 30000,
+			"gpt-4": 10000,
 			"cloudinary_files": 3,
-			"dalle": 20
+			"dalle": 5
 		},
 		"devices": {
 			

@@ -49,7 +49,7 @@ def handle_client(client_socket, client_address):
         # if the message is empty
         if not message:
             # save a log to see that it happened
-            save_log(f"[error] empty message from: {client_address}", db="bchat-errors")
+            # save_log(f"[error] empty message from: {client_address}", db="bchat-errors")
             # and ignore it
             continue
 
