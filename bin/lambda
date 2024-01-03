@@ -144,7 +144,6 @@ case $1 in
 		echo lambda app $2 ran at $(date +"[%Y-%m-%d - %T]") >> $log_file
 		# wait to errors
 		sleep 1
-		tmux ls
 	;;
 
 	# kill app
