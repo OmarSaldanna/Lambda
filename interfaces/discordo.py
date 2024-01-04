@@ -79,7 +79,7 @@ async def on_message(message):
                     # process the image
                 discordo.process_notpng(download_path)
                     # send the message
-                files_messages.append(f'> ${file_hash}')
+                files_messages.append(f'```${file_hash}```')
                     # and regist the update for images
                 update[folder] += [file_hash]
                 #except Exception as e:
@@ -89,7 +89,7 @@ async def on_message(message):
                 continue
 
             # save the messages to send them
-            files_messages.append(f'> ${file_hash}')
+            files_messages.append(f'```${file_hash}```')
             # and regist on the update for audios and documents
             update[folder] += [file_hash]
 
