@@ -8,7 +8,7 @@ def extraer_paginas(pdf_path, start_page, end_page, output_path):
 
     for page_number in range(start_page - 1, end_page):
       page = reader.pages[page_number]
-      writer.addPage(page)
+      writer.add_page(page)
 
     with open(output_path, 'wb') as output_pdf:
       writer.write(output_pdf)
