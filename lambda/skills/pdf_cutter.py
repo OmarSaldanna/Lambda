@@ -36,10 +36,7 @@ def main(params: tuple):
   return [
     {
       "type": "text",
-      "content": f"Listo, tu PDF de la página {page_from} a la {page_to} está disponible como:
-        ```
-        ${new_hash}
-        ```"
+      "content": f"Listo, tu PDF de la página {page_from} a la {page_to} está disponible como:```${new_hash}```"
     },
     {
       "type": "file",
