@@ -58,13 +58,13 @@ async def on_message(message):
             elif extension in ['.csv', '.pdf', '.txt']:
                 folder = "documents"
             # audios
-            elif extension in ['.mp3', '.ogg']:
+            elif extension in ['.mp3', '.ogg', '.wav']:
                 folder = "audios"
             # else, unsupported file type
             else:
                 files_messages.append(f'> Error: formato no apropiado **{original_filename}**')
                 files_messages.append(f'> Los formatos manejados son: **.jpg .jpeg .heic .png')
-                files_messages.append(f'> .csv .pdf .txt .mp3 .ogg**')
+                files_messages.append(f'> .csv .pdf .txt .mp3 .ogg .wav**')
                 continue
             # generate a hash based on the original name and
             # the user id to avoid repetitive hashes
