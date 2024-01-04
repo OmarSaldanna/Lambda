@@ -1,6 +1,7 @@
 {
 	"type": "multi",
 	"pdf": "pdf_reader",
+	"archivo": "pdf_reader",
 	"valor": "iot_read",
     "humedad": "iot_read",
     "temperatura": "iot_read",
