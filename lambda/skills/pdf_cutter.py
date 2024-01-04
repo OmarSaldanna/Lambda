@@ -3,8 +3,8 @@ from core.modules import generate_hash
 
 def extraer_paginas(pdf_path, start_page, end_page, output_path):
   with open(pdf_path, 'rb') as file:
-    reader = PyPDF2.PdfFileReader(file)
-    writer = PyPDF2.PdfFileWriter()
+    reader = PyPDF2.PdfReader(file)
+    writer = PyPDF2.PdfWriter()
 
     for page_number in range(start_page - 1, end_page):
       page = reader.getPage(page_number)
