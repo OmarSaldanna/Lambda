@@ -3,17 +3,17 @@
 	
 	"members": {
 		"servers": [],
-		"role": "user",
+		"role": [],
 		"usage": {
-			"gpt-3.5-turbo": 20000,
+			"gpt-3.5-turbo": 10000,
 			"gpt-3.5-turbo-16k": 30000,
-			"gpt-4": 10000,
-			"tts": 1000,
-			"dalle": 5
-		},
-		"devices": {
-
-		},
+			"gpt-4": 2000,
+			"tts": 50000,
+			"dalle": 3,
+			"vision": 3,
+			"whisper": 3
+		}
+		"devices": {},
 		"personality": "Eres alguien inteligente",
 		"context_len": 0,
 		"context": [
@@ -41,5 +41,39 @@
 		"servers": [],
 		"members": [],
 		"calls": []
+	},
+
+	"__measures": {
+		"gpt*": "tokens",
+		"tts": "characters",
+		"dalle": "images",
+		"whisper": "minutes",
+		"vision": "images"
+	},
+
+	"pro-settings": {
+		"role": ["pro"],
+		"usage": {
+			"gpt-3.5-turbo": 500000,
+			"gpt-3.5-turbo-16k": 500000,
+			"gpt-4": 50000,
+			"tts": 50000,
+			"dalle": 10,
+			"vision": 30,
+			"whisper": 30
+		}
+	},
+
+	"free-settings": {
+		"role": [],
+		"usage": {
+			"gpt-3.5-turbo": 10000,
+			"gpt-3.5-turbo-16k": 30000,
+			"gpt-4": 2000,
+			"tts": 50000,
+			"dalle": 3,
+			"vision": 3,
+			"whisper": 3
+		}
 	}
 }
