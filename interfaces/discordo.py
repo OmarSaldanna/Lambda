@@ -111,7 +111,7 @@ async def on_message(message):
         })
         # create a button
         button = discord.Button(
-            label="Copiar",
+            # label="Copiar",
             style=discord.ButtonStyle.primary,
             url="https://discord.com",
             callback=bot.on_button_click
