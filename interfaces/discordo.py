@@ -52,7 +52,7 @@ async def on_message(message):
             # folder to save the file based on the extension
             folder = ""
             # images
-            if extension in ['.jpg', '.jpeg', '.heic', '.gif', '.png']:
+            if extension in ['.jpg', '.jpeg', '.heic', '.png']:
                 folder = "images"
             # documents
             elif extension in ['.csv', '.pdf', '.txt']:
@@ -75,21 +75,20 @@ async def on_message(message):
             await attachment.save(download_path)
             # try to process images that are not png
             if folder == 'images':
-                #try:
-                    # process the image
+                # process the image
                 discordo.process_notpng(download_path)
-                    # send the message
-                files_messages.append(f'```${file_hash}```')
-                    # and regist the update for images
-                update[folder] += [file_hash]
+                # send the message
+                #files_messages.append(f'```${file_hash}```')
+                # and regist the update for images
+                #update[folder] += [file_hash]
                 #except Exception as e:
                     #print(e, 'error')
                     # send an error message
                     #files_messages.append(f'> Error procesando imagen: {original_filename}')
-                continue
+                #continue
 
             # save the messages to send them
-            files_messages.append(f'```${file_hash}```')
+            files_messages.append(file_hash)
             # and regist on the update for audios and documents
             update[folder] += [file_hash]
 
@@ -110,10 +109,45 @@ async def on_message(message):
             "id": str(message.author.id),
             "data": images_db
         })
-        # create the text
-        msg = '\n'.join(files_messages)
-        await message.channel.send(f"> **Tus archivos están disponibles como**:\n{msg}")
-
+        # create a button
+        button = discord.Button(
+            label="Copiar",
+            style=discord.ButtonStyle.primary,
+            url="https://discord.com",
+            callback=self.on_button_click
+        )
+        # start sending the hashes
+        await message.channel.send(f"> **Tus archivos están disponibles como**:")
+        # also upsate the copy on db
+        discordo.db_request('PUT', '/members', {
+            "db": "members",
+            "id": str(message.author.id),
+            "data": {
+                # copy the first file id
+                "copy": f"${files_messages[0]}"
+            }
+        })
+        # send the button to the chat
+        await message.channel.send("*Botón de prueba:*", embed=discord.Embed(
+            description="*Copiar*",
+            color=0x0000FF,
+            fields=[
+                discord.EmbedField(
+                    name="Botón",
+                    value="*Enlace:* https://discord.com",
+                    inline=False
+                ),
+                discord.EmbedField(
+                    name="Copiar",
+                    value="*Copiar al portapapeles:*",
+                    inline=False,
+                    button=button
+                )
+            ]
+        ))
+        # send all the files
+        for f in files_messages:
+            await message.channel.send(f"${f}")
 
 ###########################################################################################
 #################### Lambda Calls #########################################################
@@ -465,7 +499,20 @@ async def on_voice_state_update(member: discord.Member, before, after):
             if str(member.id) not in server_db['lockdown_members']:
                 # disconnect member who is not in the whitelist
                 await member.move_to(None)
-                
+
+# read copy button clicks
+@bot.event
+async def on_button_click(interaction):
+    # get the user id
+    user_id = interaction.user.id
+    # then retrieve the data from the db
+    user_data = discordo.db_request('GET', '/members', {
+        "db": "members",
+        "id": str(message.author.id)
+    })['answer']
+    # and select the copy field
+    await interaction.user.send(user_data['copy'])
+
 
 # run the bot
 bot.run(token)

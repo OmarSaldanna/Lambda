@@ -13,6 +13,7 @@
 			"vision": 3,
 			"whisper": 3
 		},
+		"copy": "",
 		"devices": {},
 		"personality": "Eres alguien inteligente",
 		"context_len": 0,
