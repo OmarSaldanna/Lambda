@@ -2,12 +2,31 @@ import os
 import time
 import json
 import discord
+# libraries to copy to clipboard
+import pyperclip
+# discord stuff
 from discord.ext import commands
 # modules
 from controllers import discordo
 
+
 # load credentials
 token = os.environ["DISCORD"]
+
+# this class is used for the copy button
+# more info in https://guide.pycord.dev/interactions/ui-components/buttons
+class SimpleView(discord.ui.View):
+    @discord.ui.button(label="📋 Copiar ID", style=discord.ButtonStyle.success)
+    async def copy_id(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # get the copy from the db
+        user_data = discordo.db_request('GET', '/members', {
+            "db": "members",
+            "id": str(interaction.user.id)
+        })['answer']
+        # copy it (in computers)
+        pyperclip.copy(user_data['copy'])
+        # and send a confirmation
+        await interaction.response.send_message("ID Copiada 👍")
 
 # discord configuration
 # define the intents
@@ -109,15 +128,6 @@ async def on_message(message):
             "id": str(message.author.id),
             "data": images_db
         })
-        # create a button
-        button = discord.Button(
-            # label="Copiar",
-            style=discord.ButtonStyle.primary,
-            url="https://discord.com",
-            callback=bot.on_button_click
-        )
-        # start sending the hashes
-        await message.channel.send(f"> **Tus archivos están disponibles como**:")
         # also upsate the copy on db
         discordo.db_request('PUT', '/members', {
             "db": "members",
@@ -127,24 +137,11 @@ async def on_message(message):
                 "copy": f"${files_messages[0]}"
             }
         })
-        # send the button to the chat
-        await message.channel.send("*Botón de prueba:*", embed=discord.Embed(
-            description="*Copiar*",
-            color=0x0000FF,
-            fields=[
-                discord.EmbedField(
-                    name="Botón",
-                    value="*Enlace:* https://discord.com",
-                    inline=False
-                ),
-                discord.EmbedField(
-                    name="Copiar",
-                    value="*Copiar al portapapeles:*",
-                    inline=False,
-                    button=button
-                )
-            ]
-        ))
+        # send the button for fast copy
+        view = SimpleView()
+        await message.channel.send(view=view)
+        # start sending the hashes
+        await message.channel.send(f"> **Tus archivos están disponibles como**:")
         # send all the files
         for f in files_messages:
             await message.channel.send(f"${f}")
@@ -499,19 +496,6 @@ async def on_voice_state_update(member: discord.Member, before, after):
             if str(member.id) not in server_db['lockdown_members']:
                 # disconnect member who is not in the whitelist
                 await member.move_to(None)
-
-# read copy button clicks
-@bot.event
-async def on_button_click(interaction):
-    # get the user id
-    user_id = interaction.user.id
-    # then retrieve the data from the db
-    user_data = discordo.db_request('GET', '/members', {
-        "db": "members",
-        "id": str(message.author.id)
-    })['answer']
-    # and select the copy field
-    await interaction.user.send(user_data['copy'])
 
 
 # run the bot

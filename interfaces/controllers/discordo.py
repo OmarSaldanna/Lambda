@@ -87,7 +87,6 @@ def process_notpng(input_path: str):
     new_img.save(output_path+'.png', "PNG")
 
 
-
 # split a text in pieces of n length
 # this was implemented cause of there's messages with len
 # greater than 2K characters that discord don't acept. So
