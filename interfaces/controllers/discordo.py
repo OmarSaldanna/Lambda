@@ -5,7 +5,7 @@ import os
 
 # for images
 from PIL import Image
-import pyheif
+# import pyheif
 
 ############################################################
 ###################### General Functions ###################
@@ -59,6 +59,7 @@ def generate_hash(data: str):
 
 # function to process not png uploaded images and convert them to
 # square images 1024px and .png
+''' Actually not used: discord saves images as JPG
 def process_notpng(input_path: str): 
 	# Generate the output path by replacing the extension with "_square.png"
     output_path = os.path.splitext(input_path)[0]
@@ -85,7 +86,7 @@ def process_notpng(input_path: str):
     new_img.paste(img, ((desired_size[0] - img_size[0]) // 2, (desired_size[1] - img_size[1]) // 2))
     # Save the processed image as a PNG file
     new_img.save(output_path+'.png', "PNG")
-
+'''
 
 # split a text in pieces of n length
 # this was implemented cause of there's messages with len
