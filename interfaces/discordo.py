@@ -114,7 +114,7 @@ async def on_message(message):
             label="Copiar",
             style=discord.ButtonStyle.primary,
             url="https://discord.com",
-            callback=self.on_button_click
+            callback=bot.on_button_click
         )
         # start sending the hashes
         await message.channel.send(f"> **Tus archivos están disponibles como**:")
