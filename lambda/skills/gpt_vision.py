@@ -7,15 +7,15 @@ from core.modules import OpenAI
 def security_check(file_id: str):
 	# wrong id length
 	if len(file_id) != 16: ######################## actual size of hashes ###########
-		raise ValueError("unknown hash")
+		raise ValueError(f"unknown hash: {file_id}")
 	# the hash do not contain that characters
 	for c in ' \\/$%&*:;.,][()!\"\'<>':
 		if c in file_id:
-			raise ValueError("unknown hash")
+			raise ValueError(f"unknown hash: {file_id}")
 
 
-# 0   1  2      3   4
-# Lee la imagen $id y ...
+# 0   1  2      3  4   5 6
+# Lee la imagen de $id y ...
 # same for analiza, ve, mira, observa
 # also for foto, diagrama, cuadro
 def main(params: tuple):
@@ -26,9 +26,9 @@ def main(params: tuple):
 	# split the message
 	splited_message = message.split(' ')
 	# catch the image id
-	image_id = splited_message[3][1:]
+	image_id = splited_message[4][1:]
 	# cath the text prompt
-	text_prompt = ' '.join(splited_message[5:])
+	text_prompt = ' '.join(splited_message[6:])
 	# pass the id through the security check
 	security_check(image_id)
 	# get the extension of the file
