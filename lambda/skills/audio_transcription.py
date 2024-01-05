@@ -31,7 +31,6 @@ def main(params: tuple):
 	audio_file = os.popen(f"ls lambdrive/audios | grep {audio_id}").read()[:-1]
 	# create the file path
 	audio_path = f"lambdrive/audios/{audio_file}"
-	return [{"type": "text", "content": audio_path}]
 	# use OpenAI whisper
 	return openai.speech_to_text(audio_path)
 
