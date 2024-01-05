@@ -32,7 +32,7 @@ def main(params: tuple):
 	# create the file path
 	audio_path = f"lambdrive/audios/{audio_file}"
 	# use OpenAI whisper
-  	return openai.speech_to_text(audio_path)
+	return openai.speech_to_text(audio_path)
 
 
 # info about the skill
