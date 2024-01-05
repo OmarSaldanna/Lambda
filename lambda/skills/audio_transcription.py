@@ -37,9 +37,14 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### title
-description
-> **Comando: command
-> **Ejemplo: example
-> **Verbos:** verbs
+### Audio Transcriber
+Esta función permite a Lambda transcribir el texto de audios, **audios que pueden ser en casi cualquier idioma**. Solamente sigue estos pasos:
+* Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
+* Y usa el comando para transcribir el texto del audio.
+> **Comando: Lambda [lee, extrae o transcribe] el [audio o texto] de [la id del audio]
+> **Ejemplo: Lambda transcribe el audio de $db8194cf7daf4efe
+> **Ejemplo: Lambda extrae el texto de $db8194cf7daf4efe
+> **Ejemplo: lambda lee el texto de $db8194cf7daf4efe
+> **Verbos:** lee, extrae o transcribe
+> **Sustantivos:** audio o texto
 """
