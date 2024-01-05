@@ -2,9 +2,6 @@ import os
 import time
 import json
 import discord
-# libraries to copy to clipboard
-import pyperclip
-# discord stuff
 from discord.ext import commands
 # modules
 from controllers import discordo
@@ -13,20 +10,6 @@ from controllers import discordo
 # load credentials
 token = os.environ["DISCORD"]
 
-# this class is used for the copy button
-# more info in https://guide.pycord.dev/interactions/ui-components/buttons
-class SimpleView(discord.ui.View):
-    @discord.ui.button(label="📋 Copiar ID", style=discord.ButtonStyle.success)
-    async def copy_id(self, interaction: discord.Interaction, button: discord.ui.Button):
-        # get the copy from the db
-        user_data = discordo.db_request('GET', '/members', {
-            "db": "members",
-            "id": str(interaction.user.id)
-        })['answer']
-        # copy it (in computers)
-        pyperclip.copy(user_data['copy'])
-        # and send a confirmation
-        await interaction.response.send_message("ID Copiada 👍")
 
 # discord configuration
 # define the intents
@@ -137,9 +120,6 @@ async def on_message(message):
                 "copy": f"${files_messages[0]}"
             }
         })
-        # send the button for fast copy
-        view = SimpleView()
-        await message.channel.send(view=view)
         # start sending the hashes
         await message.channel.send(f"> **Tus archivos están disponibles como**:")
         # send all the files
