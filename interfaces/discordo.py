@@ -78,7 +78,8 @@ async def on_message(message):
             # try to process images that are not png
             if folder == 'images':
                 # process the image
-                discordo.process_notpng(download_path)
+                #discordo.process_notpng(download_path)
+                pass
                 # send the message
                 #files_messages.append(f'```${file_hash}```')
                 # and regist the update for images
