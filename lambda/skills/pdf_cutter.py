@@ -15,7 +15,9 @@ def extraer_paginas(pdf_path, start_page, end_page, output_path):
 
 
 # 0     1  2   3   4  5  6 7
-# corta el pdf $id de p1 a 20
+# corta el pdf $id de p1 a p2
+# extrae del pdf $id de p1 a p2
+# recorta del pdf $id de p1 a p2
 def main(params: tuple):
   # catch the params
   message, member, server = params
@@ -48,7 +50,8 @@ def main(params: tuple):
 info = """
 ### PDF Cutter
 Esta función permite cortar PDFs, solo dile entre que páginas cortar y **Lambda te dará el archivo cortado y su id para que lo puedas usar con la función de leer PDFs de Lambda**.
-> **Comando:** Lambda corta el pdf de **página** a **página**
+> **Comando:** Lambda corta el [pdf o archivo] de **página** a **página**
 > **Ejemplo 1:** Lambda corta el pdf $123ab de 10 a 20
-> **Ejemplo 2:** Lambda corta el pdf $123ab desde 100 a 200
+> **Ejemplo 2:** Lambda extrae del archivo $123ab desde 100 a 200
+> **Ejemplo 2:** Lambda recorta del pdf $123ab desde 100 a 200
 """

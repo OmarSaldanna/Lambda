@@ -1,6 +1,7 @@
 # modules
 import os
 import json
+import pydub
 import requests
 # open ai
 from openai import OpenAI as OAI
@@ -39,6 +40,13 @@ def generate_hash(data: str):
 	# generate a numerical hash with python
     # convert it to hexadecimal
     return hex(hash(data) & 0xFFFFFFFFFFFFFFFF)[2:].zfill(16)
+
+# function to get the minutes of an audio
+def audio_minutes(audio_file: str):
+	# read the audio
+	audio = pydub.AudioSegment.from_file(audio_file)
+	# return the audio minutes
+	return audio.duration_seconds / 60
 
 ##########################################################################
 ################################# Modules ################################
@@ -178,7 +186,7 @@ class Cloudinary:
 	This is a module that uses cloudinary to upload
 	files into cloudinary
 	"""
-	def __init__ (self):
+	def __init__ (self, user_id):
 		# get the cloudinary credentials
 		# returns "https" URLs by setting secure=True  
 		config = cloudinary.config(
@@ -189,28 +197,19 @@ class Cloudinary:
 		)
 		# instance a db to use it
 		self.db = DB()
+		# and the user id
+		self.user_id = user_id
 
 	# upload files
 	def upload (self, img_path: str):
-		# try to upload the image
-		try:
-			# upload process
-			ans = cloudinary.uploader.upload(img_path)
-			# if it worked, regist on log
-			self.db.post("/logs", {
-				"db": "clodinary",
-				"data": f"[{self.user_id}] uploaded file {image_path} to {ans['secure_url']}"
-			})
-			return ans['secure_url']
-		except:
-			self.db.post("/logs", {
-				"db": "errors",
-				"data": f"[{self.user_id}] error on uploading file {image_path}"
-			})
-			return [{
-				"type": "error",
-				"content": f"Lo siento <@{self.user_id}>, ocurrió un error al subir el archivo"
-				}]
+		# upload the image
+		ans = cloudinary.uploader.upload(img_path)
+		# if it worked, regist on log
+		self.db.post("/logs", {
+			"db": "clodinary",
+			"data": f"[{self.user_id}] uploaded file {img_path} to {ans['secure_url']}"
+		})
+		return ans['secure_url']
 
 
 # models:
@@ -286,12 +285,12 @@ class OpenAI:
 
 	# checks if the current model has tokens yet to answer the question
 	# IMPORTANT: AVERAGE ANSWER LEN
-	def __model_availability (self, model: str, message: str, context: bool):
+	def __model_availability (self, model: str, message: str, context: bool, image=False):
 		# if the context is going to be counted use the actual len
 		# else, just count the context as 8, "Eres alguien inteligente"
 		context_len = self.user_data['context_len'] if context else 8
 		# now tokenize the message
-		message_len = self.token_counter(message)
+		message_len = self.token_counter(message, image)
 		# if model has more tokens than the context + message + avg answer len
 		if self.user_data['usage'][model] >= context_len + message_len + 200:
 			# the model has enough tokens yet
@@ -304,13 +303,17 @@ class OpenAI:
 	########################### context handling functions ###########################
 
 	# get the actual tokens of a string
-	def token_counter (self, string: str):
+	def token_counter (self, string: str, image=False):
+		# added to tokenize images
+		added_for_image = 0
+		if image:
+			added_for_image = int(765/3)
 		# set the tokenizer
 		encoding = tiktoken.get_encoding("cl100k_base")
 		# encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
 		# count the tokens
 		num_tokens = len(encoding.encode(string))
-		return num_tokens
+		return num_tokens + added_for_image
 
 	# determines the context limit based on the model, here's
 	# the limit of the context's size, once the context reaches
@@ -691,6 +694,9 @@ class OpenAI:
 				"content": f"Lo siento <@{self.user_id}>, ya no te quedan más imágenes."
 			}]
 	
+	
+	########################### Audio functions ###########################
+
 	# used to create text to speech audios
 	def text_to_speech (self, text: str, voice="echo", model="tts-1-hd"):
 		# first count the characters in the text
@@ -735,5 +741,158 @@ class OpenAI:
 		# finally send the answer
 		return [
 			{"type": "file", "content": audio_path},
-			{"type": "error", "content": f"Audio disponible como ${audio_hash}"}
+			{"type": "error", "content": f"Audio disponible como ${audio_hash}"},
+			{"type": "text", "content": f"Te quedan {self.user_data['usage']['tts']} caracteres para audios"}
 		]
+
+	# function to use whisper model, type can be "translation" or "transcription"
+	def speech_to_text (self, audio_path: str, model_type="transcription"):
+		# read the audio minutes
+		minutes = audio_minutes(audio_path)
+		# check availability
+		if self.user_data['usage']['whisper'] < minutes:
+			# if the user has not enough minutes left
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] no more whisper left"
+			})
+			# send a message
+			return [{
+				"type": "error",
+				"content": f"Lo siento <@{self.user_id}>, solo te quedan {self.user_data['usage']['whisper']} minutos de audio, tu audio tiene {minutes} minutos."
+			}]
+		# then the user has enough minutes
+		# so, read the user
+		audio_file = open(audio_path, "rb")
+		# create the transcript or translation
+		if model_type == "transcription":	
+			transcript = self.client.audio.transcriptions.create(
+				model="whisper-1",
+				file=audio_file
+			)
+		elif model_type == "translation":	
+			transcript = self.client.audio.transcriptions.create(
+				model="whisper-1",
+				file=audio_file
+			)
+		else:
+			raise ValueError(f"Value Error: {model_type}")
+		# regist on the logs
+		self.db.post("/logs", {
+			"db": "audios",
+			"data": f"[{self.user_id}] transcripted: {audio_path}.mp3"
+		})
+		# make the discount of the minutes
+		self.user_data['usage']['whisper'] -= minutes
+		# save the changes
+		self.__set_user_data({
+			"usage": self.user_data['usage']
+		})
+		# finally send the answer
+		return [
+			{"type": "text", "content": transcript}
+		]
+
+	########################### Vision functions ###########################
+
+	# gpt genereal usage, you can select the model to use and also
+	# you can manage wether save the conversation context or not
+	def gpt_vision (self, image_prompt: str, text_prompt: str, model="gpt-4-vision-preview", context=True):
+		# first check if there's images for the user
+		if self.user_data['usage']['vision'] <= 0:
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] no more images left for {model}"
+			})
+			# then return a message, in the correct 
+			# format: a list of dicts per message
+			return [{
+				"type": "error",
+				"content": f"Lo siento <@{self.user_id}> se te acabaron las imágenes para GPT-4 Vision."
+			}]
+		# also check tokens availability for the selected model
+		# also based on the len of the context
+		availability = self.__model_availability("gpt-4", text_prompt, context, image=True)
+		# if the model is out of tokens
+		if not availability:
+			# regist on the logs
+			self.db.post("/logs", {
+				"db": "errors",
+				"data": f"[{self.user_id}] no more tokens left for {model}"
+			})
+			# then return a message, in the correct 
+			# format: a list of dicts per message
+			return [{
+				"type": "error",
+				"content": f"Lo siento <@{self.user_id}> se te acabaron los tokens de conversación de {model} GPT-4, sin los cuales no puedes usar GPT-4 Vision."
+			}]
+		# so, upload the image
+		cloud = Cloudinary(self.user_id)
+		try:
+			image_url = cloud.upload(image_prompt)
+		except:
+			raise OSError(f"Could not upload {image_prompt} to cloudinary")
+		# at this point the user has tokens to use yet. Then add the
+		# incoming message to the context only if the context is enabled
+		if context:
+			# this function just add the prompt to the context
+			# then ONLY APPEND THE TEXT PROMPT 
+			self.__append_to_context(text_prompt, model)
+		# if not, format the prompt to call gpt
+
+		# special format for the gpt vision calls
+		messages = [
+			{
+	            "role": "user",
+	            "content": [
+	                {"type": "text", "text": text_prompt},
+	                {
+	                    "type": "image_url",
+	                    "image_url": image_url,
+	                },
+	            ],
+	        }
+	    ]
+		# so use gpt with the available model
+		res = self.client.chat.completions.create(
+			model=model,
+			# here also, if the context is required, call gpt with the
+			# prompt and context, else just use the prompt
+			messages=messages,
+			max_tokens=1024
+		)
+		# make recount of the tokens used, in the response are the
+		# tokens used, tokens in and tokens out, this function
+		tokens_in, tokens_out, adjusted, total_tokens = self.__token_recount(res.usage, "gpt-4", context)
+		# regist on the logs the answer
+		self.db.post("/logs", {
+			"db": "chat",
+			"data": f"[{self.user_id}] Q: {text_prompt}... A: {res.choices[0].message.content}"
+		})
+		self.db.post("/logs", {
+			"db": "tokens",
+			"data": f"[{self.user_id}] in: {tokens_in} out: {tokens_out} adjusted: {adjusted} total: {total_tokens}"
+		})
+		# handle context but for answer
+		# this function just appends the answer to the context (if context),
+		#  and saves changes on the database (context, usage and context len)
+		self.__handle_context(
+			res.choices[0].message.content, context
+		)
+		# discount tokens from vision
+		self.user_data['usage']['vision'] -= 1
+		# save the changes
+		self.__set_user_data({
+			"usage": self.user_data['usage']
+		})
+		# form the answer in the format
+		answer = [
+			{
+				"type": "text",
+				"content": res.choices[0].message.content
+			}
+		]
+		# finally return the answer
+		return answer
