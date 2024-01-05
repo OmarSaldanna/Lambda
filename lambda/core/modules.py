@@ -791,7 +791,7 @@ class OpenAI:
 		})
 		# finally send the answer
 		return [
-			{"type": "text", "content": transcript}
+			{"type": "text", "content": transcript.text}
 		]
 
 	########################### Vision functions ###########################
