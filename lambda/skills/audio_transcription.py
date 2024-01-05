@@ -28,7 +28,7 @@ def main(params: tuple):
 	# pass the id through the security check
 	security_check(audio_id)
 	# get the extension of the file
-	audio_file = os.popen(f"ls lambdrive/audios | grep {audio_id}").read()[:-1]
+	audio_file = os.popen(f"ls lambdrive/audios | grep {audio_id} | head -n 1").read()[:-1]
 	# create the file path
 	audio_path = f"lambdrive/audios/{audio_file}"
 	# use OpenAI whisper
@@ -39,8 +39,8 @@ def main(params: tuple):
 info = """
 ### Audio Transcriber
 Esta función permite a Lambda transcribir el texto de audios, **audios que pueden ser en casi cualquier idioma**. Solamente sigue estos pasos:
-* Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
-* Y usa el comando para transcribir el texto del audio.
+* 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
+* 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
 > **Comando: Lambda [lee, extrae o transcribe] el [audio o texto] de [la id del audio]
 > **Ejemplo: Lambda transcribe el audio de $db8194cf7daf4efe
 > **Ejemplo: Lambda extrae el texto de $db8194cf7daf4efe

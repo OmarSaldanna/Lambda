@@ -7,5 +7,9 @@
     "temperatura": "iot_read",
     "medida": "iot_read",
     "texto": "audio_transcription",
-    "audio": "audio_transcription"
+    "audio": "audio_transcription",
+    "imagen": "gpt_vision",
+    "cuadro": "gpt_vision",
+    "diagrama": "gpt_vision",
+    "foto": "gpt_vision"
 }
