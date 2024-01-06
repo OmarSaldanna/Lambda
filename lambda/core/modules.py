@@ -772,7 +772,7 @@ class OpenAI:
 				file=audio_file
 			)
 		elif model_type == "translation":	
-			transcript = self.client.audio.transcriptions.create(
+			transcript = self.client.audio.translations.create(
 				model="whisper-1",
 				file=audio_file
 			)

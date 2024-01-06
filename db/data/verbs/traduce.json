@@ -1,4 +1,5 @@
 {
-	"type": "general",
-	"function": "translate"
+	"type": "multi",
+	"texto": "translate",
+	"ingles": "audio_translation_english"
 }
