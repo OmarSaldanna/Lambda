@@ -14,21 +14,18 @@ def security_check(audio_id: str):
 			raise ValueError("unknown hash")
 
 
-# 0   1  2     3  4   5 6
-# lee el texto de ... y ...
-# transcribe el audio de ...
-# extrae el texto de ...
+# 0   1  2      3  4
+# oye mi inglés de $id
+# escucha mi inglés de $id
+# evalúa mi inglés de $id
+# califica mi inglés de $id
 def main(params: tuple):
 	# catch params
 	message, author, server = params
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
-	# split the message
-	splited_message = message.split(' ')
 	# catch the image id
-	audio_id = splited_message[4][1:]
-	# cath the text prompt
-	text_prompt = ' '.join(splited_message[6:])
+	audio_id = message.split(' ')[4][1:]
 	# pass the id through the security check
 	security_check(audio_id)
 	# get the extension of the file
@@ -40,19 +37,19 @@ def main(params: tuple):
 	# extract the text from the answer
 	text = audio_text[0]['content']
 	# then ask gpt-3 without context
-	return openai.gpt(text_prompt, context=False, system=f"Eres una IA, responde a la pregunta BASADO EN LA SIGUIENTE INFORMACIÓN proveniente de un audio: {text}")
+	return openai.gpt(text_prompt, model="gpt-3.5-turbo-16k", context=False, system=f"Eres parte de la enseñanza de inglés de un alumno, este grabó un audio y este mismo fue transcrito por una IA. Califica del 1 al 10 y brinda retroalimentación EN UNA LISTA DE PUNTOS, sobre gramática, vocabulario y demás. El siguiente mensaje fue lo que se entendió del audio: {text}")
 
 
 # info about the skill
 info = """
-### Audio Questions
-Esta función permite a Lambda transcribir el texto de audios para después **hacer preguntas espeíficas sobre la información del audio**.
+### Audio English Qualifier
+Esta función te **permitirá evaluar tus audios en inglés, Lambda evaluará tu audio y te dará retroalimentación sobre tu diálogo, vocabulario, gramática y más**. Esta función es ideal para practicar tu inglés. Solo sigue los siguientes pasos:
 * 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
 * 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando: Lambda [analiza, oye o escucha] el [audio] de [la id del audio] y [pregunta]
-> **Ejemplo: Lambda analiza el audio de $db8194cf7daf4efe y dame un resumen breve
-> **Ejemplo: Lambda oye el audio de $db8194cf7daf4efe y extrae las palabras clave del audio
-> **Ejemplo: lambda escucha el audio de $db8194cf7daf4efe y dame las ideas principales
-> **Verbos:** analiza, oye o escucha
-> **Sustantivos:** audio
+> **Comando: Lambda [califica, evalúa, oye o escucha] mi [inglés] de [la id del audio]
+> **Ejemplo: Lambda califica mi inglés de $db8194cf7daf4efe
+> **Ejemplo: Lambda escucha mi inglés de $db8194cf7daf4efe
+> **Ejemplo: lambda evalúa mi inglés de $db8194cf7daf4efe
+> **Verbos:** califica, evalúa, oye o escucha
+> **Sustantivos:** inglés
 """

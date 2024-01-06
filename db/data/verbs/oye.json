@@ -1,4 +1,5 @@
 {
 	"type": "multi",
-	"audio": "audio_question"
+	"audio": "audio_question",
+	"ingles": "audio_english_qualifier"
 }
