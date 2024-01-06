@@ -49,10 +49,10 @@ info = """
 Esta función permite a Lambda transcribir el texto de audios para después **hacer preguntas espeíficas sobre la información del audio**.
 * 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
 * 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando: Lambda [analiza, oye o escucha] el [audio] de [la id del audio] y [pregunta]
-> **Ejemplo: Lambda analiza el audio de $db8194cf7daf4efe y dame un resumen breve
-> **Ejemplo: Lambda oye el audio de $db8194cf7daf4efe y extrae las palabras clave del audio
-> **Ejemplo: lambda escucha el audio de $db8194cf7daf4efe y dame las ideas principales
+> **Comando:** Lambda [analiza, oye o escucha] el [audio] de [la id del audio] y [pregunta]
+> **Ejemplo:** Lambda analiza el audio de $db8194cf7daf4efe y dame un resumen breve
+> **Ejemplo:** Lambda oye el audio de $db8194cf7daf4efe y extrae las palabras clave del audio
+> **Ejemplo:** lambda escucha el audio de $db8194cf7daf4efe y dame las ideas principales
 > **Verbos:** analiza, oye o escucha
 > **Sustantivos:** audio
 """

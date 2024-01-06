@@ -46,10 +46,10 @@ info = """
 Esta función te **permitirá evaluar tus audios en inglés, Lambda evaluará tu audio y te dará retroalimentación sobre tu diálogo, vocabulario, gramática y más**. Esta función es ideal para practicar tu inglés. Solo sigue los siguientes pasos:
 * 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
 * 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando: Lambda [califica, evalúa, oye o escucha] mi [inglés] de [la id del audio]
-> **Ejemplo: Lambda califica mi inglés de $db8194cf7daf4efe
-> **Ejemplo: Lambda escucha mi inglés de $db8194cf7daf4efe
-> **Ejemplo: lambda evalúa mi inglés de $db8194cf7daf4efe
+> **Comando:** Lambda [califica, evalúa, oye o escucha] mi [inglés] de [la id del audio]
+> **Ejemplo:** Lambda califica mi inglés de $db8194cf7daf4efe
+> **Ejemplo:** Lambda escucha mi inglés de $db8194cf7daf4efe
+> **Ejemplo:** lambda evalúa mi inglés de $db8194cf7daf4efe
 > **Verbos:** califica, evalúa, oye o escucha
 > **Sustantivos:** inglés
 """

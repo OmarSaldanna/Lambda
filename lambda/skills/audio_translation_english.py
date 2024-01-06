@@ -38,9 +38,9 @@ info = """
 Esta función permite a Lambda traducir el texto de audios, **audios que pueden ser en casi cualquier idioma** al idioma **inglés**. Podrías grabar un audio en español desde Discord y pedirle a Lambda que te lo traduzca a inglés (en texto). **Ya después si lo deseas podrías usar la función de generar audios para crear audios en inglés**. Para usar este función solamente sigue estos pasos:
 * 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
 * 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando: Lambda [traduce, transcribe] a [inglés] de [la id del audio]
-> **Ejemplo: Lambda transcribe a inglés de $db8194cf7daf4efe
-> **Ejemplo: Lambda traduce a ingles de $db8194cf7daf4efe
+> **Comando:** Lambda [traduce, transcribe] a [inglés] de [la id del audio]
+> **Ejemplo:** Lambda transcribe a inglés de $db8194cf7daf4efe
+> **Ejemplo:** Lambda traduce a ingles de $db8194cf7daf4efe
 > **Verbos:** traduce, transcribe
 > **Sustantivos:** inglés
 """

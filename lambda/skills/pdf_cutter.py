@@ -50,8 +50,8 @@ def main(params: tuple):
 info = """
 ### PDF Cutter
 Esta función permite cortar PDFs, solo dile entre que páginas cortar y **Lambda te dará el archivo cortado y su id para que lo puedas usar con la función de leer PDFs de Lambda**.
-> **Comando:** Lambda corta el [pdf o archivo] de [id del pdf] de **página** a **página**
+> **Comando:** Lambda [corta, recorta o extrae] el [pdf o archivo] de [id del pdf] de **página** a **página**
 > **Ejemplo 1:** Lambda corta el pdf de $123ab de 10 a 20
-> **Ejemplo 2:** Lambda extrae del archivo de $123ab desde 100 a 200
 > **Ejemplo 2:** Lambda recorta del pdf de $123ab desde 100 a 200
+> **Ejemplo 3:** Lambda extrae las paginas de $123ab desde 100 a 200
 """

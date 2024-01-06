@@ -19,7 +19,7 @@ def main(params: tuple):
 info = """
 ### title
 description
-> **Comando: command
-> **Ejemplo: example
+> **Comando:** command
+> **Ejemplo:** example
 > **Verbos:** verbs
 """
