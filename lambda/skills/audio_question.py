@@ -40,7 +40,7 @@ def main(params: tuple):
 	# extract the text from the answer
 	text = audio_text[0]['content']
 	# then ask gpt-3 without context
-	return openai.gpt(text_prompt, context=False, system=f"Eres una IA, responde a la pregunta BASADO EN LA SIGUIENTE INFORMACIÓN proveniente de un audio: {audio}")
+	return openai.gpt(text_prompt, context=False, system=f"Eres una IA, responde a la pregunta BASADO EN LA SIGUIENTE INFORMACIÓN proveniente de un audio: {text}")
 
 
 # info about the skill
