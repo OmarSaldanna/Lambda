@@ -37,7 +37,7 @@ def main(params: tuple):
 	# extract the text from the answer
 	text = audio_text[0]['content']
 	# then ask gpt-3 without context
-	return openai.gpt(text_prompt, model="gpt-3.5-turbo-16k", context=False, system=f"Eres parte de la enseñanza de inglés de un alumno, este grabó un audio y este mismo fue transcrito por una IA. Califica del 1 al 10 y brinda retroalimentación EN UNA LISTA DE PUNTOS, sobre gramática, vocabulario y demás. El siguiente mensaje fue lo que se entendió del audio: {text}")
+	return openai.gpt(f"El siguiente mensaje lo que la IA capturó: {text}", model="gpt-3.5-turbo-16k", context=False, system="Eres parte de la enseñanza de inglés de un alumno, este grabó un audio y este mismo fue transcrito por una IA. Califica del 1 al 10 y brinda retroalimentación EN UNA LISTA DE PUNTOS, sobre gramática, vocabulario y demás.")
 
 
 # info about the skill
