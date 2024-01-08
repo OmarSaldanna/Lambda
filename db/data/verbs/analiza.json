@@ -4,5 +4,6 @@
     "cuadro": "gpt_vision",
     "diagrama": "gpt_vision",
     "foto": "gpt_vision",
-    "audio": "audio_question"
+    "audio": "audio_question",
+    "video": "youtube_reader"
 }
