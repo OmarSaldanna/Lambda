@@ -193,7 +193,7 @@ def add_to_errors(data: dict):
 def get_userlist():
 	try:
 		# get the userlist
-		mem = get_memory('[PUT] userlist/userlist')
+		mem = get_memory('userlist/userlist')
 		# return the data
 		return mem.dic
 	except:
@@ -225,17 +225,57 @@ def put_userlist():
 	# finally write the memory
 	mem.write()
 	# and leave a log
-	add_to_log('userlist', 'days left discounted')
+	add_to_log('userlist', '[PUT] days left discounted')
 	# and return
 	return userlist
 
-# post users in the userlist
+# post users in the userlist, also allows to create roles in
+# userlist, but there must be an usage for those new roles
 def post_users(role: str, users: list):
+	# to prevent duplicated users
 	users = list(set(users))
 	# get the roles
 	mem = get_memory('userlist/userlist')
 	# and the usages
 	usages = get_memory("../usages")
+	# if the role does not exist, then cerate it
+	if role not in mem.dic.keys():
+		# verify that there is an usage for the role
+		if role not in usages.dic.keys():
+			return f"Error: no usage for role '{role}'"
+		# then there is an usage for the new role
+		# cerate the new role in userlist with the users
+		mem[role] = {}
+		# now add each user to the role
+		for user in users:
+			# append the user with its 30 days left
+			mem[role][user] = 30
+			# also set the user usage to the role usage 
+			update_user_data(user, "members", {"usage":usages[role]})
+			# remove the user from the past role
+			# check in each role
+			for i_role in mem.dic.keys():
+				# skip the destination role
+				if role == i_role:
+					continue
+				# then check if the user in the role
+				try:
+					# if the user exists, this shouldn't throw error
+					_ = mem[i_role][user]
+					# then remove the user from that role
+					del(mem[i_role][user])
+					# break and add the user to the new role
+					break
+				except:
+					continue
+		# finally write the memory
+		mem.write()
+		# and leave a log
+		add_to_log('userlist', f"[POST] moved {','.join(users)} to new {role}")
+		# and return
+		return f'moved to role new "{role}"'
+	#######################################################################
+	# in case that the role exist in userlist
 	# for each user
 	for user in users:
 		# first check if the user is not in the selected role
@@ -274,7 +314,7 @@ def post_users(role: str, users: list):
 	# and leave a log
 	add_to_log('userlist', f"[POST] moved {','.join(users)} to {role}")
 	# and return
-	return 'ok'
+	return f'moved to role "{role}"'
 
 
 # function to restore the user's usage once their days left have ended
