@@ -193,7 +193,7 @@ def add_to_errors(data: dict):
 def get_userlist():
 	try:
 		# get the userlist
-		mem = get_memory('userlist/userlist')
+		mem = get_memory('[PUT] userlist/userlist')
 		# return the data
 		return mem.dic
 	except:
@@ -211,6 +211,8 @@ def put_userlist():
 			mem[role][user] -= 1
 	# finally write the memory
 	mem.write()
+	# and leave a log
+	add_to_log('userlist', 'days left discounted')
 	# and return
 	return mem.dic
 
@@ -221,16 +223,30 @@ def post_users(role: str, users: list):
 	mem = get_memory('userlist/userlist')
 	# for each user
 	for user in users:
+		# first check if the user is not in the selected role
+		try:
+			# if the user exists, this shouldn't throw error
+			_ = mem[role][user]
+			# in that case skip, it was a typo
+			continue
+		except:
+			pass
+		# then, the user is in another role
 		# check in each role
 		for i_role in mem.dic.keys():
-			# if the user is actually in the role
-			if user in list(mem[role].keys()):
-				# skip, it was a typo
-				break
-			# if the user is in other role
-			if user in list(mem[i_role].keys()) and role != i_role:
-				# remove the user from that role
+			# skip the destination role
+			if role == i_role:
+				continue
+			# then check if the user in the role
+			try:
+				# if the user exists, this shouldn't throw error
+				_ = mem[i_role][user]
+				# then remove the user from that role
 				del(mem[i_role][user])
+				# break and add the user to the new role
+				break
+			except:
+				continue
 		# then add the user to the role
 		# equals 30, of 30 days left
 		mem[role][user] = 30
@@ -240,5 +256,7 @@ def post_users(role: str, users: list):
 		update_user_data(user, "members", {"usage":role_usage})
 	# finally write the memory
 	mem.write()
+	# and leave a log
+	add_to_log('userlist', f"[POST] moved {','.join(users)} to {role}")
 	# and return
 	return 'ok'
