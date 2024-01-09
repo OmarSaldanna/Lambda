@@ -91,7 +91,7 @@ async def on_message(message):
                 #continue
 
             # save the messages to send them
-            files_messages.append(file_hash)
+            files_messages.append('$' + file_hash)
             # and regist on the update for audios and documents
             update[folder] += [file_hash]
 
@@ -112,20 +112,11 @@ async def on_message(message):
             "id": str(message.author.id),
             "data": images_db
         })
-        # also upsate the copy on db
-        discordo.db_request('PUT', '/members', {
-            "db": "members",
-            "id": str(message.author.id),
-            "data": {
-                # copy the first file id
-                "copy": f"${files_messages[0]}"
-            }
-        })
         # start sending the hashes
         await message.channel.send(f"> **Tus archivos están disponibles como**:")
         # send all the files
         for f in files_messages:
-            await message.channel.send(f"${f}")
+            await message.channel.send(f"{f}")
 
 ###########################################################################################
 #################### Lambda Calls #########################################################
