@@ -191,7 +191,7 @@ async def errors():
 #	"users": [user ids]
 #   "role": "{role}"
 # }
-@app.route('/userlist', methods=['GET','POST','PUT'])
+@app.route('/userlist', methods=['GET','POST','PUT', 'PATCH'])
 async def userlist():	
 	# get is to read data
 	if request.method == 'GET':
@@ -215,6 +215,30 @@ async def userlist():
 		users = request.json.get('users')
 		# use the controller
 		ans = controllers.post_users(role, users)
+		# and return the answer
+		return jsonify({"answer": ans})
+
+	# USED TO RESTORE THE USAGES OF SELECTED USERS
+	# {"role": [users], "role2": [users]}
+	elif request.method == 'PATCH':
+		# load the userlist reveipt
+		userlist = json.loads(request.json.get('userlist'))
+		# use the controller
+		ans = controllers.patch_users(userlist)
+		# and return the answer
+		return jsonify({"answer": 'ok'})
+
+
+# it only receives a {"content": "..."} 
+# exceptional API to send alerts of errors on DB
+@app.route('/alerts', methods=['POST'])
+async def alerts():	
+	# 
+	if request.method == 'POST':
+		# load the content of the alert
+		content = request.json.get('content')
+		# use the controller
+		ans = controllers.telegram_alert(content)
 		# and return the answer
 		return jsonify({"answer": ans})
 

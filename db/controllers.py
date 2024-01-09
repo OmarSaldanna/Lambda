@@ -200,27 +200,42 @@ def get_userlist():
 		raise MemoryError("userlist/userlist.json file not found or error")
 
 # discounts -1 to the users' days left
+# returns an userlist of the users to restore
 def put_userlist():
 	# get the userlist
 	mem = get_memory('userlist/userlist')
+	# start the userlist dic
+	userlist = {}
 	# then for each role
 	for role in mem.dic.keys():
+		# instance the role
+		userlist[role] = []
 		# for each user
 		for user in mem[role].keys():
-			# discount
-			mem[role][user] -= 1
+			# if user has a counter of -1
+			if mem[role][user] <= 0:
+				# then restore to 30
+				mem[role][user] = 30
+				# and add the user to the restore userlist
+				userlist[role].append(user)
+			# else, there are still days left
+			else:
+				# then discount
+				mem[role][user] -= 1
 	# finally write the memory
 	mem.write()
 	# and leave a log
 	add_to_log('userlist', 'days left discounted')
 	# and return
-	return mem.dic
+	return userlist
 
 # post users in the userlist
 def post_users(role: str, users: list):
 	users = list(set(users))
 	# get the roles
 	mem = get_memory('userlist/userlist')
+	# and the usages
+	usages = get_memory("../usages")
 	# for each user
 	for user in users:
 		# first check if the user is not in the selected role
@@ -251,12 +266,38 @@ def post_users(role: str, users: list):
 		# equals 30, of 30 days left
 		mem[role][user] = 30
 		# get the role usage
-		role_usage = get_memory("../usages")[role]
+		role_usage = usages[role]
 		# set that usage into the usage of the user
 		update_user_data(user, "members", {"usage":role_usage})
 	# finally write the memory
 	mem.write()
 	# and leave a log
 	add_to_log('userlist', f"[POST] moved {','.join(users)} to {role}")
+	# and return
+	return 'ok'
+
+
+# function to restore the user's usage once their days left have ended
+def patch_users(userlist: dict):
+	# load the usages
+	usages = get_memory("../usages")
+	# for each role in the userlist
+	for role in userlist.keys():
+		# for each user in the role
+		for user in userlist[role]:
+			# set that usage into the usage of the user
+			update_user_data(user, "members", {"usage":usages[role]})
+	# finally save a log
+	add_to_log('userlist', f"[PATCH] restored users usage")
+	# and return
+	return 'ok'
+
+
+# controller to send alerts to telegram
+def telegram_alert(content: str):
+	# send the alert
+	telegram_message(content)
+	# save a log
+	add_to_log('errors', f"[DB] {content}")
 	# and return
 	return 'ok'

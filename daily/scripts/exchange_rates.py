@@ -6,13 +6,13 @@ path = "/home/omarsaldanna/Lambda/daily/data/"
 # env path
 env_path = "/home/omarsaldanna/Lambda/.env"
 # admited exchange rates
-exchange_rates = ["MXN","CAD","USD","EUR","JPY","ARS","BRL","CLP","COP","PEN","UYU","CNY"]
+exchange_rates = ["MXN","CAD","USD","EUR","JPY","CNY"]
 
 # clear the txt file
 os.system(f'echo "" > {path}exchange_rates.txt')
 # enable the api key
 # and run the request and save it in a json
-os.system(f'curl "http://api.exchangeratesapi.io/v1/latest?access_key=$exchangeapi" > {path}rates.json')
+os.system(f'curl "http://api.exchangeratesapi.io/v1/latest?access_key=$exchangeapi&base=MXN" > {path}rates.json')
 # open the .json file
 data = json.load(open(f'{path}rates.json'))
 

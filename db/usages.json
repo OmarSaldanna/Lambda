@@ -3,7 +3,7 @@
 		"gpt-3.5-turbo": 40000,
 		"gpt-3.5-turbo-16k": 30000,
 		"gpt-4": 10000,
-		"tts": 50000,
+		"tts": 500,
 		"dalle": 3,
 		"vision": 3,
 		"whisper": 3
