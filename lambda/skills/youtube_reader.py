@@ -27,7 +27,7 @@ def main(params: tuple):
 	# try to read the video
 	transcript = "Eres un asistente inteligente, respone basado en el contenido del archivo:\n"
 	try:
-		text_dic = YouTubeTranscriptApi.get_transcript(video_id)
+		text_dic = YouTubeTranscriptApi.get_transcript(video_id, languages=['es', 'en'])
 		# extract the text
 		for t in text_dic:
   			transcript += t['text'] + " "
