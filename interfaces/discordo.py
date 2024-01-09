@@ -51,7 +51,6 @@ async def on_message(message):
             original_filename = attachment.filename
             # get the extension of the file
             extension = '.' + original_filename.split('.')[-1].lower()
-            files_messages.append(extension)
             # folder to save the file based on the extension
             folder = ""
             # images
