@@ -27,7 +27,7 @@ def main(params: tuple):
 	# users mentions 
 	users_mentions = splited_message[6:]
 	# save each user id extracted from the mentions
-	users = [extract_id(u) for u in users_mentions]
+	users = [extract_id(user) for user in users_mentions]
 	# having the list of users and the role
 	# make the post of the users in the role
 	try:
