@@ -185,6 +185,40 @@ async def errors():
 		return jsonify({'answer': ans})
 
 
+# db requests for member data: userlist
+# example request
+# {
+#	"users": [user ids]
+#   "role": "{role}"
+# }
+@app.route('/userlist', methods=['GET','POST','PUT'])
+async def userlist():	
+	# get is to read data
+	if request.method == 'GET':
+		# use the controller
+		ans = controllers.get_userlist()
+		# and return the answer
+		return jsonify({"answer": ans})
+
+	# USED TO COUNT -1 IN ALL THE USERS DAYS LEFT
+	# ALSO RETURNS ALL THE ROLES
+	elif request.method == 'PUT':
+		# use the controller
+		ans = controllers.put_userlist()
+		# and return the answer
+		return jsonify({"answer": ans})
+
+	# USED TO ADD A LIST OF USERS TO A ROLE
+	elif request.method == 'POST':
+		# load the users from the message
+		role = request.json.get('role')
+		users = request.json.get('users')
+		# use the controller
+		ans = controllers.post_users(role, users)
+		# and return the answer
+		return jsonify({"answer": ans})
+
+
 # detect dev mode
 dev = True if os.getenv("dev") == 'yes' else False
 # run the app, on localhost only

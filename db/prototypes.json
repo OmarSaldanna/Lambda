@@ -3,7 +3,7 @@
 	
 	"members": {
 		"servers": [],
-		"role": [],
+		"role": "free",
 		"usage": {
 			"gpt-3.5-turbo": 10000,
 			"gpt-3.5-turbo-16k": 30000,
@@ -51,29 +51,11 @@
 		"vision": "images"
 	},
 
-	"pro-settings": {
-		"role": ["pro"],
-		"usage": {
-			"gpt-3.5-turbo": 500000,
-			"gpt-3.5-turbo-16k": 500000,
-			"gpt-4": 50000,
-			"tts": 50000,
-			"dalle": 10,
-			"vision": 30,
-			"whisper": 30
-		}
-	},
-
-	"free-settings": {
-		"role": [],
-		"usage": {
-			"gpt-3.5-turbo": 40000,
-			"gpt-3.5-turbo-16k": 30000,
-			"gpt-4": 10000,
-			"tts": 50000,
-			"dalle": 3,
-			"vision": 3,
-			"whisper": 3
-		}
+	"__comment__": "this will have a list of users and their roles, to in base of that, recharge the users usage",
+	
+	"userlist": {
+		"pro": {},
+		"free": {},
+		"god": {}
 	}
 }

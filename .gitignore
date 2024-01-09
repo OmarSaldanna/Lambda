@@ -21,6 +21,7 @@ db/data/images
 db/data/log
 db/data/members
 db/data/servers
+db/data/userlist
 # lambdrive and backups
 lambdrive/audios
 lambdrive/images

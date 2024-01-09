@@ -13,15 +13,17 @@ sudo apt install -y python3-pip tmux python3-venv tree
 sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED
 # set a python virtual env
 python3 -m venv venv
-
+# activate the venv
+source venv/bin/activate
 # download the python libraries
-pip3 install -r reqs.txt
+pip3 install -r requirements.txt
 # create the db folders
 mkdir db/data/errors
 mkdir db/data/images
 mkdir db/data/log
 mkdir db/data/members
 mkdir db/data/servers
+mkdir db/data/user-list
 # other folders
 mkdir backups
 mkdir lambdrive
@@ -50,5 +52,4 @@ echo -e "${BLUE}# Backup Lambda every month${NC}"
 echo "50 4 * * 0 lambda backup"
 echo ""
 echo "use this commands to install python libraries"
-echo " -> source venv/bin/activate"
-echo " -> pip3 install -r reqs.txt"
+echo "Create the userlist.json file, based on the prototype"

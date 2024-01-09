@@ -27,6 +27,8 @@ def get_user_data(user_id: str, database: str, server: str):
 				new_data['servers'] += [server]
 				# and write
 				new_data.write()
+		# also append the new user to the userslist as a free user
+		post_users("free", [user_id])
 		# once created the memory, return the new data
 		return new_data.dic
 
@@ -185,3 +187,58 @@ def add_to_errors(data: dict):
 		mem.write()
 		# once created the memory, return the new data
 		return 'ok', error_hash
+
+
+# return the user list 
+def get_userlist():
+	try:
+		# get the userlist
+		mem = get_memory('userlist/userlist')
+		# return the data
+		return mem.dic
+	except:
+		raise MemoryError("userlist/userlist.json file not found or error")
+
+# discounts -1 to the users' days left
+def put_userlist():
+	# get the userlist
+	mem = get_memory('userlist/userlist')
+	# then for each role
+	for role in mem.dic.keys():
+		# for each user
+		for user in mem[role].keys():
+			# discount
+			mem[role][user] -= 1
+	# finally write the memory
+	mem.write()
+	# and return
+	return mem.dic
+
+# post users in the userlist
+def post_users(role: str, users: list):
+	users = list(set(users))
+	# get the roles
+	mem = get_memory('userlist/userlist')
+	# for each user
+	for user in users:
+		# check in each role
+		for i_role in mem.dic.keys():
+			# if the user is actually in the role
+			if user in list(mem[role].keys()):
+				# skip, it was a typo
+				break
+			# if the user is in other role
+			if user in list(mem[i_role].keys()) and role != i_role:
+				# remove the user from that role
+				del(mem[i_role][user])
+		# then add the user to the role
+		# equals 30, of 30 days left
+		mem[role][user] = 30
+		# get the role usage
+		role_usage = get_memory("../usages")[role]
+		# set that usage into the usage of the user
+		update_user_data(user, "members", {"usage":role_usage})
+	# finally write the memory
+	mem.write()
+	# and return
+	return 'ok'

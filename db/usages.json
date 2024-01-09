@@ -1,0 +1,29 @@
+{
+	"free": {
+		"gpt-3.5-turbo": 40000,
+		"gpt-3.5-turbo-16k": 30000,
+		"gpt-4": 10000,
+		"tts": 50000,
+		"dalle": 3,
+		"vision": 3,
+		"whisper": 3
+	},
+	"pro": {
+		"gpt-3.5-turbo": 500000,
+		"gpt-3.5-turbo-16k": 500000,
+		"gpt-4": 50000,
+		"tts": 50000,
+		"dalle": 10,
+		"vision": 30,
+		"whisper": 30
+	},
+	"god": {
+		"gpt-3.5-turbo": 9999999999,
+		"gpt-3.5-turbo-16k": 9999999999,
+		"gpt-4": 99999999,
+		"tts": 99999999,
+		"dalle": 9999999,
+		"vision": 999999,
+		"whisper": 9999999
+	}
+}
