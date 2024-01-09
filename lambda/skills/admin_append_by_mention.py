@@ -12,6 +12,10 @@ def main(params: tuple):
 	message, author, server = params
 	# get the user data
 	user_data = requests.get("http://127.0.0.1:8081/members", json={"db": "members", "id": author}).json()['answer']
+	return [{
+			"type": "error",
+			"content": str(user_data)
+		}]
 	# verify that the user has an admin role
 	if user_data['role'] != 'admin':
 		# if not, return a warning
