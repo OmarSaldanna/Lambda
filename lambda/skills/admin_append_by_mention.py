@@ -12,10 +12,6 @@ def main(params: tuple):
 	message, author, server = params
 	# get the user data
 	user_data = requests.get("http://127.0.0.1:8081/members", json={"db": "members", "id": author}).json()['answer']
-	return [{
-			"type": "error",
-			"content": str(user_data)
-		}]
 	# verify that the user has an admin role
 	if user_data['role'] != 'admin':
 		# if not, return a warning
@@ -31,7 +27,15 @@ def main(params: tuple):
 	# users mentions 
 	users_mentions = splited_message[6:]
 	# save each user id extracted from the mentions
-	users = [extract_id(u) for user in users_mentions]
+	users = [extract_id(u) for u in users_mentions]
+	return [{
+			"type": "error",
+			"content": str(users)
+		},
+		{
+			"type": "error",
+			"content": str(role)
+		}]
 	# having the list of users and the role
 	# make the post of the users in the role
 	try:
