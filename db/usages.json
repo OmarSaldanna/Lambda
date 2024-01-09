@@ -17,7 +17,7 @@
 		"vision": 30,
 		"whisper": 30
 	},
-	"god": {
+	"admin": {
 		"gpt-3.5-turbo": 9999999999,
 		"gpt-3.5-turbo-16k": 9999999999,
 		"gpt-4": 99999999,
