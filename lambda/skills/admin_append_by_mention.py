@@ -7,7 +7,6 @@ def extract_id(mention: str):
 # 0      1   2       3 4   5 6
 # agrega por mencion a pro a @users
 # agrega por arroba a pro a @users
-# lo mismo para mueve
 def main(params: tuple):
 	# catch params
 	message, author, server = params
