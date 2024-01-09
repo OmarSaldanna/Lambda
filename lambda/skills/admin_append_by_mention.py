@@ -37,11 +37,10 @@ def main(params: tuple):
 			json={"role": role, "users": users}
 		).json()['answer']
 		# return the answer if everything okey
-		if ans == 'ok':
-			return [{
-				"type": "error",
-				"content": f"Listo, usuarios agregados, {ans}"
-			}]
+		return [{
+			"type": "error",
+			"content": f"Listo, usuarios agregados, {ans}"
+		}]
 	except:
 		return [{
 				"type": "error",
