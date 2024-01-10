@@ -25,7 +25,7 @@ def main(params: tuple):
 	# format the answer
 	ans = [{
 		"type": "error",
-		"content": f"**<@{author}> Estos son tus recursos disponibles:**"
+		"content": f"**<@{member}> Estos son tus recursos disponibles:**"
 	}]
 	# send all in a text
 	text = ""
