@@ -25,5 +25,5 @@ Es una función de Lambda que permite hacer traducciones al instante a casi cual
 > **Ejemplo:** lambda traduce el texto Electricity rules the world
 > **Ejemplo:** lambda dame la traducción al inglés de La electricidad gobierna el mundo
 > **Ejemplo:** lambda dime la traducción al inglés de La electricidad gobierna el mundo
-Los verbos disponibles son: **traduce, dime, dame**.
+> **Verbos:** traduce, dime, dame.
 """

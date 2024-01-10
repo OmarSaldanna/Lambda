@@ -55,4 +55,5 @@ Esta función **te permitirá hacerle preguntas a Lambda sobre videos de YouTube
 > **Ejemplo:** Lambda ve el video de https://youtu.be/kCudFI4tcpg?si=G-tBUt74yeompR2v y dime de que habla y las ideas principales en una lista.
 > **Ejemplo:** Lambda ve el video de https://youtu.be/kCudFI4tcpg?si=G-tBUt74yeompR2v y dame las palabras clave en una lista.
 > **Verbos:** ve, mira, observa o analiza
+> **Sustantivos:** video
 """

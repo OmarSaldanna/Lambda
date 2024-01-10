@@ -34,6 +34,6 @@ Esta función sirve para **mostrar cuantos recursos de Lambda te quedan por usar
 > **Ejemplo:** Lambda dame mis recursos
 > **Ejemplo:** Lambda dame mi uso
 > **Ejemplo:** Lambda muestra mi disponibilidad
-> **Verbos:** _dime, dame, muestra_
-> **Sustantivos** _uso, disponibilidad, recursos_
+> **Verbos:** dime, dame, muestra
+> **Sustantivos** uso, disponibilidad, recursos
 """

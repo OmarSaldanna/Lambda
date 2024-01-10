@@ -12,9 +12,9 @@ def main(params: tuple):
   # instance openai module
   openai = OpenAI(member, server)
   # try to make the answer shorter as possible
-  message += f". Responde UNICAMENTE con el resultado, El tipo de cambio actual en EUROS es: {rates}."
+  message += f". Responde UNICAMENTE con el resultado de la CONVERSIÓN, El tipo de cambio actual en EUROS es: {rates}."
   # now call gpt
-  return openai.gpt(message, system="Eres una IA capaz de hacer cálculos, si solamente escribo 'pesos' me refiero a pesos mexicanos.", context=False, model="gpt-4")
+  return openai.gpt(message, system="Eres una IA capaz de hacer cálculos, si solamente escribo 'pesos' me refiero a pesos mexicanos. HAZ UN CALCULO CORECTO.", context=False, model="gpt-4")
 
 
 # info about the skill
