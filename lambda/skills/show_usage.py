@@ -9,6 +9,16 @@ def main(params: tuple):
 	message, member, server = params
 	# instance openai module, here we have the usage in user_data
 	openai = OpenAI(member, server)
+	# units
+	units = {
+			"gpt-3.5-turbo": "tokens (aprox. 3 letras)",
+			"gpt-3.5-turbo-16k": "tokens",
+			"gpt-4": "tokens",
+			"tts": "caracteres",
+			"dalle": "imágenes",
+			"vision": "imágenes",
+			"whisper": "minutos"
+	}
 	# now, user data is located in openai.user_data
 	# then read the usage
 	usage = openai.user_data['usage']
@@ -20,7 +30,7 @@ def main(params: tuple):
 	for resource in usage.keys():
 		ans.append({
 			"type": "text",
-			"content": f"* {resource}: **{usage[resource]}**"
+			"content": f"* {resource}: **{usage[resource]}** {units[resource]}"
 		})
 	# and send the answer
 	return ans
