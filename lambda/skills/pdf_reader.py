@@ -20,16 +20,16 @@ def get_text_from_pdf(pdf_path: str):
   return text
 
 
-# 0   1  2   3   4 5    6
-# lee el pdf $id y dime ...
-# lee el pdf $id y dame ...
+# 0   1  2   3  4   5 6
+# lee el pdf de $id y dime ...
+# lee el pdf de $id y dame ...
 def main(params: tuple):
   # catch the params
   message, member, server = params
   # instance the OpenAI module
   openai = OpenAI(member, server)
   # first get the id
-  file_id = message.split(' ')[3][1:]
+  file_id = message.split(' ')[4][1:]
   # get the file path
   file_path = f'lambdrive/documents/{file_id}.pdf'
   # set a little context
@@ -45,7 +45,7 @@ def main(params: tuple):
     }]
   # then the file has an acceptable size
   # catch the question
-  question = ' '.join(message.split(' ')[5:])
+  question = ' '.join(message.split(' ')[6:])
   # call OpenAI with an inicial message.
   return openai.gpt(question, model="gpt-3.5-turbo-16k", context=False, system=pdf_text)
 
@@ -54,9 +54,9 @@ def main(params: tuple):
 info = """
 ### PDF Reader
 Esta función permite que Lambda lea un archivo PDF de aproximadamente 12 mil palabras y que responda a preguntas basado en la información del PDF. Básicamente podría **resumir el documento, obtener los puntos más importantes hacer diagramas y mucho más**.
-> **Comando:** Lambda lee el pdf **$id** y ...
-> **Ejemplo 1:** Lambda lee el pdf $123ab y dame un resumen
-> **Ejemplo 2:** Lambda lee el pdf $123ab y dime la idea principal del texto
-> **Ejemplo 3:** Lambda lee el pdf $123ab y lista las palabras clave
+> **Comando:** Lambda lee el pdf de **$id** y ...
+> **Ejemplo 1:** Lambda lee el pdf de $123ab y dame un resumen
+> **Ejemplo 2:** Lambda lee el pdf de $123ab y dime la idea principal del texto
+> **Ejemplo 3:** Lambda lee el pdf de $123ab y lista las palabras clave
 
 """

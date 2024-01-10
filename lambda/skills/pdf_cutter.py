@@ -15,9 +15,9 @@ def extraer_paginas(pdf_path, start_page, end_page, output_path):
 
 
 # 0     1  2   3   4  5  6 7
-# corta el pdf $id de p1 a p2
-# extrae del pdf $id de p1 a p2
-# recorta del pdf $id de p1 a p2
+# corta el pdf de $id de p1 a p2
+# extrae del pdf de $id de p1 a p2
+# recorta del pdf de $id de p1 a p2
 def main(params: tuple):
   # catch the params
   message, member, server = params
