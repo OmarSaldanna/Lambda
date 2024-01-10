@@ -1,13 +1,16 @@
 import qrcode
 from core.modules import generate_hash
 
+# 
 # crea|genera un qr de|con www.google.com
 def main(params: tuple):
 	message, author, server = params
 	# create QR code instance
 	qr = qrcode.QRCode(version=1, box_size=10, border=5)
+	# split the message
+	splited_message = message.split(' ')
 	# select the qr content
-	data = message.split(' ')[-1]
+	data = ' '.join(splited_message[4:])
 	# add data to QR code
 	qr.add_data(data)
 	qr.make(fit=True)
