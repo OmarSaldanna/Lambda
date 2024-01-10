@@ -25,13 +25,15 @@ def main(params: tuple):
 	# format the answer
 	ans = [{
 		"type": "error",
-		"content": f"**Estos son tus recursos disponibles:**"
+		"content": f"**<@{author}> Estos son tus recursos disponibles:**"
 	}]
+	# send all in a text
+	text = ""
 	for resource in usage.keys():
-		ans.append({
-			"type": "text",
-			"content": f"* {resource}: **{usage[resource]}** {units[resource]}"
-		})
+		# add the resource lines to the text
+		text += f"* {resource}: **{usage[resource]}** {units[resource]}\n"
+	# add the text to the answer
+	ans.append({"type": "text", "content": text})
 	# and send the answer
 	return ans
 
