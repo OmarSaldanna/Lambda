@@ -71,11 +71,12 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Lambda IoT Turn On
-Esta Skill permite a lambda encender dispositivos conectados a la red de dispositivos de IoT de Lambda. Para más información consulta [este tutorial](https://github.com/OmarSaldanna/lambda-iot-client).
-> **Comando: Lambda [enciende, activa, prende] el [device alias]
-> **Ejemplo: Lambda enciende el luz rojo
-> **Ejemplo: lambda activa la bomba de agua
-> **Ejemplo: lambda prende la luz del estudio
-> **Verbos:** enciende, activa, prende.
+### Lambda IoT Messager
+Esta skill permite **mandar valores específicos** a los dispositivos conectados a la red de Lambda IoT, esos valores van desde números hasta strings de texto.
+> **Comando: Lambda [manda, cambia, envia, ajusta] el valor del [dispositivo] a [valor]
+> **Ejemplo: Lambda cambia el mensaje del monitor serial a hello world
+> **Ejemplo: Lambda cambia el mensaje del display lcd a hello world
+> **Ejemplo: Lambda ajusta el brillo del led rojo a 233
+> **Verbos:** manda, cambia, envia, ajusta
+> **Sustantivos:** valor, estado, mensaje, brillo
 """

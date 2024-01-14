@@ -6,7 +6,7 @@ def main(params: tuple):
   # instance openai module
   openai = OpenAI(member, server)
   # try to make the answer shorter as possible
-  message += ". Responde únicamente con el código."
+  message += ". RESPONDE ÚNICAMENTE CON EL CÓDIGO COMENTADO."
   # now call gpt
   return openai.gpt(message)
 

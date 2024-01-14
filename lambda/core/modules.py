@@ -869,11 +869,11 @@ class OpenAI:
 		# regist on the logs the answer
 		self.db.post("/logs", {
 			"db": "chat",
-			"data": f"[{self.user_id}] Q: {text_prompt}... A: {res.choices[0].message.content}"
+			"data": f"[{self.user_id}] Image Q: {text_prompt}... A: {res.choices[0].message.content}"
 		})
 		self.db.post("/logs", {
 			"db": "tokens",
-			"data": f"[{self.user_id}] in: {tokens_in} out: {tokens_out} adjusted: {adjusted} total: {total_tokens}"
+			"data": f"[{self.user_id}] Image in: {tokens_in} out: {tokens_out} adjusted: {adjusted} total: {total_tokens}"
 		})
 		# handle context but for answer
 		# this function just appends the answer to the context (if context),
