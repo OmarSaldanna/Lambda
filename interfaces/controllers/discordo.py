@@ -3,10 +3,6 @@ import requests
 import json
 import os
 
-# for images
-from PIL import Image
-# import pyheif
-
 ############################################################
 ###################### General Functions ###################
 ############################################################
@@ -56,37 +52,6 @@ def generate_hash(data: str):
 	# generate a numerical hash with python
     # convert it to hexadecimal
     return hex(hash(data) & 0xFFFFFFFFFFFFFFFF)[2:].zfill(16)
-
-# function to process not png uploaded images and convert them to
-# square images 1024px and .png
-''' Actually not used: discord saves images as JPG
-def process_notpng(input_path: str): 
-	# Generate the output path by replacing the extension with "_square.png"
-    output_path = os.path.splitext(input_path)[0]
-    # Check the file extension to determine the image format and open the image accordingly
-    if input_path.lower().endswith('.png'):
-        img = Image.open(input_path)  # Open PNG image
-    elif input_path.lower().endswith(('.jpg', '.jpeg', '.gif')):
-        img = Image.open(input_path)  # Open JPEG, JPG, or GIF image
-    elif input_path.lower().endswith('.heic'):
-        # For HEIC images, use pyheif library to read and convert
-        heif_file = pyheif.read(input_path)
-        img = Image.frombytes(
-            heif_file.mode, heif_file.size, heif_file.data,
-            "raw", heif_file.mode, heif_file.stride,
-        )
-    else:
-        raise ValueError('unsupported image format')
-    # Define the desired size for the square image
-    desired_size = (1024, 1024)
-    # Resize and create the square image
-    img.thumbnail(desired_size, Image.LANCZOS)
-    img_size = img.size
-    new_img = Image.new("RGB", desired_size, (255, 255, 255))
-    new_img.paste(img, ((desired_size[0] - img_size[0]) // 2, (desired_size[1] - img_size[1]) // 2))
-    # Save the processed image as a PNG file
-    new_img.save(output_path+'.png', "PNG")
-'''
 
 # split a text in pieces of n length
 # this was implemented cause of there's messages with len

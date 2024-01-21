@@ -41,7 +41,8 @@ async def on_message(message):
 #################### Uploading Files #########################################################
 ###########################################################################################
 
-    files_messages = []  # List to store saved files
+    files_messages = [] # List to store saved files
+    last_file_hash = "" # to store the last file hash
     update = {"images":[],"documents":[], "audios":[]} # dict to update the user db
     # if there are attatchemnts that are files
     if message.attachments:
@@ -57,16 +58,14 @@ async def on_message(message):
             if extension in ['.jpg', '.jpeg', '.heic', '.png']:
                 folder = "images"
             # documents
-            elif extension in ['.csv', '.pdf', '.txt']:
+            elif extension in ['.pdf']:
                 folder = "documents"
             # audios
             elif extension in ['.mp3', '.ogg', '.wav']:
                 folder = "audios"
             # else, unsupported file type
             else:
-                files_messages.append(f'> Error: formato no apropiado **{original_filename}**')
-                files_messages.append(f'> Los formatos manejados son: **.jpg .jpeg .heic .png')
-                files_messages.append(f'> .csv .pdf .txt .mp3 .ogg .wav**')
+                files_messages.append(f'> Archivo **{original_filename}** no disponible')
                 continue
             # generate a hash based on the original name and
             # the user id to avoid repetitive hashes
@@ -75,30 +74,24 @@ async def on_message(message):
             download_path = f"lambdrive/{folder}/{file_hash}{extension}"
             # download the file as the name defined
             await attachment.save(download_path)
-            # try to process images that are not png
-            if folder == 'images':
-                # process the image
-                #discordo.process_notpng(download_path)
-                pass
-                # send the message
-                #files_messages.append(f'```${file_hash}```')
-                # and regist the update for images
-                #update[folder] += [file_hash]
-                #except Exception as e:
-                    #print(e, 'error')
-                    # send an error message
-                    #files_messages.append(f'> Error procesando imagen: {original_filename}')
-                #continue
-
             # save the messages to send them
-            files_messages.append('$' + file_hash)
-            # and regist on the update for audios and documents
+            # files_messages.append('$' + file_hash)
+            # regist on the update for audios and documents
             update[folder] += [file_hash]
+            # and save the file hash
+            last_file_hash = file_hash
 
-    # after the download of the files, send the hashes
-    if files_messages:
+    # OPTIMIZATION SAYS: needs to be optmized on db. later
+    # after the download of the files, send the hash to the users db "file"
+    if files_messages or last_file_hash:
+        # save the first hash into the users db "file"
+        discordo.db_request('PUT', '/members', {
+            "db": "members",
+            "id": str(message.author.id),
+            "data": {"file": last_file_hash}
+        })
         # save the files in the db
-        # first get the user images        
+        # first get the user images
         images_db = discordo.db_request('GET', '/members', {
             "db": "images",
             "id": str(message.author.id)
@@ -112,11 +105,14 @@ async def on_message(message):
             "id": str(message.author.id),
             "data": images_db
         })
-        # start sending the hashes
-        await message.channel.send(f"> **Tus archivos están disponibles como**:")
-        # send all the files
-        for f in files_messages:
-            await message.channel.send(f"{f}")
+        # send the answers
+        # if the file is ok
+        if not files_messages:
+            await message.channel.send(f"> Tu archivo está disponible")
+        # the file isn't ok
+        else:
+            for f in files_messages:
+                await message.channel.send(f)
 
 ###########################################################################################
 #################### Lambda Calls #########################################################
