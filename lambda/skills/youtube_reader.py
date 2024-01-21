@@ -49,11 +49,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Youtube Reader
-Esta función **te permitirá hacerle preguntas a Lambda sobre videos de YouTube**, solamente debes de pasarle a Lambda el link del video, ese que copias y pegas del botón de compartir.
-> **Comando:** Lambda [ve, mira, observa o analiza] el video de [link] y [tus preguntas]
-> **Ejemplo:** Lambda ve el video de https://youtu.be/kCudFI4tcpg?si=G-tBUt74yeompR2v y dime de que habla y las ideas principales en una lista.
-> **Ejemplo:** Lambda ve el video de https://youtu.be/kCudFI4tcpg?si=G-tBUt74yeompR2v y dame las palabras clave en una lista.
-> **Verbos:** ve, mira, observa o analiza
-> **Sustantivos:** video
+Visor de YouTube
+Esta función te permitirá hacerle preguntas a Lambda sobre videos de YouTube, solamente debes de pasarle a Lambda el link del video, ese que copias y pegas del botón de compartir.
+Comando:Lambda [ve|mira|observa|analiza] el video de [link] y [tus preguntas]
+Ejemplo:Lambda ve el video de https://youtu.be/kCudFI4tcpg?si=G-tBUt74yeompR2v y dime de que habla y las ideas principales en una lista.
+Ejemplo:Lambda ve el video de https://youtu.be/kCudFI4tcpg?si=G-tBUt74yeompR2v y dame las palabras clave en una lista.
 """

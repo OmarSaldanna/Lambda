@@ -39,13 +39,11 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Show Usage
-Esta función sirve para **mostrar cuantos recursos de Lambda te quedan por usar: imágenes, tokens de conversación, archivos en la nube, audios** y lo demás que lambda cuente como uso. Esta te ayudará a que vayas midiendo tu uso de Lambda.
-> **Comando:** Lambda **[verbo]** mi **[sustantivo]** ...
-> **Ejemplo:** Lambda dime mi uso
-> **Ejemplo:** Lambda dame mis recursos
-> **Ejemplo:** Lambda dame mi uso
-> **Ejemplo:** Lambda muestra mi disponibilidad
-> **Verbos:** dime, dame, muestra
-> **Sustantivos** uso, disponibilidad, recursos
+Display de Recursos
+Esta función sirve para mostrar cuantos recursos de Lambda te quedan por usar: imágenes, tokens de conversación, audios y lo demás que lambda cuente como uso. Esta te ayudará a que vayas midiendo tu uso de Lambda.
+Comando:Lambda [dame|dime|muestra] mi [uso|disponibilidad|recursos]
+Ejemplo:Lambda dime mi uso
+Ejemplo:Lambda dame mis recursos
+Ejemplo:Lambda dame mi uso
+Ejemplo:Lambda muestra mi disponibilidad
 """

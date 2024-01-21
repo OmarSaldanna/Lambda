@@ -2,7 +2,6 @@
     "type": "multi",
     "imagen": "generate_dalle",
     "qr": "generate_qr",
-    "variacion": "variate_dalle",
     "codigo": "programmer",
     "script": "programmer",
     "programa": "programmer",

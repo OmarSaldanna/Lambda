@@ -20,43 +20,49 @@ def get_text_from_pdf(pdf_path: str):
   return text
 
 
-# 0   1  2   3  4   5 6
-# lee el pdf de $id y dime ...
-# lee el pdf de $id y dame ...
+# 0   1  2   3  4 5
+# lee el pdf de y dime ...
+# lee el pdf de y dame ...
 def main(params: tuple):
   # catch the params
   message, member, server = params
   # instance the OpenAI module
   openai = OpenAI(member, server)
-  # first get the id
-  file_id = message.split(' ')[4][1:]
+  # first get the file id
+  file_id = openai.user_data['file']
   # get the file path
   file_path = f'lambdrive/documents/{file_id}.pdf'
   # set a little context
   pdf_text = "Eres un asistente inteligente, respone basado en el contenido del archivo:\n"
-  # extract the text
-  pdf_text += get_text_from_pdf(file_path)
+  # try extract the text
+  try:
+    pdf_text += get_text_from_pdf(file_path)
+  except:
+    return [{
+      "type": "error",
+      "content": f"Lo siento <@{member}> no encontramos tu archivo, **subirlo de nuevo podría resolver esto.**"
+    }]
   # check the text to have less tokens than 15,000. Since the question.
-  if openai.token_counter(pdf_text) > 15500:
+  token_count = openai.token_counter(pdf_text)
+  if token_count > 15000:
     # then trow a warning that the text is too long
     return [{
       "type": "error",
-      "content": f"Lo siento <@{member}> tu archivo excede el límite de palabras. Tu texto tiene {openai.token_counter(pdf_text)} tokens."
+      "content": f"Lo siento <@{member}> tu archivo excede el límite de palabras. Tu texto tiene {token_count} tokens."
     }]
   # then the file has an acceptable size
   # catch the question
-  question = ' '.join(message.split(' ')[6:])
+  question = ' '.join(message.split(' ')[5:])
   # call OpenAI with an inicial message.
   return openai.gpt(question, model="gpt-3.5-turbo-16k", context=False, system=pdf_text)
 
 
 # info about the skill
 info = """
-### PDF Reader
-Esta función permite que Lambda lea un archivo PDF de aproximadamente 12 mil palabras y que responda a preguntas basado en la información del PDF. Básicamente podría **resumir el documento, obtener los puntos más importantes hacer diagramas y mucho más**.
-> **Comando:** Lambda lee el pdf de **$id** y ...
-> **Ejemplo 1:** Lambda lee el pdf de $123ab y dame un resumen
-> **Ejemplo 2:** Lambda lee el pdf de $123ab y dime la idea principal del texto
-> **Ejemplo 3:** Lambda lee el pdf de $123ab y lista las palabras clave
-
+Lector de PDFs
+Esta función permite que Lambda lea un archivo PDF de aproximadamente 12 mil palabras y que responda a preguntas basado en la información del PDF. Básicamente podría resumir el documento, obtener los puntos más importantes y mucho más.
+Comando:Lambda lee el pdf y [preguntas sobre el pdf]
+Ejemplo:Lambda lee el pdf y dame un resumen
+Ejemplo:Lambda lee el pdf y dime la idea principal del texto
+Ejemplo:Lambda lee el pdf y lista las palabras clave
 """

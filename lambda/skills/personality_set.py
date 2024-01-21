@@ -39,10 +39,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Personality Set
-Permite **cambiar la personalidad con la que lambda responde a tus preguntas**, con esta función podrás pedir que **lambda responda como algún celebre científico, como un poeta o literario, o que responda con sarcasmo o entusiasmo**. Ejemplos como los anteriores son para los que esta función sirve. **Esta función elimina la conversación** y esta vuelve a empezar desde cero, como una conversación nueva.
-> **Comando:** Lambda **[verbo]** tu personalidad a ...
-> **Ejemplo:** Lambda cambia tu personalidad a Eres un poeta renacentista y quiero que a todas mis preguntas respondas con un refinado uso del lenguaje y con el contexto humanista y antropocentrista destacado del renacimiento
-> **Ejemplo:** lambda ajusta la personalidad a Simula la personalidad de Stephen Hawking, a todas las preguntas y temas de conversación responde con su elocuencia, humor y ocupa el refinado lenguaje de un científico. Da respuestas profundas y detalladas
-> **Verbos:** cambia, ajusta, resetea, edita
+Ajuste de Personalidad 
+Permite ajustar la "personalidad" con la que Lambda responde, podrás pedir que Lambda responda como algún célebre científico, como un poeta o literario, o que responda con sarcasmo o entusiasmo. Además podrías pedirle que escriba en manera de lista, remarque conceptos, etc. Esta función elimina la conversación y esta vuelve a empezar desde cero.
+Comando:Lambda **[cambia|ajusta|resetea|edita] tu [personalidad] a [descripción]
+Ejemplo:Lambda cambia tu personalidad a Eres un poeta renacentista y quiero que a todas mis preguntas respondas con un refinado uso del lenguaje y con el contexto humanista y antropocentrista destacado del renacimiento
+Ejemplo:lambda ajusta la personalidad a Simula la personalidad de Stephen Hawking, a todas las preguntas y temas de conversación responde con su elocuencia, humor y ocupa el refinado lenguaje de un científico. Da respuestas profundas y detalladas
 """

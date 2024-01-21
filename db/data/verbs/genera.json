@@ -2,9 +2,9 @@
     "type": "multi",
     "imagen": "generate_dalle",
     "qr": "generate_qr",
-    "variacion": "variate_dalle",
     "codigo": "programmer",
     "script": "programmer",
+    "funcion": "programmer",
     "programa": "programmer",
     "algoritmo": "programmer",
     "audio": "generate_tts"

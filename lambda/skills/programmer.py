@@ -12,11 +12,10 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Programmer 
-Usas un modelo de lenguaje para poder escribir programas, literalmente **puedes pedirle a Lambda que te programe un Arduino, una página web, y muchas más cosas.**
-> **Comando:** Lambda programa ...
-> **Comando:** Lambda dame un [codigo o programa] ...
-> **Ejemplo:** Lambda programa un arduino para que haga parpadear a dos leds
-> **Ejemplo:** Lambda dame el código base HTML para una página web
-Los verbos disponibles son: **programa, dame**.
+Programador
+Lambda te escribirá programas basados en una descripción del programa, puede ser casi cualquier programa.
+Comando 1:Lambda programa [descripción del programa]
+Comando 2:Lambda [dame|crea|genera] un [codigo|programa|script|función|algoritmo] [descripción]
+Ejemplo:Lambda programa un arduino para que haga parpadear a dos leds
+Ejemplo:Lambda dame el código base HTML para una página web
 """
