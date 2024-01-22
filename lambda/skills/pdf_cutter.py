@@ -16,7 +16,7 @@ def extraer_paginas(pdf_path, start_page, end_page, output_path):
       writer.write(output_pdf)
 
 def get_user_file(user_id):
-  return user_data = requests.get('http://127.0.0.1:8081/members', json={
+  return requests.get('http://127.0.0.1:8081/members', json={
     "db": "members",
     "id": user_id
   })['answer']['file']
