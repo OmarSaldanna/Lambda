@@ -572,8 +572,8 @@ class OpenAI:
 			# finally return the paths in the correct format
 			answer = []
 			for p,h in zip(paths, hashes):
-				answer.append({'type':'text', 'content':"Listo, tu imagen está disponible"})
 				answer.append({'type':'file', 'content':p})
+				answer.append({'type':'text', 'content':"Listo, tu imagen está disponible"})
 			# and append a message with the remaining images
 			answer.append({
 				"type": "text",
