@@ -517,12 +517,13 @@ class OpenAI:
 
 	# function to update usage, after generating the images
 	# also saves the images hash
-	def __update_dalle_usage (self, n: int):
+	def __update_dalle_usage (self, n: int, last_hash: str):
 		# update the local instance
 		self.user_data['usage']['dalle'] -= n
 		# now update in the db
 		self.__set_user_data({
-			"usage": self.user_data['usage']
+			"usage": self.user_data['usage'],
+			"file": last_hash
 		})
 
 	# function to pre process images to use dalle edit and variation
@@ -567,12 +568,12 @@ class OpenAI:
 			# download the images
 			paths, hashes = self.__download_images(urls, 'images')
 			# update the usage
-			self.__update_dalle_usage(n)
+			self.__update_dalle_usage(n, hashes[0])
 			# finally return the paths in the correct format
 			answer = []
 			for p,h in zip(paths, hashes):
+				answer.append({'type':'text', 'content':"Listo, tu imagen está disponible"})
 				answer.append({'type':'file', 'content':p})
-				answer.append({'type':'text', 'content':f"Imagen disponible como ${h}"})
 			# and append a message with the remaining images
 			answer.append({
 				"type": "text",
@@ -736,12 +737,13 @@ class OpenAI:
 		self.user_data['usage']['tts'] -= chars
 		# and save changes
 		self.__set_user_data({
-			"usage": self.user_data['usage']
+			"usage": self.user_data['usage'], 
+			"file": audio_hash
 		})
 		# finally send the answer
 		return [
 			{"type": "file", "content": audio_path},
-			{"type": "error", "content": f"Audio disponible como ${audio_hash}"},
+			{"type": "text", "content": f"Listo, tu audio está disponible para usarse."},
 			{"type": "text", "content": f"Te quedan {self.user_data['usage']['tts']} caracteres para audios"}
 		]
 
