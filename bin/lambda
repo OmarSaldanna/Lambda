@@ -18,6 +18,10 @@ NC='\033[0m' # No color
 
 case $1 in
 
+	lines)
+		echo Lambda has $(git ls-files | xargs cat | wc -l) lines
+	;;
+
 	start)
 		echo -e "${GREEN}Starting Lambda λ${NC}"
 		# append to log
