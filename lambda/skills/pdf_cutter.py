@@ -19,7 +19,7 @@ def get_user_file(user_id):
   return requests.get('http://127.0.0.1:8081/members', json={
     "db": "members",
     "id": user_id
-  })['answer']['file']
+  }).json()['answer']['file']
 
 def set_user_file(user_id, file_hash):
   requests.put('http://127.0.0.1:8081/members', json={
