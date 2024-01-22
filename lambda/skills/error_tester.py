@@ -13,9 +13,8 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Error Tester
-This function is for development purposes. Directly throws an error with a message.
-> **Comando:** Lambda dame un error de ...
-> **Ejemplo:** lambda dame un error de caramón camarelo
-
+Error Tester 
+De las primeras funciones incorporadas en Lambda para prpobar su estabildad, usarla generará un error, que será notificado al Admin por mensaje, el contenido de dicho será el texto del error.
+Comando:Lambda [dame] un [error] de [texto del error]
+Ejemplo:lambda dame un error de caramón camarelo
 """

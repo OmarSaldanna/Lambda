@@ -13,13 +13,12 @@ def main(params: tuple):
 	# use the TTS model function
 	return openai.text_to_speech(prompt)
 
-
 # info about the skill
 info = """
-### Text To Speech
-Esta función te permitirá **generar audios a partir de un texto**, todo por inteligencia artificial. Solo manda el texto y Lambda generará el audio al instante. El modelo puede generar audio en múltiples idiomas, por ejemplo: Inglés, Alemán, Francés y muchos más. **No tienes que específicar el idioma, simplemente escribe el texto** en el idioma que quieras, si quieres copia y pega de una traducción.
-> **Comando:** Lambda [crea, genera o dame] una [audio] de ...
-> **Ejemplo:** lambda crea un audio de Ich haiße Lambda, Ich bin gut, un Dir?
-> **Ejemplo:** Lambda dame un audio de Bonjour bonne journée comment vas-tu?
-> **Ejemplo:** Lambda dame un audio de Hello good morning, how are you??
+Texto a Audio
+Esta función te permitirá generar audios a partir de un texto, todo por inteligencia artificial. Solo manda el texto y Lambda generará el audio al instante. El modelo puede generar audio en casi cualquier idioma. No tienes que específicar el idioma, simplemente escribe el texto en el idioma que quieras.
+Comando:Lambda [crea|genera|dame] un [audio] de [texto del audio]
+Ejemplo:lambda crea un audio de Ich haiße Lambda, Ich bin gut, un Dir?
+Ejemplo:Lambda dame un audio de Bonjour bonne journée comment vas-tu?
+Ejemplo:Lambda dame un audio de Hello good morning, how are you??
 """

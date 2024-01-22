@@ -6,7 +6,6 @@
     "humedad": "iot_read",
     "temperatura": "iot_read",
     "medida": "iot_read",
-    "texto": "audio_transcription",
     "audio": "audio_transcription",
     "imagen": "gpt_vision",
     "cuadro": "gpt_vision",

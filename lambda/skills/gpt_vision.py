@@ -14,8 +14,8 @@ def security_check(file_id: str):
 			raise ValueError(f"unknown hash: {file_id}")
 
 
-# 0   1  2      3  4   5 6
-# Lee la imagen de $id y ...
+# 0   1  2      3 4   5 6
+# Lee la imagen y ...
 # same for analiza, ve, mira, observa
 # also for foto, diagrama, cuadro
 def main(params: tuple):
@@ -26,9 +26,9 @@ def main(params: tuple):
 	# split the message
 	splited_message = message.split(' ')
 	# catch the image id
-	image_id = splited_message[4][1:]
+	image_id = openai.user_data['file']
 	# cath the text prompt
-	text_prompt = ' '.join(splited_message[6:])
+	text_prompt = ' '.join(splited_message[4:])
 	# pass the id through the security check
 	security_check(image_id)
 	# get the extension of the file
@@ -41,15 +41,10 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### AI Vision (by OpenAI's GPT)
-Esta función permitirá que **Lambda analice imágenes y puedas preguntar sobre las imágenes**, desde diagramas, plantas, animales, paises, ecuaciones, arte y mucho más. Solo sigue estos pasos:
-* 1. Sube la imagen a discord, puedes mandarla al chat de @Lambda.
-* 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando: Lambda [lee, analiza, ve, mira u observa] el [imagen, foto, diagrama o cuadro] de [la id de la imagen] y [tus preguntas]
-> **Ejemplo: Lambda mira la imagen de $db8194cf7daf4efe y dime que puedes ver
-> **Ejemplo: Lambda analiza el cuadro de $db8194cf7daf4efe y dime de que artista piensas que sea
-> **Ejemplo: lambda observa la imagen de $db8194cf7daf4efe y dime que planta es, y si es muy complicada y cara de cuidar
-> **Ejemplo: lambda lee el diagrama de $db8194cf7daf4efe y dame una breve explicación de lo que habla el diagrama
-> **Verbos:** lee, analiza, ve, mira u observa
-> **Sustantivos:** imagen, foto, cuadro o diagrama
+Visión Inteligente
+Esta función permitirá que Lambda analice imágenes y puedas preguntar sobre ellas, desde diagramas, plantas, animales, paises, ecuaciones, arte y mucho más. Solo sube el tu imagen al chat, y luego de que lambda te diga que "tu archivo está disponible" haz tus preguntas. Se aceptan formatos .jpg .jpeg .heic .png. 
+Comando: Lambda [lee|analiza|ve|mira|observa] la [imagen|foto|diagrama|cuadro] y [tus preguntas]
+Ejemplo: Lambda mira la imagen y dime que puedes ver
+Ejemplo: Lambda analiza el cuadro y dime de que artista piensas que sea
+Ejemplo: lambda lee el diagrama de $db8194cf7daf4efe y dame una breve explicación de lo que habla el diagrama
 """

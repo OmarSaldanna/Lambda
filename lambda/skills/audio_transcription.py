@@ -14,17 +14,17 @@ def security_check(audio_id: str):
 			raise ValueError("unknown hash")
 
 
-# 0   1  2     3  4
-# lee el texto de ...
-# transcribe el audio de ...
-# extrae el texto de ...
+# 0   1  2
+# lee el texto
+# transcribe el audio
+# extrae el texto
 def main(params: tuple):
 	# catch params
 	message, author, server = params
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
 	# catch the audio id
-	audio_id = message.split(' ')[4][1:]
+	audio_id = openai.user_data['file']
 	# pass the id through the security check
 	security_check(audio_id)
 	# get the extension of the file
@@ -37,14 +37,10 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Audio Transcriber
-Esta función permite a Lambda transcribir el texto de audios, **audios que pueden ser en casi cualquier idioma**. Solamente sigue estos pasos:
-* 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
-* 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando:** Lambda [lee, extrae o transcribe] el [audio o texto] de [la id del audio]
-> **Ejemplo:** Lambda transcribe el audio de $db8194cf7daf4efe
-> **Ejemplo:** Lambda extrae el texto de $db8194cf7daf4efe
-> **Ejemplo:** lambda lee el texto de $db8194cf7daf4efe
-> **Verbos:** lee, extrae o transcribe
-> **Sustantivos:** audio o texto
+Transcriptor de Audio
+Esta función permite a Lambda transcribir el texto de audios, dichos pueden ser en casi cualquier idioma. Solamente sube tu archivo o graba un audio desde Discord y ocupa la función
+Comando Lambda [lee|extrae|transcribe] el [audio|texto]
+Ejemplo Lambda transcribe el audio
+Ejemplo Lambda extrae el texto
+Ejemplo lambda lee el texto
 """

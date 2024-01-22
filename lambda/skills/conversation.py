@@ -18,7 +18,8 @@ def main(params: tuple):
 info = """
 ### Conversation
 Esta función es la que ocupa lambda para las conversaciones, también es implementada en el comando de "_Lambda, ..._". Permite tener conversaciones con _gpt3.5-turbo_.
-> **Comando:** Lambda dime algo [sobre o acerca] ...
-> **Ejemplo:** lambda dime algo sobre los agujeros negros
-
+Comando 1:Lambda dime algo [sobre o acerca] [algún tema]
+Comando 2:Lambda, [preguntas o conversación]
+Ejemplo:lambda dime algo sobre los agujeros negros
+Ejemplo:lambda, cuál es la capital de Perú?
 """

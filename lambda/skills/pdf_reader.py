@@ -61,7 +61,7 @@ def main(params: tuple):
 info = """
 Lector de PDFs
 Esta función permite que Lambda lea un archivo PDF de aproximadamente 12 mil palabras y que responda a preguntas basado en la información del PDF. Básicamente podría resumir el documento, obtener los puntos más importantes y mucho más.
-Comando:Lambda lee el pdf y [preguntas sobre el pdf]
+Comando:Lambda [lee] el [pdf] y [preguntas sobre el pdf]
 Ejemplo:Lambda lee el pdf y dame un resumen
 Ejemplo:Lambda lee el pdf y dime la idea principal del texto
 Ejemplo:Lambda lee el pdf y lista las palabras clave

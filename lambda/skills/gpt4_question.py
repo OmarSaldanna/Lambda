@@ -21,10 +21,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### GPT4 Conversation
-Es básicamente la misma función que la conversación convencional, también almacena la conversación, el detalle es que **esta usa GPT4**, que es el modelo más capaz de OpenAI.
-> **Comando:** Lambda [verbo] con cuatro ...
-> **Ejemplo:** lambda dime con cuatro que son los agujeros negros
-> **Ejemplo:** lambda pregunta a cuatro que es la radiación de Hawking
-Los verbos disponibles son: **pregunta, dime, responde, contesta**.
+GPT-4
+Es básicamente la misma función que la conversación convencional, también almacena la conversación, el detalle es usa GPT-4, que es el modelo más capaz de OpenAI. Se recomienda usar únicamente en casos excepcionales.
+Comando:Lambda [pregunta|dime|responde|contesta] con [cuatro] [las preguntas]
+Ejemplo:lambda dime con cuatro que son los agujeros negros
+Ejemplo:lambda pregunta a cuatro que es la radiación de Hawking
 """

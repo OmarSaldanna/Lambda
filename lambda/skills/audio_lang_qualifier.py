@@ -22,7 +22,7 @@ def main(params: tuple):
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
 	# catch the image id
-	audio_id = message.split(' ')[4][1:]
+	audio_id = openai.user_data['file']
 	# pass the id through the security check
 	security_check(audio_id)
 	# get the extension of the file
@@ -39,14 +39,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Audio Language Qualifier
-Esta función te **permitirá evaluar tus audios en cualquier idioma, Lambda evaluará tu audio y te dará retroalimentación sobre tu diálogo, vocabulario, gramática y más**. Esta función es ideal para practicar tu aprendizaje de idioma. **No tienes que especificar el lenguaje, Lambda lo va a detectar automáticamente. Solo sigue los siguientes pasos:
-* 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
-* 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando:** Lambda [califica, evalúa, oye o escucha] mi [pronunciación o idioma] de [id del audio]
-> **Ejemplo:** Lambda califica mi pronunciación de $db8194cf7daf4efe
-> **Ejemplo:** Lambda escucha mi pronunciación de $db8194cf7daf4efe
-> **Ejemplo:** lambda evalúa mi idioma de $db8194cf7daf4efe
-> **Verbos:** califica, evalúa, oye o escucha
-> **Sustantivos:** inglés
+Audio Language Qualifier
+Esta función te permitirá evaluar tus audios en cualquier idioma, Lambda evaluará tu audio y te dará retroalimentación sobre tu diálogo, vocabulario, gramática y más. Esta función es ideal para practicar tu aprendizaje de idioma. No tienes que especificar el lenguaje, Lambda lo va a detectar automáticamente. Solo sube tu o graba audio y usa la función.
+Comando:Lambda [califica|evalúa|oye|escucha] mi [pronunciación|idioma]
+Ejemplo:Lambda califica mi pronunciación
+Ejemplo:Lambda escucha mi pronunciación
 """

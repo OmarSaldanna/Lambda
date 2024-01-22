@@ -22,7 +22,7 @@ def main(params: tuple):
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
 	# catch the image id
-	audio_id = message.split(' ')[4][1:]
+	audio_id = openai.user_data['file']
 	# pass the id through the security check
 	security_check(audio_id)
 	# get the extension of the file
@@ -30,22 +30,19 @@ def main(params: tuple):
 	# create the file path
 	audio_path = f"lambdrive/audios/{audio_file}"
 	# use OpenAI whisper
-	audio_text = openai.speech_to_text(audio_path, "translation")
+	answer = openai.speech_to_text(audio_path, "translation")
 	# extract the text from the answer
-	text = audio_text[0]['content']
+	audio_text = message + ':\n' + answer[0]['content']
 	# then ask gpt-3 without context
-	return openai.gpt(text, model="gpt-3.5-turbo-16k", context=False, system="Eres una IA para realizar traducciones RESPONDE ÚNICAMENTE CON LA TRADUCCIÓN EN ESPAÑOL DEL TEXTO PROPORCIONADO")
+	return openai.gpt(text, model="gpt-3.5-turbo-16k", context=False, system="Eres una IA para realizar traducciones RESPONDE ÚNICAMENTE CON LA TRADUCCIÓN en el idioma especificado, si no se especifica, tradúcelo a español")
 
 
 # info about the skill
 info = """
-### Spanish Audio Translator
-Esta función hará que **Lambda traduzca a texto en español un audio en cualquier idioma**. Ideal para traducir fragmentos de videos, o diálogos con extranjeros. Para usar esta función sigue estos pasos:
-* 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
-* 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando:** Lambda traduce el audio de [la id del audio]
-> **Ejemplo:** Lambda traduce el audio de $db8194cf7daf4efe
-> **Ejemplo:** lambda traduce el audio de $db8194cf7daf4efe
-> **Verbos:** traduce
-> **Sustantivos:** audio
+Traductor de Audios
+Esta función hará que Lambda traduzca a texto en cualquier idioma (a español por default) un audio en cualquier idioma. Ideal para traducir fragmentos de videos, o diálogos con extranjeros. Sólo sube tu archivo o graba el audio y ocupa la función.
+Comando:Lambda [traduce] el [audio] a [idioma del texto]
+Ejemplo:Lambda traduce el audio
+Ejemplo:Lambda traduce el audio a inglés
+Ejemplo:Lambda traduce el audio a japonés
 """

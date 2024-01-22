@@ -67,11 +67,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Lambda IoT Turn On
-Esta Skill permite a lambda encender dispositivos conectados a la red de dispositivos de IoT de Lambda. Para más información consulta [este tutorial](https://github.com/OmarSaldanna/lambda-iot-client).
-> **Comando: Lambda [enciende, activa, prende] el [device alias]
-> **Ejemplo: Lambda enciende el luz rojo
-> **Ejemplo: lambda activa la bomba de agua
-> **Ejemplo: lambda prende la luz del estudio
-> **Verbos:** enciende, activa, prende.
+Lambda IoT: Encender
+Permite a Lambda encender dispositivos conectados a la red de dispositivos de IoT de Lambda. Manda un valor de 255. Para más información técnica consulta https://github.com/OmarSaldanna/lambda-iot-client
+Comando:Lambda [enciende|activa|prende] el [alias del dispositivo]
+Ejemplo:Lambda enciende el led rojo
+Ejemplo:lambda activa la bomba de agua
 """

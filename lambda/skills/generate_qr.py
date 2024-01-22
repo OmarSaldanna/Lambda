@@ -30,9 +30,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### QR Generator
-Esta función se encarga de generar códigos QR de links o de textos.
-> **Comando:** Lambda [crea, genera o dame] un [QR o qr] de ...
-> **Ejemplo:** lambda crea un qr de larasa.me
-
+Generar QRs
+Esta función se encarga de generar códigos QR de links o de textos. Solo proporciona el contenido del QR y Lambda lo creará.
+Comando:Lambda [crea|genera|dame] un [QR|qr] de [contenido del QR]
+Ejemplo:Lambda crea un qr de https://www.youtube.com/watch?v=J---aiyznGQ
+Ejemplo:lambda crea un QR de mensaje para el qr
 """

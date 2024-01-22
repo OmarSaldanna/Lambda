@@ -15,12 +15,15 @@ def extraer_paginas(pdf_path, start_page, end_page, output_path):
     with open(output_path, 'wb') as output_pdf:
       writer.write(output_pdf)
 
+# function to get the "file" from the user db, this is the hash
+# of the las file used or uploaded by the user.
 def get_user_file(user_id):
   return requests.get('http://127.0.0.1:8081/members', json={
     "db": "members",
     "id": user_id
   }).json()['answer']['file']
 
+# this function is to update that field with a new hash
 def set_user_file(user_id, file_hash):
   requests.put('http://127.0.0.1:8081/members', json={
     "db": "members",
@@ -64,7 +67,7 @@ def main(params: tuple):
   return [
     {
       "type": "text",
-      "content": f"Listo, tu PDF de la página {page_from} a la {page_to} está disponible para usarse."
+      "content": f"Listo, tu PDF de la página {page_from} a la {page_to} está disponible para usarse, por ejemplo con la función de leer PDFs."
     },
     {
       "type": "file",
@@ -74,10 +77,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### PDF Cutter
-Esta función permite cortar PDFs, solo dile entre que páginas cortar y **Lambda te dará el archivo cortado y su id para que lo puedas usar con la función de leer PDFs de Lambda**.
-> **Comando:** Lambda [corta, recorta o extrae] el [pdf o archivo] de [id del pdf] de **página** a **página**
-> **Ejemplo 1:** Lambda corta el pdf de $123ab de 10 a 20
-> **Ejemplo 2:** Lambda recorta del pdf de $123ab desde 100 a 200
-> **Ejemplo 3:** Lambda extrae las paginas de $123ab desde 100 a 200
+Recortar PDFs
+Esta función permite recortar PDFs, solo dile entre que páginas cortar y Lambda te dará el archivo recortado, además este archivo recortado estará disponible para que se use en siguientes funciones como la de leer PDFs.
+Comando:Lambda [corta|recorta|extrae|obten] el [pdf|archivo] de [desde página] a [a página]
+Ejemplo:Lambda recorta del pdf desde 100 a 200
+Ejemplo:Lambda extrae las paginas desde 1 a 3
 """

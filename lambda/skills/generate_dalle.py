@@ -33,10 +33,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Image Generator
-Esta función es la que crea imágenes con DALL-E 3. Preferentemente las descripciones de las imágenes deben de ser en inglés, esto hará que el resultado sea más preciso. **El modelo actual solamente permite crear una imagen a la vez**. Además ahora podrás crear imagenes en formatos vertical, horizontal y cuadrado.
-> **Comando:** Lambda [crea, genera o dame] una imagen [horizontal, vertical o cuadrada] de ...
-> **Ejemplo:** lambda crea una imagen horizontal de Porsche Origami
-> **Ejemplo:** Lambda genera una imagen cuadrada de gato en la sala, al lado de la chimenea al atardecer, nevando, casa de madera, foto casera en navidad
-
+Generador de Imágenes
+Esta función es la que crea imágenes con DALL-E 3. Proporciona las descripciones de las imágenes en inglés. El modelo actual solamente permite crear solo una imagen a la vez. Además ahora podrás crear imagenes en formatos vertical, horizontal y cuadrado.
+Comando:Lambda [crea|genera|dame] una [imagen] [horizontal|vertical|cuadrada] de [descripción de la imagen]
+Ejemplo:Lambda crea una imagen vertical de a professional architectural photograph of an innovative building with brutalist design, with plants on some balconies, solar panels, and some mini wind turbines, clear weather, hyper-realistic photo, ultra high quality
+Ejemplo:Lambda crea una imagen cuadrada de a Rover picture on mars showing two moons at the distance and two suns
 """

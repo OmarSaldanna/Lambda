@@ -71,12 +71,10 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Lambda IoT Messager
-Esta skill permite **mandar valores específicos** a los dispositivos conectados a la red de Lambda IoT, esos valores van desde números hasta strings de texto.
-> **Comando: Lambda [manda, cambia, envia, ajusta] el valor del [dispositivo] a [valor]
-> **Ejemplo: Lambda cambia el mensaje del monitor serial a hello world
-> **Ejemplo: Lambda cambia el mensaje del display lcd a hello world
-> **Ejemplo: Lambda ajusta el brillo del led rojo a 233
-> **Verbos:** manda, cambia, envia, ajusta
-> **Sustantivos:** valor, estado, mensaje, brillo
+Lambda IoT: Mensajes
+Permite mandar valores específicos a los dispositivos conectados a la red de Lambda IoT, esos valores van desde números hasta strings de texto. Para más información consulta https://github.com/OmarSaldanna/lambda-iot-client.
+Comando:Lambda [manda|cambia|envia|ajusta] el [valor|estado|mensaje|brillo] del [alias del dispositivo] a [valor nuevo]
+Ejemplo:Lambda cambia el mensaje del monitor serial a hello world
+Ejemplo:Lambda cambia el mensaje del display lcd a hello world
+Ejemplo:Lambda ajusta el brillo del led rojo a 233
 """

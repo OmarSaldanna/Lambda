@@ -1,6 +1,5 @@
 {
 	"type": "multi",
 	"texto": "translate",
-	"ingles": "audio_translation_english",
-	"audio": "audio_translation_spanish"
+	"audio": "audio_translation"
 }

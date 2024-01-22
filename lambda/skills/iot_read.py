@@ -69,12 +69,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Lambda IoT Reader
-Esta skill permite que Lambda lea el valor de sensores o estados de dispositivos (cualquier variable) conectados a los Arduinos en la red de Arduinos de Lambda para IoT. Para más información consulta [este tutorial](https://github.com/OmarSaldanna/lambda-iot-client).
-> **Comando: Lambda [dime, dame, lee] el [cosa] del [dispositivo]
-> **Ejemplo: Lambda lee la medida del potenciometro
-> **Ejemplo: lambda dime la temperatura del cuarto
-> **Ejemplo: lambda dame la humedad del la cocina
-> **Verbos:** lee, dime, dame.
-> **Cosas:** valor, temperatura, humedad, medida.
+Lambda IoT: Lectura
+Esta skill permite que Lambda lea el valor de sensores o estados de dispositivos (o cualquier variable) conectados a los Arduinos en la red de Lambda para IoT. Para más información consulta https://github.com/OmarSaldanna/lambda-iot-client.
+Comando:Lambda [dime|dame|lee] el [valor|temperatura|humedad|medida] del [alias del dispositivo]
+Ejemplo:Lambda lee la medida del potenciómetro
+Ejemplo:lambda dime la temperatura del cuarto
 """

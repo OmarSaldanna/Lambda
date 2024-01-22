@@ -33,11 +33,10 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Context Cleaner
-Esta función borra el contexto almacenado, es decir, **Lambda borra tu historial de conversación**. Esta función es **recomendable para cuando quieres hablar con lambda sobre un tema diferente**, pues te permite empezar una nueva conversación.
-> **Comando:** Lambda **[verbo]** mi contexto
-> **Ejemplo:** Lambda limpia mi contexto
-> **Ejemplo:** lambda borra mi contexto
-> **Ejemplo:** lambda vacía mi contexto
-> **Verbos:** limpia, borra, resetea, vacía
+Limpiar Conversación
+Esta función borra el contexto almacenado, es decir, Lambda borra tu historial de conversación (manualmente). Esta función es recomendable para cuando quieres hablar con lambda sobre un tema diferente, pues te permite empezar una nueva conversación.
+Comando:** Lambda [limpia|borra|resetea|vacía] mi [contexto|conversación|chat|charla|plática]
+Ejemplo:** Lambda limpia mi contexto
+Ejemplo:** lambda borra el chat
+Ejemplo:** lambda vacía nuestra plática
 """

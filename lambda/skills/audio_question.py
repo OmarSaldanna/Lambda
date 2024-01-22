@@ -14,10 +14,10 @@ def security_check(audio_id: str):
 			raise ValueError("unknown hash")
 
 
-# 0   1  2     3  4   5 6
-# lee el texto de ... y ...
-# transcribe el audio de ...
-# extrae el texto de ...
+# 0   1  2     3 4
+# lee el texto y ...
+# transcribe el audio y ...
+# extrae el texto y ...
 def main(params: tuple):
 	# catch params
 	message, author, server = params
@@ -26,9 +26,9 @@ def main(params: tuple):
 	# split the message
 	splited_message = message.split(' ')
 	# catch the image id
-	audio_id = splited_message[4][1:]
+	audio_id = openai.user_data['file']
 	# cath the text prompt
-	text_prompt = ' '.join(splited_message[6:])
+	text_prompt = ' '.join(splited_message[4:])
 	# pass the id through the security check
 	security_check(audio_id)
 	# get the extension of the file
@@ -45,14 +45,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Audio Questions
-Esta función permite a Lambda transcribir el texto de audios para después **hacer preguntas espeíficas sobre la información del audio**.
-* 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
-* 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando:** Lambda [analiza, oye o escucha] el [audio] de [la id del audio] y [pregunta]
-> **Ejemplo:** Lambda analiza el audio de $db8194cf7daf4efe y dame un resumen breve
-> **Ejemplo:** Lambda oye el audio de $db8194cf7daf4efe y extrae las palabras clave del audio
-> **Ejemplo:** lambda escucha el audio de $db8194cf7daf4efe y dame las ideas principales
-> **Verbos:** analiza, oye o escucha
-> **Sustantivos:** audio
+Pregunta a Audio
+Esta función permite a Lambda transcribir el texto de audios para después hacer preguntas espeíficas sobre la información del audio. Sólo sube o graba el audio y después puedes preguntar.
+Comando:Lambda [lee|analiza|oye|escucha] el [audio] y [preguntas]
+Ejemplo:Lambda analiza el audio y dame un resumen breve
+Ejemplo:Lambda oye el audio y extrae las palabras clave del audio
 """

@@ -47,7 +47,7 @@ def main(params: tuple):
 				"content": f"Ups, algo salió mal"
 			}]
 
-
+info = ""
 
 # info about the skill
-info = """ya sabes que hace wey, pero te dejo un ejemplo: agrega por [mencion, arroba] a [rol] a @users. RECUERDA QUE SI VAS A AGREGAR A UN ROL NUEVO HAY QUE MODIFICAR: **usages.json** y quizá **userlist.json**"""
+informacion = """ya sabes que hace wey, pero te dejo un ejemplo: agrega por [mencion, arroba] a [rol] a @users. RECUERDA QUE SI VAS A AGREGAR A UN ROL NUEVO HAY QUE MODIFICAR: **usages.json** y quizá **userlist.json**"""

@@ -16,10 +16,10 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Converter
-Es un conversor universal de unidades, solo dile a que unidades o código quieres convertir algo y listo. **Este comando no aplica para conversiones a monedas**, para ese caso te recomiendo usar el comando **Intercambia**.
-> **Comando:** Lambda convierte ...
-> **Ejemplo:** Lambda convierte 111010110 a hexadecimal
-> **Ejemplo:** lambda convierte 10 Kg a Libras
-> **Ejemplo:** lambda convierte 124 Km a Millas
+Conversor de Unidades
+Es un conversor universal de unidades, solo dile a que unidades o código quieres convertir algo y listo. Este comando no aplica para conversiones a monedas..
+Comando:Lambda [convierte] [unidades a convertir]
+Ejemplo:Lambda convierte 111010110 a hexadecimal
+Ejemplo:lambda convierte 10 Kg a Libras
+Ejemplo:lambda convierte 124 Km a Millas
 """

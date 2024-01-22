@@ -17,9 +17,4 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### title
-description
-> **Comando:** command
-> **Ejemplo:** example
-> **Verbos:** verbs
 """

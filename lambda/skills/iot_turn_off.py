@@ -66,10 +66,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Lambda IoT Turn Off
-Esta Skill permite apagar dispositivos conectados a la red de dispositios de Lambda para IoT. Para más información consulta [este tutorial](https://github.com/OmarSaldanna/lambda-iot-client).
-> **Comando: Lambda [apaga, desactiva] el [device alias]
-> **Ejemplo: Lambda desactiva el led rojo
-> **Ejemplo: lambda apaga la luz del estudio
-> **Verbos:** apaga, desactiva.
+Lambda IoT: Apagar
+Permite apagar dispositivos conectados a la red de dispositios de Lambda para IoT. Manda un valor de 0. Para más información consulta https://github.com/OmarSaldanna/lambda-iot-client.
+Comando:Lambda [apaga|desactiva] el [alias del dispositivo]
+Ejemplo:Lambda desactiva el led rojo
+Ejemplo:lambda apaga la luz del estudio
 """

@@ -25,7 +25,7 @@ def main(params: tuple):
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
 	# catch the image id
-	audio_id = message.split(' ')[4][1:]
+	audio_id = openai.user_data['file']
 	# pass the id through the security check
 	security_check(audio_id)
 	# get the extension of the file
@@ -42,14 +42,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Audio English Qualifier
-Esta función te **permitirá evaluar tus audios en inglés, Lambda evaluará tu audio y te dará retroalimentación sobre tu diálogo, vocabulario, gramática y más**. Esta función es ideal para practicar tu inglés. Solo sigue los siguientes pasos:
-* 1. Sube el audio a discord como un archivo, puedes mandarlo al chat de @Lambda.
-* 2. Usa el comando para transcribir el texto del audio. Es el siguiente:
-> **Comando:** Lambda [califica, evalúa, oye o escucha] mi [inglés] de [la id del audio]
-> **Ejemplo:** Lambda califica mi inglés de $db8194cf7daf4efe
-> **Ejemplo:** Lambda escucha mi inglés de $db8194cf7daf4efe
-> **Ejemplo:** lambda evalúa mi inglés de $db8194cf7daf4efe
-> **Verbos:** califica, evalúa, oye o escucha
-> **Sustantivos:** inglés
+Audio English Qualifier
+Esta función te permitirá evaluar tus audios en inglés, Lambda evaluará tu audio y te dará retroalimentación sobre tu diálogo, vocabulario, gramática y más. Esta función es ideal para practicar tu inglés. Solo sube o graba tu audio y usa la función.
+Comando:Lambda [califica|evalúa|oye|escucha] mi [inglés]
+Ejemplo:Lambda califica mi inglés
+Ejemplo:Lambda escucha mi inglés
 """

@@ -3,5 +3,6 @@
 	"contexto": "context_clean",
 	"conversacion": "context_clean",
 	"platica": "context_clean",
-	"charla": "context_clean"
+	"charla": "context_clean",
+	"chat": "context_clean"
 }

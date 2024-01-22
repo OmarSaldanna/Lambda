@@ -18,9 +18,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### ID Reader
-Esta función permite al usuario mostrarle su ID de discord. Esta ID se utiliza para otras funciones de Lambda, como las conexiones de IoT para robótica.
-> **Comando:** Lambda [dame, dime, muestra] mi id
-> **Ejemplo:** lambda dame mi id
-> **Ejemplo:** lambda muestra mi id
+Obtener ID
+Esta función permite al usuario mostrarle su ID de discord. Esta ID se utiliza para otras funciones de Lambda, como las conexiones de IoT para robótica. Además quizá te la pida un admin para registrarte.
+Comando:Lambda [dame|dime|muestra] mi [id]
+Ejemplo:lambda dame mi id
+Ejemplo:lambda muestra mi id
 """

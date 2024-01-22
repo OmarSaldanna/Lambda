@@ -1,5 +1,6 @@
 {
 	"type": "multi",
     "audio": "audio_transcription",
-    "texto": "audio_transcription"
+    "texto": "audio_transcription",
+    "paginas": "pdf_cutter"
 }
