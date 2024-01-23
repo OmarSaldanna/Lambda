@@ -31,7 +31,7 @@ def main(params: tuple):
 
 		Primero que nada, si quieres usar archivos en tus funciones: como PDFs, audios o imágenes, primero sube tu archivo al chat de discord, y luego manda el mensaje para usar la función, automáticamente se detectará el ultimo archivo que hayas subido. Los formatos aceptados son .pdf .jpeg .jpg .png .heic .mp3 .wav .ogg\n\n""" + read_file(global_resume)
 	# passs the message and the system_text
-  	return openai.gpt(message, model="gpt-3.5-turbo-16k", context=False, system=system_text)
+	return openai.gpt(message, model="gpt-3.5-turbo-16k", context=False, system=system_text)
 
 
 # theres no info, this is the function that uses all the info
