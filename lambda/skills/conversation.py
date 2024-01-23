@@ -16,9 +16,9 @@ def main(params: tuple):
 
 # info about the skill
 info = """
-### Conversation
-Esta función es la que ocupa lambda para las conversaciones, también es implementada en el comando de "_Lambda, ..._". Permite tener conversaciones con _gpt3.5-turbo_.
-Comando 1:Lambda dime algo [sobre o acerca] [algún tema]
+Conversation
+Esta función es la que ocupa lambda para las conversaciones, también es implementada en el comando de "Lambda, ...". Permite tener conversaciones con gpt 3.5-turbo.
+Comando 1:Lambda [dime] algo [sobre|acerca] [algún tema]
 Comando 2:Lambda, [preguntas o conversación]
 Ejemplo:lambda dime algo sobre los agujeros negros
 Ejemplo:lambda, cuál es la capital de Perú?
