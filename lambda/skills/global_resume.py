@@ -33,7 +33,6 @@ def main(params: tuple):
 	# passs the message and the system_text
 	return openai.gpt(message, model="gpt-3.5-turbo-16k", context=False, system=system_text)
 
-
 # theres no info, this is the function that uses all the info
 info = """
 """
