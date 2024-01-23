@@ -1,0 +1,175 @@
+Audio English Qualifier
+Esta función te permitirá evaluar tus audios en inglés, Lambda evaluará tu audio y te dará retroalimentación sobre tu diálogo, vocabulario, gramática y más. Esta función es ideal para practicar tu inglés. Solo sube o graba tu audio y usa la función.
+Comando:Lambda [califica|evalúa|oye|escucha] mi [inglés]
+Ejemplo:Lambda califica mi inglés
+Ejemplo:Lambda escucha mi inglés
+
+Visión Inteligente
+Esta función permitirá que Lambda analice imágenes y puedas preguntar sobre ellas, desde diagramas, plantas, animales, países, ecuaciones, arte y mucho más. Solo sube el tu imagen al chat, y luego de que lambda te diga que "tu archivo está disponible" haz tus preguntas. Se aceptan formatos .jpg .jpeg .heic .png. 
+Comando: Lambda [lee|analiza|ve|mira|observa] la [imagen|foto|diagrama|cuadro] y [tus preguntas]
+Ejemplo: Lambda mira la imagen y dime que puedes ver
+Ejemplo: Lambda analiza el cuadro y dime de qué artista piensas que sea
+Ejemplo: lambda lee el diagrama de $db8194cf7daf4efe y dame una breve explicación de lo que habla el diagrama
+
+Lambda IoT: Mensajes
+Permite mandar valores específicos a los dispositivos conectados a la red de Lambda IoT, esos valores van desde números hasta strings de texto. Para más información consulta https://github.com/OmarSaldanna/lambda-iot-client.
+Comando:Lambda [manda|cambia|envia|ajusta] el [valor|estado|mensaje|brillo] del [alias del dispositivo] a [valor nuevo]
+Ejemplo:Lambda cambia el mensaje del monitor serial a hello world
+Ejemplo:Lambda cambia el mensaje del display lcd a hello world
+Ejemplo:Lambda ajusta el brillo del led rojo a 233
+
+Generador de Imágenes
+Esta función es la que crea imágenes con DALL-E 3. Proporciona las descripciones de las imágenes en inglés. El modelo actual solamente permite crear solo una imagen a la vez. Además ahora podrás crear imágenes en formatos vertical, horizontal y cuadrado.
+Comando:Lambda [crea|genera|dame] una [imagen] [horizontal|vertical|cuadrada] de [descripción de la imagen]
+Ejemplo:Lambda crea una imagen vertical de a professional architectural photograph of an innovative building with brutalist design, with plants on some balconies, solar panels, and some mini wind turbines, clear weather, hyper-realistic photo, ultra high quality
+Ejemplo:Lambda crea una imagen cuadrada de a Rover picture on mars showing two moons at the distance and two suns
+
+Lector de PDFs
+Esta función permite que Lambda lea un archivo PDF de aproximadamente 12 mil palabras y que responda a preguntas basadas en la información del PDF. Básicamente podría resumir el documento, obtener los puntos más importantes y mucho más.
+Comando:Lambda [lee] el [pdf] y [preguntas sobre el pdf]
+Ejemplo:Lambda lee el pdf y dame un resumen
+Ejemplo:Lambda lee el pdf y dime la idea principal del texto
+Ejemplo:Lambda lee el pdf y lista las palabras clave
+
+Error Tester 
+De las primeras funciones incorporadas en Lambda para probar su estabilidad, usarla generará un error, que será notificado al Admin por mensaje, el contenido de dicho será el texto del error.
+Comando:Lambda [dame] un [error] de [texto del error]
+Ejemplo:lambda dame un error de caramón camarelo
+
+Traductor
+Es una función de Lambda que permite hacer traducciones al instante a casi cualquier idioma del mundo.
+Comando 1:Lambda traduce el texto [texto a traducir]
+Comando 2:Lambda [dime|dame] la traducción [texto a traducir]
+Ejemplo:lambda traduce el texto Electricity rules the world
+Ejemplo:lambda dame la traducción al inglés de La electricidad gobierna el mundo
+
+Traductor de Audios
+Esta función hará que Lambda traduzca a texto en cualquier idioma (a español por default) un audio en cualquier idioma. Ideal para traducir fragmentos de videos, o diálogos con extranjeros. Sólo sube tu archivo o graba el audio y ocupa la función.
+Comando:Lambda [traduce] el [audio] a [idioma del texto]
+Ejemplo:Lambda traduce el audio
+Ejemplo:Lambda traduce el audio a inglés
+Ejemplo:Lambda traduce el audio a japonés
+
+Lambda IoT: Apagar
+Permite apagar dispositivos conectados a la red de dispositivos de Lambda para IoT. Manda un valor de 0. Para más información consulta https://github.com/OmarSaldanna/lambda-iot-client.
+Comando:Lambda [apaga|desactiva] el [alias del dispositivo]
+Ejemplo:Lambda desactiva el led rojo
+Ejemplo:lambda apaga la luz del estudio
+
+GPT-4
+Es básicamente la misma función que la conversación convencional, también almacena la conversación, el detalle es usa GPT-4, que es el modelo más capaz de OpenAI. Se recomienda usar únicamente en casos excepcionales.
+Comando:Lambda [pregunta|dime|responde|contesta] con [cuatro] [las preguntas]
+Ejemplo:lambda dime con cuatro que son los agujeros negros
+Ejemplo:lambda pregunta a cuatro que es la radiación de Hawking
+
+Lambda IoT: Encender
+Permite a Lambda encender dispositivos conectados a la red de dispositivos de IoT de Lambda. Manda un valor de 255. Para más información técnica consulta https://github.com/OmarSaldanna/lambda-iot-client
+Comando:Lambda [enciende|activa|prende] el [alias del dispositivo]
+Ejemplo:Lambda enciende el led rojo
+Ejemplo:lambda activa la bomba de agua
+
+Conversor de Monedas
+Es un conversor de monedas, por el momento solamente acepta las monedas: Dólar Canadiense (CAD), Euro (EUR), Yen Japonés (JPY), Peso Mexicano (MXN), Dólar Estadounidense (USD). La conversión no es 100% precisa, es una mera aproximación.
+Comando 1:Lambda [intercambia] [monedas a convertir]
+Comando 2:Lambda [cuantos] [monedas a convertir]
+Ejemplo:lambda intercambia 10 pesos a dólares
+Ejemplo:lambda cuantos pesos son 50 euros
+
+Conversation
+Esta función es la que ocupa lambda para las conversaciones, también es implementada en el comando de "Lambda, ...". Permite tener conversaciones con gpt 3.5-turbo.
+Comando 1:Lambda [dime] algo [sobre|acerca] [algún tema]
+Comando 2:Lambda, [preguntas o conversación]
+Ejemplo:lambda dime algo sobre los agujeros negros
+Ejemplo:lambda, cuál es la capital de Perú?
+
+Ajuste de Personalidad 
+Permite ajustar la "personalidad" con la que Lambda responde, podrás pedir que Lambda responda como algún célebre científico, como un poeta o literato, o que responda con sarcasmo o entusiasmo. Además podrías pedirle que escriba en manera de lista, remarque conceptos, etc. Esta función elimina la conversación y esta vuelve a empezar desde cero.
+Comando:Lambda **[cambia|ajusta|resetea|edita] tu [personalidad] a [descripción]
+Ejemplo:Lambda cambia tu personalidad a Eres un poeta renacentista y quiero que a todas mis preguntas respondas con un refinado uso del lenguaje y con el contexto humanista y antropocentrista destacado del renacimiento
+Ejemplo:lambda ajusta la personalidad a Simula la personalidad de Stephen Hawking, a todas las preguntas y temas de conversación responde con su elocuencia, humor y ocupa el refinado lenguaje de un científico. Da respuestas profundas y detalladas
+
+Conversor de Unidades
+Es un conversor universal de unidades, solo dile a que unidades o código quieres convertir algo y listo. Este comando no aplica para conversiones a monedas..
+Comando:Lambda [convierte] [unidades a convertir]
+Ejemplo:Lambda convierte 111010110 a hexadecimal
+Ejemplo:lambda convierte 10 Kg a Libras
+Ejemplo:lambda convierte 124 Km a Millas
+
+Generar QRs
+Esta función se encarga de generar códigos QR de links o de textos. Solo proporciona el contenido del QR y Lambda lo creará.
+Comando:Lambda [crea|genera|dame] un [QR|qr] de [contenido del QR]
+Ejemplo:Lambda crea un qr de https://www.youtube.com/watch?v=J---aiyznGQ
+Ejemplo:lambda crea un QR de mensaje para el qr
+
+Display de Recursos
+Esta función sirve para mostrar cuántos recursos de Lambda te quedan por usar: imágenes, tokens de conversación, audios y lo demás que lambda cuente como uso. Esto te ayudará a que vayas midiendo tu uso de Lambda.
+Comando:Lambda [dame|dime|muestra] mi [uso|disponibilidad|recursos]
+Ejemplo:Lambda dime mi uso
+Ejemplo:Lambda dame mis recursos
+Ejemplo:Lambda dame mi uso
+Ejemplo:Lambda muestra mi disponibilidad
+
+Pregunta a Audio
+Esta función permite a Lambda transcribir el texto de audios para después hacer preguntas específicas sobre la información del audio. Sólo sube o graba el audio y después puedes preguntar.
+Comando:Lambda [lee|analiza|oye|escucha] el [audio] y [preguntas]
+Ejemplo:Lambda analiza el audio y dame un resumen breve
+Ejemplo:Lambda oye el audio y extrae las palabras clave del audio
+
+Audio Language Qualifier
+Esta función te permitirá evaluar tus audios en cualquier idioma, Lambda evaluará tu audio y te dará retroalimentación sobre tu diálogo, vocabulario, gramática y más. Esta función es ideal para practicar tu aprendizaje de idioma. No tienes que especificar el lenguaje, Lambda lo va a detectar automáticamente. Solo sube tu o graba audio y usa la función.
+Comando:Lambda [califica|evalúa|oye|escucha] mi [pronunciación|idioma]
+Ejemplo:Lambda califica mi pronunciación
+Ejemplo:Lambda escucha mi pronunciación
+
+Visor de YouTube
+Esta función te permitirá hacerle preguntas a Lambda sobre videos de YouTube, solamente debes de pasarle a Lambda el link del video, ese que copias y pegas del botón de compartir.
+Comando:Lambda [ve|mira|observa|analiza] el video de [link] y [tus preguntas]
+Ejemplo:Lambda ve el video de https://youtu.be/kCudFI4tcpg?si=G-tBUt74yeompR2v y dime de que habla y las ideas principales en una lista.
+Ejemplo:Lambda ve el video de https://youtu.be/kCudFI4tcpg?si=G-tBUt74yeompR2v y dame las palabras clave en una lista.
+
+Programador
+Lambda te escribirá programas basados en una descripción del programa, puede ser casi cualquier programa.
+Comando 1:Lambda programa [descripción del programa]
+Comando 2:Lambda [dame|crea|genera] un [código|programa|script|función|algoritmo] [descripción]
+Ejemplo:Lambda programa un arduino para que haga parpadear a dos leds
+Ejemplo:Lambda dame el código base HTML para una página web
+
+Lambda IoT: Lectura
+Esta skill permite que Lambda lea el valor de sensores o estados de dispositivos (o cualquier variable) conectados a los Arduinos en la red de Lambda para IoT. Para más información consulta https://github.com/OmarSaldanna/lambda-iot-client.
+Comando:Lambda [mide|dime|dame|lee] el [valor|temperatura|humedad|medida] del [alias del dispositivo]
+Ejemplo:Lambda lee la medida del potenciómetro
+Ejemplo:lambda mide la temperatura del cuarto
+
+
+Texto a Audio
+Esta función te permitirá generar audios a partir de un texto, todo por inteligencia artificial. Solo manda el texto y Lambda generará el audio al instante. El modelo puede generar audio en casi cualquier idioma. No tienes que especificar el idioma, simplemente escribe el texto en el idioma que quieras.
+Comando:Lambda [crea|genera|dame] un [audio] de [texto del audio]
+Ejemplo:lambda crea un audio de Ich haiße Lambda, Ich bin gut, un Dir?
+Ejemplo:Lambda dame un audio de Bonjour bonne journée comment vas-tu?
+Ejemplo:Lambda dame un audio de Hello good morning, how are you??
+
+Transcriptor de Audio
+Esta función permite a Lambda transcribir el texto de audios, dichos pueden ser en casi cualquier idioma. Solamente sube tu archivo o graba un audio desde Discord y ocupa la función
+Comando Lambda [lee|extrae|transcribe] el [audio|texto]
+Ejemplo Lambda transcribe el audio
+Ejemplo Lambda extrae el texto
+Ejemplo lambda lee el texto
+
+Recortar PDFs
+Esta función permite recortar PDFs, solo dile entre qué páginas cortar y Lambda te dará el archivo recortado, además este archivo recortado estará disponible para que se use en siguientes funciones como la de leer PDFs.
+Comando:Lambda [corta|recorta|extrae|obten] el [pdf|archivo] de [desde página] a [a página]
+Ejemplo:Lambda recorta del pdf desde 100 a 200
+Ejemplo:Lambda extrae las páginas desde 1 a 3
+
+Limpiar Conversación
+Esta función borra el contexto almacenado, es decir, Lambda borra tu historial de conversación (manualmente). Esta función es recomendable para cuando quieres hablar con lambda sobre un tema diferente, pues te permite empezar una nueva conversación.
+Comando:** Lambda [limpia|borra|resetea|vacía] mi [contexto|conversación|chat|charla|plática]
+Ejemplo:** Lambda limpia mi contexto
+Ejemplo:** lambda borra el chat
+Ejemplo:** lambda vacía nuestra plática
+
+Obtener ID
+Esta función permite al usuario mostrarle su ID de discord. Esta ID se utiliza para otras funciones de Lambda, como las conexiones de IoT para robótica. Además quizá te la pida un administrador para registrarte.
+Comando:Lambda [dame|dime|muestra] mi [id]
+Ejemplo:lambda dame mi id
+Ejemplo:lambda muestra mi id
