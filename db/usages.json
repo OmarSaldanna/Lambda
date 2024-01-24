@@ -1,12 +1,12 @@
 {
 	"free": {
-		"gpt-3.5-turbo": 30000,
-		"gpt-3.5-turbo-16k": 30000,
-		"gpt-4": 5000,
-		"tts": 500,
-		"dalle": 1,
-		"vision": 3,
-		"whisper": 3
+		"gpt-3.5-turbo": 100000,
+		"gpt-3.5-turbo-16k": 100000,
+		"gpt-4": 20000,
+		"tts": 2000,
+		"dalle": 5,
+		"vision": 10,
+		"whisper": 10
 	},
 	"pro": {
 		"gpt-3.5-turbo": 500000,

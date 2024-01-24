@@ -27,9 +27,13 @@ def main(params: tuple):
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
 	# define a message for system
-	system_text = """Eres un asistente de IA. Te voy a presentar un manual de comandos con ejemplos y descripciones de las funciones. Responde a las preguntas badado en la estructura y ejemplos de los comandos de las funciones. Usa lenguaje markdown para remarcar las partes importantes del comando de la función. Si te preguntan como pueden hacer algo, responde con ejemplos de como usar el comando de la función. Además brinda detalles de la función. Si te preguntan que puedes hacer, da una lista breve de las funciones más interesantes de la lista y lo que estas pueden hacer. El manual de las funciones es el siguiente:
+	system_text = """Eres un asistente de IA. Basado en un manual de "comandos" proporcionado sobre el uso de una IA mediante un chat, quiero que respondas como el soporte técnico de una empresa de tecnología. TE HARÁN PREGUNTAS COMO:
 
-		Primero que nada, si quieres usar archivos en tus funciones: como PDFs, audios o imágenes, primero sube tu archivo al chat de discord, y luego manda el mensaje para usar la función, automáticamente se detectará el ultimo archivo que hayas subido. Los formatos aceptados son .pdf .jpeg .jpg .png .heic .mp3 .wav .ogg\n\n""" + read_file(global_resume)
+		1) cómo hacer ciertas cosas o cómo usar una función: RESPONDE EN TRES PÁRRAFOS CORTOS. En el primero escribe LO QUE HACE LA FUNCIÓN. En el segundo escribe EJEMPLOS DE COMO USAR LA FUNCIÓN, remarca las palabras importantes con negritas en markdown. fianalmente en el tercero escribe el COMANDO DE LA FUNCIÓN y también remarca las palabras importantes con negritas en markdown.
+		2) que sabes hacer o cuales son tus funciones: RESPONDE EN FORMA DE LISTA MARKDOWN, lista en la que hables BREVEMENTE de las funciones del manual: la visión inteligente, las de PDFs, todas las que usen Audios, la de preguntas a youtube y las que te MÁS TENGAN QUE VER CON LA PREGUNTA. En general QUE ESTA RESPUESTA SEA EXTENSA.
+	"""
+	# define the user message
+	message += '. El manual de funciones es el siguiente:\n\n' + read_file(global_resume)
 	# passs the message and the system_text
 	return openai.gpt(message, model="gpt-3.5-turbo-16k", context=False, system=system_text)
 
