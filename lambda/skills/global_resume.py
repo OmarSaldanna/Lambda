@@ -33,7 +33,7 @@ def main(params: tuple):
 		2) que sabes hacer o cuales son tus funciones: RESPONDE EN FORMA DE LISTA MARKDOWN, lista en la que hables BREVEMENTE, pero NO ESCRIBAS NADA SOBRE LOS COMANDOS O EJEMPLOS de las funciones del manual: la visión inteligente, las de PDFs, todas las que usen Audios, la de preguntas a youtube y las que te MÁS TENGAN QUE VER CON LA PREGUNTA. En general QUE ESTA RESPUESTA SEA EXTENSA, REMARCA LAS KEYWORDS EN NEGRITAS.
 	"""
 	# define the user message
-	message += '. El manual de funciones es el siguiente:\n\n' + read_file(global_resume)
+	message += '. RECUERDA REMARCAR EN NEGRITAS LAS KEYWORDS. El manual de funciones es el siguiente:\n\n' + read_file(global_resume)
 	# passs the message and the system_text
 	return openai.gpt(message, model="gpt-3.5-turbo-16k", context=False, system=system_text)
 
