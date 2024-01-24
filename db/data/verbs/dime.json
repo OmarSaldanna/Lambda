@@ -11,5 +11,8 @@
     "valor": "iot_read",
     "humedad": "iot_read",
     "temperatura": "iot_read",
-    "medida": "iot_read"
+    "medida": "iot_read",
+    "sabes": "global_resume",
+    "funciones": "global_resume",
+    "puedes": "global_resume"
 }

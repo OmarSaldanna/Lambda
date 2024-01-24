@@ -21,6 +21,8 @@ def read_file(path):
 # general type for que and como
 # lambda que puedes ...
 # lambda como puedo ...
+# lambda dime que sabes
+# lambda dime que puedes
 def main(params: tuple):
 	# catch params
 	message, author, server = params
