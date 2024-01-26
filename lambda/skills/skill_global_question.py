@@ -1,7 +1,7 @@
 # Lambda's OpenAI module
 from core.modules import OpenAI
 # file that contains the "info" of all the modules
-global_resume = "lambda/skills/global_resume.txt"
+global_resume = "lambda/skills/skill_list.txt"
 
 
 def read_file(path):
@@ -18,9 +18,7 @@ def read_file(path):
     except PermissionError:
         return f"No se tienen permisos para acceder al archivo: {path}"
 
-# general type for que and como
 # lambda que puedes ...
-# lambda como puedo ...
 # lambda dime que sabes
 # lambda dime que puedes
 def main(params: tuple):
@@ -29,8 +27,7 @@ def main(params: tuple):
 	# instance the openai object to use models
 	openai = OpenAI(author, server)
 	# define a message for system
-	system_text = """Eres un asistente de IA. Basado en un manual de "comandos" proporcionado sobre el uso de una IA mediante un chat, quiero que respondas como el soporte técnico de una empresa de tecnología. Responde en formato markdown y escrbe en negritas las keywords por favor. 
-	"""
+	system_text = """Eres un asistente de IA. Basado en un manual de funciones sobre el uso de una IA mediante un chat, quiero que respondas como el soporte técnico de una empresa de tecnología."""
 	# define the user message
 	message += '. El manual de funciones es el siguiente:\n\n' + read_file(global_resume)
 	# passs the message and the system_text

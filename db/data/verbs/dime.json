@@ -12,7 +12,8 @@
     "humedad": "iot_read",
     "temperatura": "iot_read",
     "medida": "iot_read",
-    "sabes": "global_resume",
-    "funciones": "global_resume",
-    "puedes": "global_resume"
+    "sabes": "skill_global_question",
+    "puedes": "skill_global_question",
+    "funcion": "skill_specific_question",
+    "que": "skill_specific_question"
 }
