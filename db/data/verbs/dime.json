@@ -15,5 +15,10 @@
     "sabes": "skill_global_question",
     "puedes": "skill_global_question",
     "funcion": "skill_specific_question",
-    "que": "skill_specific_question"
+    "que": "skill_specific_question",
+    "informacion": "skill_specific_question",
+    "detalles": "skill_specific_question",
+    "info": "skill_specific_question",
+    "ejemplo": "skill_specific_question",
+    "lista": "skill_global_question"
 }

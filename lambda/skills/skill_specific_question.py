@@ -23,6 +23,7 @@ def read_file(path):
 # lambda dime con que ...
 # dame mas detalles ...
 # same for ejemplo, info, informacion
+# same for verb dime
 def main(params: tuple):
 	# catch params
 	message, author, server = params

@@ -22,7 +22,7 @@ def read_file(path):
 # lambda dime que sabes
 # lambda dime que puedes
 # dame la lista ...
-# dame el manual
+# same for dime 
 def main(params: tuple):
 	# catch params
 	message, author, server = params
