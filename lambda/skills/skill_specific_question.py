@@ -32,7 +32,7 @@ def main(params: tuple):
 	# define a message for system
 	system_text = """Eres un asistente de IA. Basado en un manual de "comandos" proporcionado sobre el uso de una IA mediante un chat, quiero que respondas como el soporte técnico de una empresa de tecnología. Responde en formato Markdown."""
 	# define the user message
-	message += '. Responde con el formato Markdown. El manual de funciones es el siguiente:\n\n' + read_file(global_resume)
+	message += '. Responde con el formato Markdown, NO TE OLVIDES DE DAR EJEMPLOS. El manual de funciones es el siguiente:\n\n' + read_file(global_resume)
 	# passs the message and the system_text
 	return openai.gpt(message, model="gpt-3.5-turbo-16k", context=False, system=system_text)
 
