@@ -21,6 +21,8 @@ def read_file(path):
 # lambda que puedes ...
 # lambda dime que sabes
 # lambda dime que puedes
+# dame la lista ...
+# dame el manual
 def main(params: tuple):
 	# catch params
 	message, author, server = params
