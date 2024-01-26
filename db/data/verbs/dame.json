@@ -17,5 +17,10 @@
     "humedad": "iot_read",
     "temperatura": "iot_read",
     "medida": "iot_read",
-    "audio": "generate_tts"
+    "audio": "generate_tts",
+    "informacion": "skill_specific_question",
+    "detalles": "skill_specific_question",
+    "info": "skill_specific_question",
+    "lista": "skill_global_question",
+    "manual": "skill_global_question"
 }
