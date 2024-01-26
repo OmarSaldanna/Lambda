@@ -20,5 +20,6 @@
     "detalles": "skill_specific_question",
     "info": "skill_specific_question",
     "ejemplo": "skill_specific_question",
-    "lista": "skill_global_question"
+    "lista": "skill_global_question",
+    "usar": "skill_specific_question"
 }
