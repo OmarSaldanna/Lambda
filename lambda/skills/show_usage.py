@@ -13,7 +13,7 @@ def main(params: tuple):
 	names = {
 		"gpt-3.5-turbo": "Conversación",
 		"gpt-3.5-turbo-16k": "Lectura de textos largos",
-		"gpt-4": "GPT-4 y visión(respuestas)",
+		"gpt-4-turbo-preview": "GPT-4 y visión(respuestas)",
 		"tts": "Generación de audios",
 		"dalle": "Creación de Imágenes(no QRs)",
 		"vision": "Visión inteligente",
@@ -23,7 +23,7 @@ def main(params: tuple):
 	units = {
 		"gpt-3.5-turbo": "palabras (aprox.)",
 		"gpt-3.5-turbo-16k": "palabras (aprox.)",
-		"gpt-4": "palabras (aprox.)",
+		"gpt-4-turbo-preview": "palabras (aprox.)",
 		"tts": "caracteres",
 		"dalle": "imágenes",
 		"vision": "imágenes",
