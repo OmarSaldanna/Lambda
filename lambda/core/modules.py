@@ -255,6 +255,11 @@ class OpenAI:
 			"gpt-3.5-turbo-16k",
 			"gpt-4-turbo-preview"
 		]
+		self.metrics = {
+			"gpt-3.5-turbo": "conversación",
+			"gpt-3.5-turbo-16k": "documentos, videos o audios",
+			"gpt-4-turbo-preview": "gpt-4 o visión de imágenes"
+		}
 		# get the user data
 		self.user_data = self.db.get('/members', {
 			"id": self.user_id,
@@ -415,7 +420,7 @@ class OpenAI:
 			# format: a list of dicts per message
 			return [{
 				"type": "error",
-				"content": f"Lo siento <@{self.user_id}> se te acabaron los tokens de conversación de {model}."
+				"content": f"Lo siento <@{self.user_id}> se te acabaron las palabras para {self.metrics[model]}."
 			}]
 		# at this point the user has tokens to use yet. Then add the
 		# incoming message to the context only if the context is enabled
@@ -812,7 +817,7 @@ class OpenAI:
 			# format: a list of dicts per message
 			return [{
 				"type": "error",
-				"content": f"Lo siento <@{self.user_id}> se te acabaron las imágenes para GPT-4 Vision."
+				"content": f"Lo siento <@{self.user_id}> se te acabaron las imágenes para la Vision Inteligente."
 			}]
 		# also check tokens availability for the selected model
 		# also based on the len of the context
@@ -828,7 +833,7 @@ class OpenAI:
 			# format: a list of dicts per message
 			return [{
 				"type": "error",
-				"content": f"Lo siento <@{self.user_id}> se te acabaron los tokens de conversación de {model} GPT-4, sin los cuales no puedes usar GPT-4 Vision."
+				"content": f"Lo siento <@{self.user_id}> se te acabaron las imágenes para la Vision Inteligente."
 			}]
 		# so, upload the image
 		cloud = Cloudinary(self.user_id)
