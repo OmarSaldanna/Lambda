@@ -41,7 +41,12 @@ def main(params: tuple):
 	text = ""
 	for resource in usage.keys():
 		# add the resource lines to the text
-		text += f"* {resource}: **{names[resource]}** {units[resource]}\n"
+		# to calculate from tokens to words
+		if resource.startswith('gpt'):
+			text += f"* {resource}: **{names[resource]}** {units[resource]*.75}\n"
+		# to other models
+		else:
+			text += f"* {resource}: **{names[resource]}** {units[resource]}\n"
 	# add the text to the answer
 	ans.append({"type": "text", "content": text})
 	# and send the answer
