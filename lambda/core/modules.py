@@ -821,7 +821,7 @@ class OpenAI:
 			}]
 		# also check tokens availability for the selected model
 		# also based on the len of the context
-		availability = self.__model_availability("gpt-4", text_prompt, context, image=True)
+		availability = self.__model_availability("gpt-4-turbo-preview", text_prompt, context, image=True)
 		# if the model is out of tokens
 		if not availability:
 			# regist on the logs
@@ -872,7 +872,7 @@ class OpenAI:
 		)
 		# make recount of the tokens used, in the response are the
 		# tokens used, tokens in and tokens out, this function
-		tokens_in, tokens_out, adjusted, total_tokens = self.__token_recount(res.usage, "gpt-4", context)
+		tokens_in, tokens_out, adjusted, total_tokens = self.__token_recount(res.usage, "gpt-4-turbo-preview", context)
 		# regist on the logs the answer
 		self.db.post("/logs", {
 			"db": "chat",
