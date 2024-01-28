@@ -43,8 +43,8 @@ _Comando: Lambda [corta|recorta|extrae|obten] el [pdf|archivo] de [desde página
 > **Ejemplo: Lambda extrae las páginas desde 1 a 3**
 
 ### Conversar con Lambda (lo mismo que chatGPT)
-Comando 1:Lambda [dime] algo [sobre|acerca] [algún tema]
-Comando 2:Lambda, [preguntas o conversación]
+_Comando 1:Lambda [dime] algo [sobre|acerca] [algún tema]_
+_Comando 2:Lambda, [preguntas o conversación]_
 > **Ejemplo: lambda dime algo sobre los agujeros negros**
 > **Ejemplo: lambda, cuál es la capital de Perú?**
 
@@ -105,14 +105,14 @@ _Comando: Lambda [apaga|desactiva] el [alias del dispositivo]_
 
 ### Enviar mensajes IoT
 Detalles: para que funcione debes tener prendido el sistema local de Lambda IoT. Más información (https://github.com/OmarSaldanna/lambda-iot-client.)[este link]
-_Comando: Lambda [manda|cambia|envia|ajusta] el [valor|estado|mensaje|brillo] del [alias de_**dispositivo] a [valor nuevo]
+_Comando: Lambda [manda|cambia|envia|ajusta] el [valor|estado|mensaje|brillo] del [alias del dispositivo] a [valor nuevo]_
 > **Ejemplo: Lambda cambia el mensaje del monitor serial a hello world**
 > **Ejemplo: Lambda cambia el mensaje del display lcd a hello world**
 > **Ejemplo: Lambda ajusta el brillo del led rojo a 233**
 
 ### Lectura de datos IoT
 Detalles: para que funcione debes tener prendido el sistema local de Lambda IoT. Más información (https://github.com/OmarSaldanna/lambda-iot-client.)[este link]
-_Comando: Lambda [mide|dime|dame|lee] el [valor|temperatura|humedad|medida] del [alias de_**dispositivo]
+_Comando: Lambda [mide|dime|dame|lee] el [valor|temperatura|humedad|medida] del [alias del dispositivo]
 > **Ejemplo: Lambda lee la medida del potenciómetro**
 > **Ejemplo: lambda mide la temperatura del cuarto**
 
@@ -125,8 +125,8 @@ _Comando: Lambda [convierte] [unidades a convertir]_
 
 ### Hacer Conversiones de Monedas
 Detalles: solamente acepta las monedas: Dólar Canadiense (CAD), Euro (EUR), Yen Japonés (JPY), Peso Mexicano (MXN), Dólar Estadounidense (USD). La conversión no es 100% precisa, es una mera aproximación.
-Comando 1:Lambda [intercambia] [monedas a convertir]
-Comando 2:Lambda [cuantos] [monedas a convertir]
+_Comando 1:Lambda [intercambia] [monedas a convertir]_
+_Comando 2:Lambda [cuantos] [monedas a convertir]_
 > **Ejemplo: lambda intercambia 10 pesos a dólares**
 > **Ejemplo: lambda cuantos pesos son 50 euros**
 
@@ -146,13 +146,13 @@ _Comando: Lambda [dame|dime|muestra] mi [uso|disponibilidad|recursos]_
 
 ### Calificar Audio en Cualquier Idioma
 Detalles: No tienes que especificar el lenguaje, Lambda lo va a detectar automáticamente. Solo sube tu o graba audio. Especial para Maestros de Idiomas.
-_Comando: Lambda [califica|evalúa|oye|escucha] mi [pronunciación|idioma]_
+_Comando: Lambda [califica|evalúa|oye|escucha] mi [pronunciación|idioma|diálogo]_
 > **Ejemplo: Lambda califica mi pronunciación**
 > **Ejemplo: Lambda escucha mi pronunciación**
 
 ### Programar o Crear Programas
-Comando 1:Lambda programa [descripción del programa]
-Comando 2:Lambda [dame|crea|genera] un [código|programa|script|función|algoritmo] [descripción]
+_Comando 1:Lambda programa [descripción del programa]_
+_Comando 2:Lambda [dame|crea|genera] un [código|programa|script|función|algoritmo] [descripción]_
 > **Ejemplo: Lambda programa un arduino para que haga parpadear a dos leds**
 > **Ejemplo: Lambda dame el código base HTML para una página web**
 
