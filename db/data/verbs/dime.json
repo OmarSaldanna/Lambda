@@ -21,5 +21,7 @@
     "info": "skill_specific_question",
     "ejemplo": "skill_specific_question",
     "lista": "skill_global_question",
-    "usar": "skill_specific_question"
+    "usar": "skill_specific_question",
+    "pesos": "exchange_trade",
+    "dolares": "exchange_trade"
 }
