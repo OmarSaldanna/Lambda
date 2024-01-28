@@ -9,15 +9,25 @@ def main(params: tuple):
 	message, member, server = params
 	# instance openai module, here we have the usage in user_data
 	openai = OpenAI(member, server)
+	# for client names
+	names = {
+		"gpt-3.5-turbo": "Conversación",
+		"gpt-3.5-turbo-16k": "Lectura de textos largos",
+		"gpt-4": "GPT-4 y visión(respuestas)",
+		"tts": "Generación de audios",
+		"dalle": "Creación de Imágenes(no QRs)",
+		"vision": "Visión inteligente",
+		"whisper": "Oído inteligente"
+	}
 	# units
 	units = {
-			"gpt-3.5-turbo": "tokens (aprox. 3 letras)",
-			"gpt-3.5-turbo-16k": "tokens",
-			"gpt-4": "tokens",
-			"tts": "caracteres",
-			"dalle": "imágenes",
-			"vision": "imágenes",
-			"whisper": "minutos"
+		"gpt-3.5-turbo": "palabras (aprox.)",
+		"gpt-3.5-turbo-16k": "palabras (aprox.)",
+		"gpt-4": "palabras (aprox.)",
+		"tts": "caracteres",
+		"dalle": "imágenes",
+		"vision": "imágenes",
+		"whisper": "minutos"
 	}
 	# now, user data is located in openai.user_data
 	# then read the usage
@@ -31,7 +41,7 @@ def main(params: tuple):
 	text = ""
 	for resource in usage.keys():
 		# add the resource lines to the text
-		text += f"* {resource}: **{usage[resource]}** {units[resource]}\n"
+		text += f"* {resource}: **{names[resource]}** {units[resource]}\n"
 	# add the text to the answer
 	ans.append({"type": "text", "content": text})
 	# and send the answer
