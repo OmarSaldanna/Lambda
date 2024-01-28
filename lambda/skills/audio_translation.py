@@ -34,7 +34,7 @@ def main(params: tuple):
 	# extract the text from the answer
 	audio_text = message + ':\n' + answer[0]['content']
 	# then ask gpt-3 without context
-	return openai.gpt(audio_text, model="gpt-3.5-turbo-16k", context=False, system="Eres una IA para realizar traducciones RESPONDE ÚNICAMENTE CON LA TRADUCCIÓN en el idioma especificado, si no se especifica, tradúcelo a español")
+	return openai.gpt(audio_text, model="gpt-3.5-turbo-16k", context=False, system="Eres una IA para realizar traducciones RESPONDE ÚNICAMENTE CON LA TRADUCCIÓN en el idioma especificado, si no se especifica, tradúcelo a español", model="gpt-3.5-turbo-16k")
 
 
 # info about the skill
