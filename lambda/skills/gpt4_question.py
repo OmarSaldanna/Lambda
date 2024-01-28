@@ -16,7 +16,7 @@ def main(params: tuple):
   # try to make the answer shorter as possible
   message += ". Que tu respuesta sea concisa."
   # now call gpt
-  return openai.gpt(cut_message, model="gpt-4")
+  return openai.gpt(message, model="gpt-4-turbo-preview")
 
 
 # info about the skill

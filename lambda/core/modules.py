@@ -215,7 +215,7 @@ class Cloudinary:
 # models:
 # gpt-3.5-turbo
 # gpt-3.5-turbo-16k
-# gpt-4
+# gpt-4-turbo-preview
 class OpenAI:
 	"""
 	Module used to interact with OpenAI models
@@ -253,7 +253,7 @@ class OpenAI:
 		self.models = [
 			"gpt-3.5-turbo",
 			"gpt-3.5-turbo-16k",
-			"gpt-4"
+			"gpt-4-turbo-preview"
 		]
 		# get the user data
 		self.user_data = self.db.get('/members', {
@@ -349,7 +349,7 @@ class OpenAI:
   		tokens_in = usage.prompt_tokens
   		tokens_out = usage.completion_tokens
   		# calculate the adjusted based on the model
-  		adjusted = int(tokens_out * 1.3) if model != "gpt-4" else int(tokens_out * 2)
+  		adjusted = int(tokens_out * 2) if model != "gpt-4-turbo-preview" else int(tokens_out * 3)
   		# calculate the total = tokens_in + adjusted
   		total_tokens = tokens_in + adjusted
   		# update the user data

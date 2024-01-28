@@ -5,17 +5,17 @@
 		"servers": [],
 		"role": "free",
 		"usage": {
-			"gpt-3.5-turbo": 10000,
-			"gpt-3.5-turbo-16k": 30000,
-			"gpt-4": 2000,
-			"tts": 500,
-			"dalle": 3,
-			"vision": 3,
-			"whisper": 3
+			"gpt-3.5-turbo": 100000,
+			"gpt-3.5-turbo-16k": 100000,
+			"gpt-4-turbo-preview": 20000,
+			"tts": 2000,
+			"dalle": 5,
+			"vision": 10,
+			"whisper": 10
 		},
 		"file": "",
 		"devices": {},
-		"personality": "Eres alguien inteligente",
+		"personality": "Eres una IA asistente",
 		"context_len": 0,
 		"context": [
 			{"role": "system", "content": "Eres alguien inteligente"}

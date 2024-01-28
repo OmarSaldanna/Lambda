@@ -2,7 +2,7 @@
 	"free": {
 		"gpt-3.5-turbo": 100000,
 		"gpt-3.5-turbo-16k": 100000,
-		"gpt-4": 20000,
+		"gpt-4-turbo-preview": 20000,
 		"tts": 2000,
 		"dalle": 5,
 		"vision": 10,
@@ -11,7 +11,7 @@
 	"pro": {
 		"gpt-3.5-turbo": 500000,
 		"gpt-3.5-turbo-16k": 500000,
-		"gpt-4": 50000,
+		"gpt-4-turbo-preview": 50000,
 		"tts": 50000,
 		"dalle": 10,
 		"vision": 30,
@@ -20,7 +20,7 @@
 	"admin": {
 		"gpt-3.5-turbo": 9999999999,
 		"gpt-3.5-turbo-16k": 9999999999,
-		"gpt-4": 99999999,
+		"gpt-4-turbo-preview": 99999999,
 		"tts": 99999999,
 		"dalle": 9999999,
 		"vision": 999999,
