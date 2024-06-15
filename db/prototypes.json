@@ -5,13 +5,13 @@
 		"servers": [],
 		"role": "free",
 		"usage": {
-			"gpt-3.5-turbo": 100000,
-			"gpt-3.5-turbo-16k": 100000,
-			"gpt-4-turbo-preview": 20000,
-			"tts": 2000,
-			"dalle": 5,
-			"vision": 10,
-			"whisper": 10
+			"gpt-3.5-turbo": 100000000,
+			"gpt-3.5-turbo-16k": 10000000,
+			"gpt-4-turbo-preview": 2000000,
+			"tts": 200000,
+			"dalle": 20,
+			"vision": 30,
+			"whisper": 300
 		},
 		"file": "",
 		"devices": {},

@@ -26,6 +26,7 @@ db/data/userlist
 lambdrive/audios
 lambdrive/images
 lambdrive/documents
+lambdrive/dalle
 lambdrive/qrs
 backups
 daily/data

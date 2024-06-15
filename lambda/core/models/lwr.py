@@ -45,8 +45,8 @@ class Lambda_Word_Recognizer:
       try:
         # get the idx
         idx = self.ord_values[letter]
-        # sum 1 where the letter
-        word_vector[idx] += 1
+        # sum √(i+1) where the letter
+        word_vector[idx] += np.sqrt(i+1)
       except:
         pass
     # return as a numpy array
