@@ -23,8 +23,10 @@ mkdir db/data/images
 mkdir db/data/log
 mkdir db/data/members
 mkdir db/data/servers
-mkdir db/data/user-list
-# other folders
+mkdir db/data/userlist
+# create the userlist basic file
+echo '{"pro": {},"free": {},"admin": {}}' > db/data/userlist/userlist.json
+# other folders: backups and lambdrive
 mkdir backups
 mkdir lambdrive
 mkdir lambdrive/audios
