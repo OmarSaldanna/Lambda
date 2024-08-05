@@ -67,7 +67,6 @@ def get_memory(mem: str):
 # read the memory files by id
 def get_memory_by_id(database: str, _id: str):
   # returns a memory instance
-  # print(f'{memory_path}{database}/{_id}.json')
   return Memory(f'{memory_path}{database}/{_id}.json')
 
 # create a memory file, mostly used when memory

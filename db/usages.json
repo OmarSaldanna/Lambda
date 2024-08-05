@@ -1,29 +1,32 @@
 {
 	"free": {
-		"gpt-3.5-turbo": 100000,
-		"gpt-3.5-turbo-16k": 100000,
-		"gpt-4-turbo-preview": 20000,
-		"tts": 2000,
-		"dalle": 5,
-		"vision": 10,
-		"whisper": 10
+		"talk": 100000000,
+		"text": 10000000,
+		"intelligence": 2000000,
+		"research": 2000000,
+		"voice": 200000,
+		"images": 20,
+		"vision": 30,
+		"ear": 300
 	},
 	"pro": {
-		"gpt-3.5-turbo": 500000,
-		"gpt-3.5-turbo-16k": 500000,
-		"gpt-4-turbo-preview": 50000,
-		"tts": 50000,
-		"dalle": 10,
+		"talk": 100000000,
+		"text": 10000000,
+		"intelligence": 2000000,
+		"research": 2000000,
+		"voice": 200000,
+		"images": 20,
 		"vision": 30,
-		"whisper": 30
+		"ear": 300
 	},
 	"admin": {
-		"gpt-3.5-turbo": 9999999999,
-		"gpt-3.5-turbo-16k": 9999999999,
-		"gpt-4-turbo-preview": 99999999,
-		"tts": 99999999,
-		"dalle": 9999999,
-		"vision": 999999,
-		"whisper": 9999999
+		"talk": 100000000,
+		"text": 10000000,
+		"intelligence": 2000000,
+		"research": 2000000,
+		"voice": 200000,
+		"images": 20,
+		"vision": 30,
+		"ear": 300
 	}
 }

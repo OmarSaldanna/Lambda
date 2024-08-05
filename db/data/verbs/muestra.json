@@ -1,7 +1,7 @@
 {
 	"type": "multi",
-	"uso": "show_usage",
-    "recursos": "show_usage",
-    "disponibilidad": "show_usage",
-    "id": "get_id"
+	"uso": "info.show_usage",
+    "recursos": "info.show_usage",
+    "disponibilidad": "info.show_usage",
+    "id": "info.get_id"
 }

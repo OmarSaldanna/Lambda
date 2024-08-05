@@ -1,7 +1,7 @@
 {
 	"type": "multi",
-	"valor": "iot_read",
-    "humedad": "iot_read",
-    "temperatura": "iot_read",
-    "medida": "iot_read"
+	"valor": "iot.iot_read",
+    "humedad": "iot.iot_read",
+    "temperatura": "iot.iot_read",
+    "medida": "iot.iot_read"
 }

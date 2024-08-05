@@ -9,53 +9,58 @@ from flask import Flask, request, jsonify
 import controllers
 from modules import telegram_message
 
-# this server, won't include the try and catch, since 
-# normaly databases throw error on bad requests
+# detect dev mode
+dev = True if os.getenv("dev") == 'yes' else False
+
+# This DB server, won't include the try and catch,
+# since normaly databases throw error on bad requests
 
 # instance the flask app
 app = Flask(__name__)
 CORS(app)
 
-# db requests for member data: members/, images/
-# example request
+# requests for member data:
 # {
-#	"db": "members|images",
-#	"id": "[id]",
-#	*"data": {data}
+#	"id": "[user id]",
+#   *"server": "[server name]" *only for GET requests
+#	*"data": "{data}" *only for PUT requests
 # }
+# Note: the server ins't receipt in PUT requests since those requests
+# are made by the Lambda modules, after the GET requests.
 @app.route('/members', methods=['GET','PUT'])
 async def members():
 	# get the json content
 	data = request.json
 	# extract the message from the request
-	author_id = data.get('id')
-	database = data.get('db')
-	server = data.get('server')
+	user = data.get('id')
 
-	print(f"{request.method} -> /members -> {database} -> {author_id}")
+	if dev:
+		print(f"{request.method} -> /members -> {user}")
 
 	# get is to read data
 	if request.method == 'GET':
+		# aditional: the server name
+		server = data.get('server')
 		# get the user json
-		data = controllers.get_user_data(author_id, database, server)
+		data = controllers.get_user_data(user, server)
 		# and return
 		return jsonify({'answer': data})
-		# put is to update data
-
+	
+	# put is to update data
 	elif request.method == 'PUT':
 		# aditional info to update
 		update = json.loads(data.get('data'))
 		# update the user json
-		data = controllers.update_user_data(author_id, database, update)
+		data = controllers.update_user_data(user, update)
 		# and return
 		return jsonify({'answer': data})
 
 
-# db requests for server
-# example request
+# requests for server
 # {
-#	"id": "[id]"
-#	*"data": {data}
+#	"id": "[id]",
+#   *"server": "[name]" *only for GET requests
+#	*"data": {data} *only for PUT requests
 # }
 @app.route('/servers', methods=['GET', 'PUT'])
 async def servers():
@@ -64,12 +69,15 @@ async def servers():
 	# extract the message from the request
 	server_id = data.get('id')
 	
-	print(f"{request.method} -> /servers -> {server_id}")
+	if dev:
+		print(f"{request.method} -> /servers -> {server_id}")
 
 	# get is to read data
 	if request.method == 'GET':
+		# aditional: the server name
+		server_name = data.get('name')
 		# get the server json
-		data = controllers.get_server_data(server_id)
+		data = controllers.get_server_data(server_id, server_name)
 		# and return
 		return jsonify({'answer': data})
 
@@ -83,51 +91,102 @@ async def servers():
 		return jsonify({'answer': data})
 
 
-# verbs database 
+# requests for images
 # {
-#	"verb": "[verb]"
-#	"data": {
-#       "type": "general|multi"
-# 		"object": "function name",
-#		*"function": "function name"
-#		...
-# 	}
+#	"id": "[image hash]",
+#   "url": "[public url]",
+#   "prompt": "[image prompt]"
 # }
-@app.route('/verbs', methods=['GET','PUT','POST'])
+@app.route('/images', methods=['POST'])
+async def images():
+	# get the json content
+	data = request.json
+	
+	if dev:
+		print(f"{request.method} -> /images")
+
+	# post is to create data	
+	if request.method == 'POST':
+		# get the image data
+		image_hash = data.get('id')
+		image_url = data.get('url')
+		image_prompt = data.get('prompt')
+		# use the controller
+		ans = controllers.post_image(image_hash, image_url, image_prompt)
+		# and return
+		return jsonify({'answer': ans})
+
+
+# put, delete and patch have special cases
+@app.route('/verbs', methods=['GET','POST','DELETE','PATCH'])
 async def verbs():
 	# get the json content
 	data = request.json
-	# extract the message from the request
-	verb = data.get('verb')
 
-	print(f"{request.method} -> /verbs -> {verb}")
-
-
-	# post to add info
+	# reads verb data, mostly used by Lambda's brain
+	# {
+	# 	"verb": "[verb]"
+	# }
 	if request.method == 'GET':
+		# get the verb from the request
+		verb = data.get('verb')
 		# use the controller
 		ans = controllers.get_verb_data(verb)
 		# and return
 		return jsonify({'answer': ans})
 
-	# post to add info
+	# writes or overwrites verb data based on the create or elimination
+	# elimination of lambda skills
+	# {
+	#	"skill": "[name of the skill]",
+	#	"words": [words...],
+	#	"verbs": [verbs...],
+	#   "lock": "[literally something]"
+	# }
 	elif request.method == 'POST':
-		# get the extra data
-		data = json.loads(data.get('data'))
+		# get the skill name
+		skill = data.get('skill')
+		# and the word and verb lists
+		word_list = eval(data.get('words'))
+		verbs = eval(data.get('verbs'))
+		# extra parameter, makes able to create new verbs
+		newverb_lock = True if data.get('lock') else False
 		# use the controller
-		ans = controllers.add_verb_data(verb, data)
+		ans = controllers.post_verb_data(skill, word_list, verbs, newverb_lock)
 		# and return
 		return jsonify({'answer': ans})
 
-	# post to add info
-	elif request.method == 'PUT':
+	# removes all the information related to a lambda skill
+	# {
+	# 	"skill": "[name of the skill]"
+	# }
+	elif request.method == 'DELETE':
 		# get the extra data
-		data = json.loads(data.get('data'))
+		skill = data.get('skill')
 		# use the controller
-		ans = controllers.update_verb_data(verb, data)
+		ans = controllers.delete_verb_data(skill)
 		# and return
 		return jsonify({'answer': ans})
-		
+	
+	# PATCH is a special function that has searching uses:
+	# * see what verbs has a word or a function [word, function]
+	# {
+	#	"search": "[word|function]",
+	#	"value": "[that word or function]"
+	# }
+	# * see with what words and verbs is asociated a function [skill]
+	# {
+	#	"search": "skill",
+	#	"value": "[skill name]"
+	# }
+	elif request.method == 'PATCH':
+		# catch the params
+		search = data.get("search")
+		value = data.get("value")
+		# use the controller
+		ans = controllers.patch_verb_data(search, value)
+		# and return
+		return jsonify({'answer': ans})
 
 # log requests, to save the logs only
 # then only admins can read them
@@ -243,7 +302,5 @@ async def alerts():
 		return jsonify({"answer": ans})
 
 
-# detect dev mode
-dev = True if os.getenv("dev") == 'yes' else False
 # run the app, on localhost only
-app.run(port=8081, host="127.0.0.1", debug=dev)
+app.run(port=31417, host="127.0.0.1", debug=dev)

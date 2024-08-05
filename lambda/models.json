@@ -1,0 +1,31 @@
+{
+	"models": {
+		"talk": "gpt-3.5-turbo",
+		"text": "gpt-4o",
+		"intelligence": "gpt-4o",
+		"vision": "gpt-4o",
+		"research": "gemini-1.5-pro",
+		"voice": "tts-1-hd",
+		"images": "dall-e-3",
+		"ear": "whisper-1"
+	},
+
+	"__comment__": "These ones are the token limits per each model. These numbers can be the officials from the docs, or adjusted to less in order to reduce operation costs.",
+
+	"limits": {
+		"talk": 2000,
+		"text": 120000,
+		"intelligence": 4000,
+		"research": 4000
+	}
+	
+	"__comment__": "These are used to calculate token (GPT LLMs) counts and are calculated (tokens) output/input. The reason is to calculate the token pricing in terms of input tokens.",
+
+	"coefs": { 
+		"talk": 3,
+		"text": 3,
+		"intelligence": 3,
+		"research": 3,
+		"vision": 3
+	}
+}

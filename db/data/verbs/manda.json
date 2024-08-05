@@ -1,7 +1,7 @@
 {
 	"type": "multi",
-	"valor": "iot_message",
-	"estado": "iot_message",
-	"mensaje": "iot_message",
-	"brillo": "iot_message"
+	"valor": "iot.iot_message",
+	"estado": "iot.iot_message",
+	"mensaje": "iot.iot_message",
+	"brillo": "iot.iot_message"
 }

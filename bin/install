@@ -35,7 +35,7 @@ mkdir lambdrive/dalle
 mkdir daily/data
 
 # append Lambda/bin to path
-echo "export PATH=/home/omarsaldanna/Lambda/bin:$PATH" >> ~/.bashrc
+echo "export PATH=/home/$USER/Lambda/bin:$PATH" >> ~/.bashrc
 # and make executable the files
 chmod 700 bin/*
 

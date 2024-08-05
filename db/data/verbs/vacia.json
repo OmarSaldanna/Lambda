@@ -1,8 +1,8 @@
 {
 	"type": "multi",
-	"contexto": "context_clean",
-	"conversacion": "context_clean",
-	"platica": "context_clean",
-	"charla": "context_clean"
-	"chat": "context_clean"
+	"contexto": "info.context_clean",
+	"conversacion": "info.context_clean",
+	"platica": "info.context_clean",
+	"charla": "info.context_clean",
+	"chat": "info.context_clean"
 }

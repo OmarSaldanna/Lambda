@@ -1,7 +1,7 @@
 {
 	"type": "multi",
-	"ingles": "audio_english_qualifier",
-	"idioma": "audio_lang_qualifier",
-	"pronunciacion": "audio_lang_qualifier",
-	"dialogo": "audio audio_lang_qualifier"
+	"ingles": "audios.audio_english_qualifier",
+	"idioma": "audios.audio_lang_qualifier",
+	"pronunciacion": "audios.audio_lang_qualifier",
+	"dialogo": "audio audios.audio_lang_qualifier"
 }

@@ -15,7 +15,6 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No color
 
-
 case $1 in
 
 	lines)
@@ -151,7 +150,7 @@ case $1 in
 	;;
 
 	# kill app
-	app-kill)
+	apk)
 		# kill the app session
 		tmux kill-session -t $2
 		# append to log
@@ -173,8 +172,42 @@ case $1 in
 		echo lambda daily scripts ran at $(date +"[%Y-%m-%d - %T]") >> $log_file
 	;;
 
+	# testing commands
+	run)
+		case $2 in
+			# run only the db for testing
+			db)
+				echo -e "${GREEN}Starting DB...${NC}"
+				source .env && source venv/bin/activate && python3 db/app.py
+				echo -e "${RED}Stopping DB...${NC}"
+				exit 0
+			;;
+			# run the db on tmux
+			dbs)
+				echo -e "${BLUE}DB Enabled${NC}"
+				tmux new-session -d -s db "$pre && python3 db/app.py"
+				tmux ls
+				exit 0
+			;;
+			# run lambda
+			*)
+				echo -e "${GREEN}Starting Lambda...${NC}"
+				source .env && source venv/bin/activate && python3 lambda/app.py
+				echo -e "${RED}Stopping Lambda...${NC}"
+				exit 0
+			;;
+		esac
+	;;
+
 	*)
 		echo Unknown Command λ
 		echo lambda "[start|stop|update|restart|rupdate|reqinstall|backup|app|app-kill]"
 	;;
 esac
+
+
+
+# in testing, to make this file work easily, create a symbolic link in a folder known by $PATH
+# in my case $HOME/bin/ is included in $PATH
+# ln bin/lambda $HOME/bin/lambda
+# chmod 700 $HOME/bin/lambda

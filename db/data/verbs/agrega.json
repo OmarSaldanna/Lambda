@@ -1,5 +1,5 @@
 {
 	"type": "multi",
-	"mencion": "admin_append_by_mention",
-	"arroba": "admin_append_by_mention"
+	"mencion": "admin.admin_append_by_mention",
+	"arroba": "admin.admin_append_by_mention"
 }

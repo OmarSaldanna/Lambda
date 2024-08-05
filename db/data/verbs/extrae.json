@@ -1,7 +1,7 @@
 {
 	"type": "multi",
-	"pdf": "pdf_cutter",
-	"paginas": "pdf_cutter",
-    "audio": "audio_transcription",
-    "texto": "audio_transcription"
+	"pdf": "documents.pdf_cutter",
+	"paginas": "documents.pdf_cutter",
+    "audio": "audios.audio_transcription",
+    "texto": "audios.audio_transcription"
 }

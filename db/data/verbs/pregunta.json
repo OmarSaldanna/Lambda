@@ -1,4 +1,4 @@
 {
 	"type": "multi",
-	"cuatro": "gpt4_question"
+	"cuatro": "text.gpt4_question"
 }

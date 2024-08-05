@@ -5,15 +5,17 @@
 		"servers": [],
 		"role": "free",
 		"usage": {
-			"gpt-3.5-turbo": 100000000,
-			"gpt-3.5-turbo-16k": 10000000,
-			"gpt-4-turbo-preview": 2000000,
-			"tts": 200000,
-			"dalle": 20,
-			"vision": 30,
-			"whisper": 300
+			"talk": 300000,
+			"text": 150000,
+			"intelligence": 150000,
+			"research": 150000,
+			"vision": 150000,
+			"voice": 100000,
+			"images": 20,
+			"ear": 300
 		},
 		"file": "",
+		"memory": "",
 		"devices": {},
 		"personality": "Eres una IA asistente",
 		"context_len": 0,
@@ -22,16 +24,8 @@
 		]
 	},
 
-	"images": {
-		"documents": [],
-		"audios": [],
-		"images": [],
-		"creates": [],
-		"edits": [],
-		"variations": []
-	},
-
 	"servers": {
+		"name": "",
 		"lockdown_channel": "",
   		"lockdown_members": []
 	},
@@ -42,14 +36,6 @@
 		"servers": [],
 		"members": [],
 		"calls": []
-	},
-
-	"__measures": {
-		"gpt*": "tokens",
-		"tts": "characters",
-		"dalle": "images",
-		"whisper": "minutes",
-		"vision": "images"
 	},
 
 	"__comment__": "this will have a list of users and their roles, to in base of that, recharge the users usage",

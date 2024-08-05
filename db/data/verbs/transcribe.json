@@ -1,4 +1,4 @@
 {
 	"type": "multi",
-    "audio": "audio_transcription"
+    "audio": "audios.audio_transcription"
 }
