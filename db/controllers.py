@@ -34,7 +34,7 @@ def get_user_data(user_id: str, server: str):
 		return new_data.dic
 
 
-def update_user_data(user_id: str, update: dict):
+def update_user_data(user_id: str, update: dict, userlist_update=False):
 	# try to open the user file
 	try:
 		# open the memory file
@@ -48,7 +48,11 @@ def update_user_data(user_id: str, update: dict):
 		# then create one and get the mem instance
 		mem = make_memory(user_id, "members")
 		# make the update changes
-		mem.update(update) 
+		mem.update(update)
+		# also append the new user to the userslist as a free user
+		# only if the update doesnt become from userlist functions
+		if not userlist_update:
+			post_users("free", [user_id])
 		# once created the memory, return the new data
 		return 'ok'
 
@@ -122,6 +126,7 @@ def get_verb_data(verb: str):
 	except:
 		return '404'
 
+
 # writes or overwrites verb data based on the create or elimination
 # elimination of lambda skills
 def post_verb_data(skill: str, words: list, verbs: list, newverb_lock=False):
@@ -148,6 +153,7 @@ def post_verb_data(skill: str, words: list, verbs: list, newverb_lock=False):
 				create_memory(f"verbs/{verb}.json", update)
 	# finally return the missing
 	return missing
+
 
 # removes all the information related to a lambda skill
 def delete_verb_data(skill: str):
@@ -177,6 +183,7 @@ def delete_verb_data(skill: str):
 			altered.append(verb)
 	# and finally return the altered verbs
 	return altered
+
 
 def patch_verb_data(search: str, value: str):
 	# list
@@ -331,7 +338,7 @@ def post_users(role: str, users: list):
 			# append the user with its 30 days left
 			mem[role][user] = 30
 			# also set the user usage to the role usage 
-			update_user_data(user, "members", {"usage":usages[role]})
+			update_user_data(user, {"usage":usages[role], "role": role}, userlist_update=True)
 			# remove the user from the past role
 			# check in each role
 			for i_role in mem.dic.keys():
@@ -351,6 +358,7 @@ def post_users(role: str, users: list):
 		# finally write the memory
 		mem.write()
 		# and leave a log
+		add_to_log('userlist', f"[POST] new role {role} created")
 		add_to_log('userlist', f"[POST] moved {','.join(users)} to new {role}")
 		# and return
 		return f'moved to role new "{role}"'
@@ -388,7 +396,7 @@ def post_users(role: str, users: list):
 		# get the role usage
 		role_usage = usages[role]
 		# set that usage into the usage of the user
-		update_user_data(user, "members", {"usage":role_usage})
+		update_user_data(user, {"usage": role_usage, "role": role}, userlist_update=True)
 	# finally write the memory
 	mem.write()
 	# and leave a log
@@ -406,11 +414,15 @@ def patch_users(userlist: dict):
 		# for each user in the role
 		for user in userlist[role]:
 			# set that usage into the usage of the user
-			update_user_data(user, "members", {"usage":usages[role]})
+			update_user_data(user, {"usage":usages[role], "role": role})
 	# finally save a log
 	add_to_log('userlist', f"[PATCH] restored users usage")
 	# and return
 	return 'ok'
+
+
+# SPECIAL NOTE: put counts the days and returns the users to be recharged
+# and their roles, patch updates the usages from those users to be recharged
 
 #############################################################################################
 #################################### Extra Functions ########################################

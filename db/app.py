@@ -49,7 +49,8 @@ async def members():
 	# put is to update data
 	elif request.method == 'PUT':
 		# aditional info to update
-		update = json.loads(data.get('data'))
+		# update = json.loads(data.get('data'))
+		update = eval(data.get('data')) # this one supports ' and \"
 		# update the user json
 		data = controllers.update_user_data(user, update)
 		# and return
@@ -203,7 +204,8 @@ async def log():
 	# data in this case is just a string
 	data = data.get('data')
 	
-	print(f"{request.method} -> /logs -> {database}")
+	if dev:
+		print(f"{request.method} -> /logs -> {database}")
 
 	# post to add info
 	if request.method == 'POST':
@@ -228,16 +230,19 @@ async def errors():
 	# get the json content
 	data = request.json
 	# extract the message from the request
-	data = json.loads(data.get('data'))
+	# data = json.loads(data.get('data'))
+	data = eval(data.get('data'))
 	
-	# print(f"{request.method} -> /members -> {author_id}")
+	if dev:
+		print(f"{request.method} -> /errors -> {data['member']}")
 
 	# post to add info
 	if request.method == 'POST':
 		# use the controller
 		ans, error_hash = controllers.add_to_errors(data)
 		# use telegram bot to notify
-		telegram_message(f"Error on: {data['call']}")
+		# removed due to security problems
+		# telegram_message(f"Error on: {data['call']}")
 		telegram_message(f"Error id: {error_hash}")
 		telegram_message(f"Error: {data['code']}")
 		# and return
@@ -281,7 +286,7 @@ async def userlist():
 	# {"role": [users], "role2": [users]}
 	elif request.method == 'PATCH':
 		# load the userlist reveipt
-		userlist = json.loads(request.json.get('userlist'))
+		userlist = eval(request.json.get('userlist'))
 		# use the controller
 		ans = controllers.patch_users(userlist)
 		# and return the answer
@@ -290,6 +295,7 @@ async def userlist():
 
 # it only receives a {"content": "..."} 
 # exceptional API to send alerts of errors on DB
+# used in daily script that restores the usages
 @app.route('/alerts', methods=['POST'])
 async def alerts():	
 	# 

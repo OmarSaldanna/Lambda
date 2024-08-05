@@ -10,7 +10,7 @@
 		"ear": 300
 	},
 	"pro": {
-		"talk": 100000000,
+		"talk": 100,
 		"text": 10000000,
 		"intelligence": 2000000,
 		"research": 2000000,
