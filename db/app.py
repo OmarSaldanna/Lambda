@@ -6,8 +6,9 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify
 
 # db controllers
-import controllers
-from modules import telegram_message
+from controllers import member, server, image, verb, error, userlist
+# functions to send notifications and the function for logs
+from modules import telegram_alert, app_to_log
 
 # detect dev mode
 dev = True if os.getenv("dev") == 'yes' else False
@@ -42,7 +43,7 @@ async def members():
 		# aditional: the server name
 		server = data.get('server')
 		# get the user json
-		data = controllers.get_user_data(user, server)
+		data = member.get_user_data(user, server)
 		# and return
 		return jsonify({'answer': data})
 	
@@ -52,7 +53,7 @@ async def members():
 		# update = json.loads(data.get('data'))
 		update = eval(data.get('data')) # this one supports ' and \"
 		# update the user json
-		data = controllers.update_user_data(user, update)
+		data = member.update_user_data(user, update)
 		# and return
 		return jsonify({'answer': data})
 
@@ -78,7 +79,7 @@ async def servers():
 		# aditional: the server name
 		server_name = data.get('name')
 		# get the server json
-		data = controllers.get_server_data(server_id, server_name)
+		data = server.get_server_data(server_id, server_name)
 		# and return
 		return jsonify({'answer': data})
 
@@ -87,7 +88,7 @@ async def servers():
 		# aditional info to update
 		update = json.loads(data.get('data'))
 		# update the user json
-		data = controllers.update_server_data(server_id, update)
+		data = server.update_server_data(server_id, update)
 		# and return
 		return jsonify({'answer': data})
 
@@ -113,7 +114,7 @@ async def images():
 		image_url = data.get('url')
 		image_prompt = data.get('prompt')
 		# use the controller
-		ans = controllers.post_image(image_hash, image_url, image_prompt)
+		ans = image.post_image(image_hash, image_url, image_prompt)
 		# and return
 		return jsonify({'answer': ans})
 
@@ -130,9 +131,9 @@ async def verbs():
 	# }
 	if request.method == 'GET':
 		# get the verb from the request
-		verb = data.get('verb')
+		verb_str = data.get('verb')
 		# use the controller
-		ans = controllers.get_verb_data(verb)
+		ans = verb.get_verb_data(verb_str)
 		# and return
 		return jsonify({'answer': ans})
 
@@ -142,7 +143,7 @@ async def verbs():
 	#	"skill": "[name of the skill]",
 	#	"words": [words...],
 	#	"verbs": [verbs...],
-	#   "lock": "[literally something]"
+	#   "create": "[literally something]"
 	# }
 	elif request.method == 'POST':
 		# get the skill name
@@ -151,9 +152,9 @@ async def verbs():
 		word_list = eval(data.get('words'))
 		verbs = eval(data.get('verbs'))
 		# extra parameter, makes able to create new verbs
-		newverb_lock = True if data.get('lock') else False
+		newverb_lock = True if data.get('create') else False
 		# use the controller
-		ans = controllers.post_verb_data(skill, word_list, verbs, newverb_lock)
+		ans = verb.post_verb_data(skill, word_list, verbs, newverb_lock)
 		# and return
 		return jsonify({'answer': ans})
 
@@ -165,7 +166,7 @@ async def verbs():
 		# get the extra data
 		skill = data.get('skill')
 		# use the controller
-		ans = controllers.delete_verb_data(skill)
+		ans = verb.delete_verb_data(skill)
 		# and return
 		return jsonify({'answer': ans})
 	
@@ -185,7 +186,7 @@ async def verbs():
 		search = data.get("search")
 		value = data.get("value")
 		# use the controller
-		ans = controllers.patch_verb_data(search, value)
+		ans = verb.patch_verb_data(search, value)
 		# and return
 		return jsonify({'answer': ans})
 
@@ -195,7 +196,7 @@ async def verbs():
 #	"db": "bin|admins|errors|general"
 #	"data": "message to add"
 # }
-@app.route('/logs', methods=['POST'])
+@app.route('/logs', methods=['POST']) # this one has no controllers
 async def log():
 	# get the json content
 	data = request.json
@@ -210,7 +211,7 @@ async def log():
 	# post to add info
 	if request.method == 'POST':
 		# use the controller
-		ans = controllers.add_to_log(database, data)
+		ans = app_to_log(database, data)
 		# and return
 		return jsonify({'answer': ans})
 
@@ -219,10 +220,10 @@ async def log():
 # then only admins can read them
 # {
 #	"data": {
-#		"call": lambda call that generated the error
-# 		"code": error code
-# 		"member": user id
-# 		"server": server
+#		"call": "[lambda call that generated the error]",
+# 		"code": "[error code]",
+# 		"member": "[user id]",
+# 		"server": "[server]"
 # 	}
 # }
 @app.route('/errors', methods=['POST'])
@@ -239,12 +240,12 @@ async def errors():
 	# post to add info
 	if request.method == 'POST':
 		# use the controller
-		ans, error_hash = controllers.add_to_errors(data)
+		ans, error_hash = error.add_to_errors(data)
 		# use telegram bot to notify
 		# removed due to security problems
 		# telegram_message(f"Error on: {data['call']}")
-		telegram_message(f"Error id: {error_hash}")
-		telegram_message(f"Error: {data['code']}")
+		telegram_alert(f"Error id: {error_hash}")
+		telegram_alert(f"Error: {data['code']}")
 		# and return
 		return jsonify({'answer': ans})
 
@@ -260,7 +261,7 @@ async def userlist():
 	# get is to read data
 	if request.method == 'GET':
 		# use the controller
-		ans = controllers.get_userlist()
+		ans = userlist.get_userlist()
 		# and return the answer
 		return jsonify({"answer": ans})
 
@@ -268,7 +269,7 @@ async def userlist():
 	# ALSO RETURNS ALL THE ROLES
 	elif request.method == 'PUT':
 		# use the controller
-		ans = controllers.put_userlist()
+		ans = userlist.put_userlist()
 		# and return the answer
 		return jsonify({"answer": ans})
 
@@ -278,7 +279,7 @@ async def userlist():
 		role = request.json.get('role')
 		users = request.json.get('users')
 		# use the controller
-		ans = controllers.post_users(role, users)
+		ans = member.post_users(role, users)
 		# and return the answer
 		return jsonify({"answer": ans})
 
@@ -288,25 +289,10 @@ async def userlist():
 		# load the userlist reveipt
 		userlist = eval(request.json.get('userlist'))
 		# use the controller
-		ans = controllers.patch_users(userlist)
+		ans = userlist.patch_users(userlist)
 		# and return the answer
 		return jsonify({"answer": 'ok'})
 
 
-# it only receives a {"content": "..."} 
-# exceptional API to send alerts of errors on DB
-# used in daily script that restores the usages
-@app.route('/alerts', methods=['POST'])
-async def alerts():	
-	# 
-	if request.method == 'POST':
-		# load the content of the alert
-		content = request.json.get('content')
-		# use the controller
-		ans = controllers.telegram_alert(content)
-		# and return the answer
-		return jsonify({"answer": ans})
-
-
 # run the app, on localhost only
-app.run(port=31417, host="127.0.0.1", debug=dev)
+app.run(port=int(os.environ["PORT"]), host=os.environ["HOST"], debug=dev)

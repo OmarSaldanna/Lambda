@@ -1,5 +1,5 @@
 {
-	"__comment__": "this file contains the prototypes for the dbs, that are created for new users or errors, or edited for existing ones",
+	"__comment__": "this file contains the prototypes for the dbs, that are created for new users or errors, or edited for existing ones.",
 	
 	"members": {
 		"servers": [],
@@ -38,11 +38,5 @@
 		"calls": []
 	},
 
-	"__comment__": "this will have a list of users and their roles, to in base of that, recharge the users usage",
-	
-	"userlist": {
-		"pro": {},
-		"free": {},
-		"god": {}
-	}
+	"__comment__": "userlist and images, are bult automaitcally with the use and Logs are just text files, that are also made by itself."
 }

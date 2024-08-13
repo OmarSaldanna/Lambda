@@ -9,6 +9,15 @@ userlist = requests.put("http://127.0.0.1:8081/userlist").json()['answer']
 try:
 	# try to restore the usages
 	_ = requests.patch("http://127.0.0.1:8081/userlist", json={"userlist": json.dumps(userlist)})
-except:
+except Exception as err:
 	# send a telegram alert throgh the db
-	requests.post("http://127.0.0.1:8081/alerts", json={"content": "[DB] Error: Couldn't restore the users usages"})
+	requests.post(
+		"http://127.0.0.1:8081/errors",
+		json={
+			"data": json.dumps({
+				"call": "Error on Daily usage_updater script",
+				"code": err,
+				"member": "admin",
+				"server": "admin"
+			})
+		})

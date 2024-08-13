@@ -312,7 +312,7 @@ def put_userlist():
 	# finally write the memory
 	mem.write()
 	# and leave a log
-	add_to_log('userlist', '[PUT] days left discounted')
+	app_to_log('userlist', '[PUT] days left discounted')
 	# and return
 	return userlist
 
@@ -358,8 +358,8 @@ def post_users(role: str, users: list):
 		# finally write the memory
 		mem.write()
 		# and leave a log
-		add_to_log('userlist', f"[POST] new role {role} created")
-		add_to_log('userlist', f"[POST] moved {','.join(users)} to new {role}")
+		app_to_log('userlist', f"[POST] new role {role} created")
+		app_to_log('userlist', f"[POST] moved {','.join(users)} to new {role}")
 		# and return
 		return f'moved to role new "{role}"'
 	#######################################################################
@@ -400,7 +400,7 @@ def post_users(role: str, users: list):
 	# finally write the memory
 	mem.write()
 	# and leave a log
-	add_to_log('userlist', f"[POST] moved {','.join(users)} to {role}")
+	app_to_log('userlist', f"[POST] moved {','.join(users)} to {role}")
 	# and return
 	return f'moved to role "{role}"'
 
@@ -416,7 +416,7 @@ def patch_users(userlist: dict):
 			# set that usage into the usage of the user
 			update_user_data(user, {"usage":usages[role], "role": role})
 	# finally save a log
-	add_to_log('userlist', f"[PATCH] restored users usage")
+	app_to_log('userlist', f"[PATCH] restored users usage")
 	# and return
 	return 'ok'
 
@@ -433,7 +433,7 @@ def telegram_alert(content: str):
 	# send the alert
 	telegram_message(content)
 	# save a log
-	add_to_log('errors', f"[DB] {content}")
+	app_to_log('errors', f"[DB] {content}")
 	# and return
 	return 'ok'
 
