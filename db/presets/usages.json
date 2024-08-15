@@ -1,5 +1,5 @@
 {
-	"__comment__": "The units are meassured in tokens for LLMs, minutes for audio, and number of images for images*."
+	"__comment__": "The units are meassured in tokens for LLMs, minutes for audio, and number of images for images*.",
 	"free": {
 		"talk": 100000000,
 		"text": 10000000,

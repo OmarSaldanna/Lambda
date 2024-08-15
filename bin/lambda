@@ -1,53 +1,86 @@
 #!/bin/bash
 
-# lambda path
-route=$HOME/Lambda
-# memory path
-memory=$route/db/data
-# log file
-log_file=$memory/log/bin.txt
-# preprocess command
-pre="cd $route && source .env && source venv/bin/activate"
+# load the global variables
+source ./global.conf
 
-# colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No color
+# function to create tmux sessions
+new_tmux() {
+	# cath the params
+    local name=$1
+    local payload=$2
+    # create the tmux session with the name and the payload
+    tmux new-session -d -s "$name" "$payload"
+}
 
+# main program flow
 case $1 in
 
+	# displays how many lines the project has
 	lines)
 		echo Lambda has $(git ls-files | xargs cat | wc -l) lines
 	;;
 
-	start)
-		echo -e "${GREEN}Starting Lambda λ${NC}"
+	##################################################################################
+	###################### Running Operations ########################################
+	##################################################################################
+
+	# this new command runs the main systems based on the run.sh files
+	run)
 		# append to log
-		echo Started Lambda at $(date +"[%Y-%m-%d - %T]") >> $log_file
-		# run lambda
-		tmux new-session -d -s db "$pre && python3 db/app.py"
-		tmux new-session -d -s lambda "$pre && python3 lambda/app.py"
-		tmux new-session -d -s discordo "$pre && python3 interfaces/discordo.py"
-		sleep 2
-		# iot stuff
-		# $0 app bchat-server
-		# $0 app bchat-api
-        # see tmux active sessions
-        tmux ls
+		echo $(date +"[%Y-%m-%d - %T]") system $2 started >> $BIN_LOG
+		# and run the sistem
+		eval "$(cat $2/run.sh)"
 	;;
 
-	stop)
-		echo -e "${RED}Stopping Lambda λ${NC}"
+	# also add the app command here, for apps
+	app)
 		# append to log
-		echo Stopped Lambda at $(date +"[%Y-%m-%d - %T]") >> $log_file
+		echo $(date +"[%Y-%m-%d - %T]") app $2 started >> $BIN_LOG
+		# and run the sistem
+		eval "$(cat apps/$2/run.sh)"
+	;;
+	
+	# run all the sistems
+	start)
+		echo -e "${START_COLOR}Starting Lambda λ${NO_COLOR}"
+		# append to log
+		echo $(date +"[%Y-%m-%d - %T]") Main system started >> $BIN_LOG
+		# run all the basics
+		new_tmux db "$0 run db"
+		new_tmux db "$0 run lambda"
+		# also start the interface
+		tmux new-session -d -s discordo "source .env && python3 interfaces/discordo.py"
+		# show results
+		sleep 1
+		tmux ls
+	;;
+
+	##################################################################################
+	###################### Stopping Operations #######################################
+	##################################################################################
+
+	# kill an app or a system, mainly used for apps
+	kill)
+		# kill the tmux session
+		tmux kill-session -t $2
+		# append to log
+		echo $(date +"[%Y-%m-%d - %T]") app $2 killed >> $BIN_LOG
+	;;
+
+	# as start, these stops all the lambda main systems
+	stop)
+		echo -e "${END_COLOR}Stopping Lambda λ${NO_COLOR}"
+		# append to log
+		echo $(date +"[%Y-%m-%d - %T]") Main system stopped >> $BIN_LOG
 		# stop lambda
 		tmux kill-session -t db
 		tmux kill-session -t lambda
 		tmux kill-session -t discordo
-		tmux kill-session -t bchat-api
-		tmux kill-session -t bchat-server
 	;;
+
+	##################################################################################
+	###################### Updating Operations #######################################
+	##################################################################################
 
 	update)
 		cd $route
@@ -143,19 +176,11 @@ case $1 in
 		app="apps/$2/$2"
 		# and run the app
 		tmux new-session -d -s $2 "$pre && sh $app"
-		# append to log
-		echo lambda app $2 ran at $(date +"[%Y-%m-%d - %T]") >> $log_file
+		
 		# wait to errors
 		sleep 1
 	;;
 
-	# kill app
-	apk)
-		# kill the app session
-		tmux kill-session -t $2
-		# append to log
-		echo lambda app $2 killed at $(date +"[%Y-%m-%d - %T]") >> $log_file
-	;;
 
 	# daily scripts
 	daily)
@@ -170,33 +195,6 @@ case $1 in
 		done
 		# append to log
 		echo lambda daily scripts ran at $(date +"[%Y-%m-%d - %T]") >> $log_file
-	;;
-
-	# testing commands
-	run)
-		case $2 in
-			# run only the db for testing
-			db)
-				echo -e "${GREEN}Starting DB...${NC}"
-				source .env && source venv/bin/activate && python3 db/app.py
-				echo -e "${RED}Stopping DB...${NC}"
-				exit 0
-			;;
-			# run the db on tmux
-			dbs)
-				echo -e "${BLUE}DB Enabled${NC}"
-				tmux new-session -d -s db "$pre && python3 db/app.py"
-				tmux ls
-				exit 0
-			;;
-			# run lambda
-			*)
-				echo -e "${GREEN}Starting Lambda...${NC}"
-				source .env && source venv/bin/activate && python3 lambda/app.py
-				echo -e "${RED}Stopping Lambda...${NC}"
-				exit 0
-			;;
-		esac
 	;;
 
 	*)
