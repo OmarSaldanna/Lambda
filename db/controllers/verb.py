@@ -39,7 +39,7 @@ def post_verb_data(skill: str, words: list, verbs: list, newverb_lock=False):
 				# now create the memory
 				create_memory(f"verbs/{verb}.json", update)
 	# finally return the missing
-	return missing
+	return missing if len(missing) > 1 else 'ok'
 
 
 # removes all the information related to a lambda skill
