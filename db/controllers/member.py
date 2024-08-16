@@ -106,6 +106,6 @@ def post_users(role: str, users: list, new_user=False):
 	mem.dic = userlist
 	mem.write()
 	# leave a log
-	app_to_log('userlist', f"[POST] moved {','.join(users)} to new {role}")
+	app_to_log('userlist', f"[POST] moved {','.join(users)} to {role}")
 	# and return a message
-	return f'moved to role new "{role}"'
+	return f'ok'

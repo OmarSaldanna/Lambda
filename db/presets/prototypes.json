@@ -1,5 +1,5 @@
 {
-	"__comment__": "this file contains the prototypes for the dbs, that are created for new users or errors, or edited for existing ones.",
+	"__comment__": "usages are still going to be adjusted",
 	
 	"members": {
 		"servers": [],

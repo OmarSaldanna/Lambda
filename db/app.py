@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify
 
 # db controllers
-from controllers import member, server, image, verb, error, userlist
+from controllers import member, server, image, verb, error, userlist as ulist
 # functions to send notifications and the function for logs
 from modules import telegram_alert, app_to_log
 
@@ -149,8 +149,8 @@ async def verbs():
 		# get the skill name
 		skill = data.get('skill')
 		# and the word and verb lists
-		word_list = eval(data.get('words'))
-		verbs = eval(data.get('verbs'))
+		word_list = data.get('words')
+		verbs = data.get('verbs')
 		# extra parameter, makes able to create new verbs
 		newverb_lock = True if data.get('create') else False
 		# use the controller
@@ -257,11 +257,11 @@ async def errors():
 #   "role": "{role}"
 # }
 @app.route('/userlist', methods=['GET','POST','PUT', 'PATCH'])
-async def userlist():	
+async def userlists():	
 	# get is to read data
 	if request.method == 'GET':
 		# use the controller
-		ans = userlist.get_userlist()
+		ans = ulist.get_userlist()
 		# and return the answer
 		return jsonify({"answer": ans})
 
@@ -269,7 +269,7 @@ async def userlist():
 	# ALSO RETURNS ALL THE ROLES
 	elif request.method == 'PUT':
 		# use the controller
-		ans = userlist.put_userlist()
+		ans = ulist.put_userlist()
 		# and return the answer
 		return jsonify({"answer": ans})
 
@@ -289,7 +289,7 @@ async def userlist():
 		# load the userlist reveipt
 		userlist = eval(request.json.get('userlist'))
 		# use the controller
-		ans = userlist.patch_users(userlist)
+		ans = ulist.patch_users(userlist)
 		# and return the answer
 		return jsonify({"answer": 'ok'})
 
