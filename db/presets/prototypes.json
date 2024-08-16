@@ -16,11 +16,17 @@
 		},
 		"file": "",
 		"memory": "",
+		"credentials": {
+			"hint": "",
+			"hash": ""
+		},
 		"devices": {},
 		"personality": "Eres una IA asistente",
 		"context_len": 0,
 		"context": [
-			{"role": "system", "content": "Eres alguien inteligente"}
+			{
+				"role": "system", "content": "Eres alguien inteligente"
+			}
 		]
 	},
 
