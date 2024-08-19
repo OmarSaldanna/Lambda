@@ -8,7 +8,7 @@ echo -e "${START_COLOR}Starting DB...${NO_COLOR}"
 source .env
 source global.conf
 # load the config
-source db/settings.conf
+source db/local.conf
 # activate the venv
 source venv/bin/activate
 # and run the app
