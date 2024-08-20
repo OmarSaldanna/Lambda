@@ -5,13 +5,12 @@ lib
 share
 __pycache__
 
-# files from lambdrive
+# files from lambdrive and others
 *.tar.gz
 *.mp3
 
 # credentials
-.env
-
+.keys
 # virtual env
 venv
 
@@ -28,6 +27,7 @@ lambdrive/images
 lambdrive/documents
 lambdrive/dalle
 lambdrive/qrs
+# other folders
 backups
 daily/data
 
