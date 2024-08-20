@@ -1,5 +1,6 @@
 {
 	"type": "multi",
 	"pdf": "documents.pdf_cutter",
+	"documento": "documents.pdf_cutter",
 	"archivo": "documents.pdf_cutter"
 }

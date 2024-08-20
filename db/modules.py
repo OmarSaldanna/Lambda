@@ -147,4 +147,4 @@ def telegram_alert(content: str):
 # controller to list files in directories
 # used mainly for json files
 def list_file_names (folder: str, removed_letters=5):
-  return [f[:-5] for f in os.listdir(folder)]
+  return [f[:-5] for f in os.listdir(folder) if f.endswith(".json")]

@@ -1,7 +1,6 @@
 {
-	"type": "multi",
-	"error": "admin.error_tester",
-	"imagen": "images.generate_dalle",
+    "type": "multi",
+    "imagen": "images.generate_dalle",
     "qr": "images.generate_qr",
     "traduccion": "text.translate",
     "codigo": "text.programmer",

@@ -1,4 +1,4 @@
 {
-	"type": "general",
-	"function": "text.converter"
+    "type": "general",
+    "function": "general.converter"
 }
