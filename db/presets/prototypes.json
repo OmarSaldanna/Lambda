@@ -5,14 +5,13 @@
 		"servers": [],
 		"role": "free",
 		"usage": {
-			"talk": 300000,
-			"text": 150000,
-			"intelligence": 150000,
-			"research": 150000,
-			"vision": 150000,
-			"voice": 100000,
+			"chat": 5000,
+			"intelligence": 3000,
+			"research": 4000,
+			"vision": 3000,
+			"voice": 1000,
 			"images": 20,
-			"ear": 300
+			"ear": 150
 		},
 		"file": "",
 		"memory": "",
@@ -22,10 +21,9 @@
 		},
 		"models": {
 			"chat": "gpt-3.5-turbo",
-			"large": "gpt-4o",
-			"vision": "gpt-4o",
-			"research": "gemini-1.5-pro",
 			"intelligence": "gpt-4o"
+			"research": "gemini-1.5-pro",
+			"vision": "gpt-4o"
 		},
 		"devices": {},
 		"personality": "Eres una IA asistente",

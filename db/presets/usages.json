@@ -1,33 +1,30 @@
 {
 	"__comment__": "The units are meassured in tokens for LLMs, minutes for audio, and number of images for images*.",
 	"free": {
-		"talk": 100000000,
-		"text": 10000000,
-		"intelligence": 2000000,
-		"research": 2000000,
-		"voice": 200000,
+		"chat": 5000,
+		"intelligence": 3000,
+		"research": 4000,
+		"vision": 3000,
+		"voice": 1000,
 		"images": 20,
-		"vision": 30,
-		"ear": 300
+		"ear": 150
 	},
 	"pro": {
-		"talk": 100,
-		"text": 10000000,
-		"intelligence": 2000000,
-		"research": 2000000,
-		"voice": 200000,
-		"images": 20,
-		"vision": 30,
+		"chat": 50000,
+		"intelligence": 30000,
+		"research": 30000,
+		"vision": 20000,
+		"voice": 2000,
+		"images": 40,
 		"ear": 300
 	},
 	"admin": {
-		"talk": 100000000,
-		"text": 10000000,
-		"intelligence": 2000000,
-		"research": 2000000,
-		"voice": 200000,
-		"images": 20,
-		"vision": 30,
+		"chat": 50000,
+		"intelligence": 30000,
+		"research": 30000,
+		"vision": 20000,
+		"voice": 2000,
+		"images": 40,
 		"ear": 300
 	}
 }
