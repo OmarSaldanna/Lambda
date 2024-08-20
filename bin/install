@@ -24,19 +24,19 @@ mkdir db/data/log
 mkdir db/data/members
 mkdir db/data/servers
 mkdir db/data/userlist
-# create the userlist basic file
-echo '{"pro": {},"free": {},"admin": {}}' > db/data/userlist/userlist.json
 # other folders: backups and lambdrive
-mkdir backups
 mkdir lambdrive
 mkdir lambdrive/audios
 mkdir lambdrive/qrs
 mkdir lambdrive/images
 mkdir lambdrive/documents
 mkdir lambdrive/dalle
+# other folders
+mkdir backups
 mkdir daily/data
 
 # append Lambda/bin to path
+echo "Adding Lambda bin to PATH..."
 echo "export PATH=/home/$USER/Lambda/bin:$PATH" >> ~/.bashrc
 # and make executable the files
 chmod 700 bin/*
