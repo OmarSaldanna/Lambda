@@ -1,30 +1,19 @@
 {
-	"__comment__": "The units are meassured in tokens for LLMs, minutes for audio, and number of images for images*.",
+	"__comment__": "The units are meassured in Dollars for LLMs, minutes for audio, and number of images for images*.",
 	"free": {
-		"chat": 5000,
-		"intelligence": 3000,
-		"research": 4000,
-		"vision": 3000,
-		"voice": 1000,
-		"images": 20,
-		"ear": 150
+		"budget": 1,
+		"images": 10
+	},
+	"basic": {
+		"budget": 2,
+		"images": 15
 	},
 	"pro": {
-		"chat": 50000,
-		"intelligence": 30000,
-		"research": 30000,
-		"vision": 20000,
-		"voice": 2000,
-		"images": 40,
-		"ear": 300
+		"budget": 3,
+		"images": 15
 	},
 	"admin": {
-		"chat": 50000,
-		"intelligence": 30000,
-		"research": 30000,
-		"vision": 20000,
-		"voice": 2000,
-		"images": 40,
-		"ear": 300
+		"budget": 4,
+		"images": 15
 	}
 }

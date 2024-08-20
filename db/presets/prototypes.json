@@ -5,13 +5,8 @@
 		"servers": [],
 		"role": "free",
 		"usage": {
-			"chat": 5000,
-			"intelligence": 3000,
-			"research": 4000,
-			"vision": 3000,
-			"voice": 1000,
-			"images": 20,
-			"ear": 150
+			"budget": 1,
+			"images": 10
 		},
 		"file": "",
 		"memory": "",
@@ -20,10 +15,10 @@
 			"hash": ""
 		},
 		"models": {
-			"chat": "gpt-3.5-turbo",
-			"intelligence": "gpt-4o"
-			"research": "gemini-1.5-pro",
-			"vision": "gpt-4o"
+			"chat": "gpt-4o-mini",
+			"intelligence": "claude-3-5-sonnet-20240620",
+			"research": "gemini-1.5-flash",
+			"vision": "gemini-1.5-flash"
 		},
 		"devices": {},
 		"personality": "Eres una IA asistente",
