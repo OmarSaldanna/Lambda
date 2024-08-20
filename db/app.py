@@ -295,4 +295,4 @@ async def userlists():
 
 
 # run the app, on localhost only
-app.run(port=int(os.environ["PORT"]), host=os.environ["HOST"], debug=dev)
+app.run(port=int(os.environ["DB_PORT"]), host=os.environ["DB_HOST"], debug=dev)

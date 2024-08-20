@@ -20,6 +20,13 @@
 			"hint": "",
 			"hash": ""
 		},
+		"models": {
+			"chat": "gpt-3.5-turbo",
+			"large": "gpt-4o",
+			"vision": "gpt-4o",
+			"research": "gemini-1.5-pro",
+			"intelligence": "gpt-4o"
+		},
 		"devices": {},
 		"personality": "Eres una IA asistente",
 		"context_len": 0,
