@@ -1,17 +1,21 @@
 {
-	"__comment__": "The units are meassured in Dollars for LLMs, minutes for audio, and number of images for images*.",
+	"__comment__": "budget means how many USDs a user can use inside all Lambda services that aren't free. Images are an exception, since we're looking towards new functions that use all the created images. Then we encourage users to freely use the image creation.",
+	
 	"free": {
 		"budget": 1,
 		"images": 10
 	},
+
 	"basic": {
 		"budget": 2,
 		"images": 15
 	},
+
 	"pro": {
 		"budget": 3,
 		"images": 15
 	},
+	
 	"admin": {
 		"budget": 4,
 		"images": 15

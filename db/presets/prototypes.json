@@ -1,6 +1,4 @@
-{
-	"__comment__": "usages are still going to be adjusted",
-	
+{	
 	"members": {
 		"servers": [],
 		"role": "free",
@@ -42,7 +40,5 @@
 		"servers": [],
 		"members": [],
 		"calls": []
-	},
-
-	"__comment__": "userlist and images, are bult automaitcally with the use and Logs are just text files, that are also made by itself."
+	}
 }
