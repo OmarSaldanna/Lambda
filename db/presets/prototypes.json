@@ -7,6 +7,7 @@
 			"images": 10
 		},
 		"file": "",
+		"voice": "echo",
 		"memory": "",
 		"credentials": {
 			"hint": "",
@@ -21,11 +22,7 @@
 		"devices": {},
 		"personality": "Eres una IA asistente",
 		"context_len": 0,
-		"context": [
-			{
-				"role": "system", "content": "Eres alguien inteligente"
-			}
-		]
+		"context": []
 	},
 
 	"servers": {
