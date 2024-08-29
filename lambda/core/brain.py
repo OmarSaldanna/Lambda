@@ -1,26 +1,27 @@
-# This is the lambda main module, here is where the
+# This is the Lambda main module, here is where the
 # funcions are linked to words based on the incoming
 # messages.
 # AI class, when is called it recieves a message and
 # returns an answer. As easy as that. 
 
-# import all the models
-from core.models.lwr import Lambda_Word_Recognizer
-
-# import needed modules
-from core.modules import OpenAI, DB
-# and libraries
-import os
+# import the Lambda Word Recognizer
+from modules.lwr import Lambda_Word_Recognizer
+# import the DB handler
+from modules.db import DB
+# also libraries
 import importlib
+import os
 
 
-class AI:
-  # instance all the models and the function dic
+class Brain:
+
+  # instance DB handler, and a LWR to correct verbs
   def __init__ (self):
-    # create a list of all the known verbs
-    known_words = os.listdir("db/data/verbs")
+    # create a list of all the verbs
+    known_words = os.listdir(os.environ["MEMORY_PATH"] + "verbs")
+    # remove the "".json"
     known_words = [file[:-5] for file in known_words if file.endswith('.json')]
-    # lambda word recognizer for all the known words
+    # instance a lambda word recognizer for all the known words
     self.word_recognizer = Lambda_Word_Recognizer()
     # train the model with the knwon words
     self.word_recognizer.train(known_words)
@@ -58,6 +59,7 @@ class AI:
     except Exception as e:
       # if is on dev
       if os.getenv("dev") == "yes":
+        # show the error code
         print(str(e))
       # use the report
       self.__error_report(str(e), params)
@@ -73,7 +75,7 @@ class AI:
     first_word = message.split(' ')[0]
     # correct the first word
     verb = self.word_recognizer(first_word)
-    # now load the db from the verb
+    # now load the verb data from the db
     verb_data = self.db.get('/verbs', {
       'verb': verb
     })['answer']
@@ -106,26 +108,23 @@ class AI:
       # this is a clear error on db
       raise ValueError(f"Error on database, verb: {verb}, type unknown")
       
-
-  #gpt(self, prompt: str, model="gpt-3.5-turbo", temp=0.5, context=True, system="Eres alguien inteligente")
-
-  # this is a fast function, independent. This is a simple
-  # function for fast usage, like: Lambda, ...
-  def chat(self, message: str, author: str, server: str):
-    # instance openai module
-    openai = OpenAI(author, server)
-    # try to make the answer shorter as possible
-    message += ". Responde en 1 párrafo o menos."
-    # now call gpt
-    return openai.gpt(message, context=True)
+  # # this is a fast function, independent. This is a simple
+  # # function for fast usage, like: Lambda, ...
+  # def chat(self, message: str, author: str, server: str):
+  #   # instance openai module
+  #   openai = OpenAI(author, server)
+  #   # try to make the answer shorter as possible
+  #   message += ". Responde en 1 párrafo o menos."
+  #   # now call gpt
+  #   return openai.gpt(message, context=True)
 
 
-  # this is also a fast function, the thing is that this
-  # one doesn't save context, so it is faster and cheaper
-  def fast(self, message: str, author: str, server: str):
-    # instance openai module
-    openai = OpenAI(author, server)
-    # try to make the answer shorter as possible
-    message += ". Que tu respuesta sea breve y concisa."
-    # now call fast usage
-    return openai.gpt(message, context=False, system="")
+  # # this is also a fast function, the thing is that this
+  # # one doesn't save context, so it is faster and cheaper
+  # def fast(self, message: str, author: str, server: str):
+  #   # instance openai module
+  #   openai = OpenAI(author, server)
+  #   # try to make the answer shorter as possible
+  #   message += ". Que tu respuesta sea breve y concisa."
+  #   # now call fast usage
+  #   return openai.gpt(message, context=False, system="")

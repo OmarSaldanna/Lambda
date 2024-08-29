@@ -1,0 +1,85 @@
+# https://platform.openai.com/docs/api-reference/chat/create?lang=python
+from openai import OpenAI
+
+# instance the API
+client = OpenAI()
+
+
+# function to load the images, according to the API reference
+def load_image (path: str): 
+  
+
+# function to parse the current context to GPT mode
+# current form:
+#   {"role": "system", "content": "You are a helpful assistant."},
+#   {"role": "user", "content": "Hello!"}
+def parse_context (context: dict): 
+  parsed_context = []
+  # the first row must be a system one, then:
+  for i, item in enumerate(context):
+    # extract the info
+    _type, _content = list(item.items())[0]
+    # basic presets
+    role = ""
+    content = [{
+      "type": "text",
+      "content": _content
+    }]
+    # the first message starts with role: system
+    if i == 0:
+      role = "system"
+    # for even i, it is an assitant message
+    elif i%2 == 0:
+      role = "assistant"
+    # else is an user message, it can also contain images
+    else:
+      role = "user"
+      # in case of image
+      if  == "image":
+        # then item _content is a list: image url and message
+        content = [
+          { "type": "image_url", "image_url": {"url": _content[0]} },
+          { "type": "text", "content": _content[1] }
+        ]
+      # else it is a text, but the same content format as before the ifs 
+    # finally append each message to the context
+    parsed_context.append({
+      "role": role, 
+      "content": content
+    })
+
+  # and return
+  return parsed_context
+
+
+# function to count tokens token counter, returns the amont of USDs
+# that the prompt has taken. receives the response object and also
+# the prices from the input and output tokens. Loaded on ai.py file.
+# https://platform.openai.com/docs/api-reference/chat/object
+def discounter (response, prices: list):
+  total_cost = 0;
+  # calculate the price for input tokens
+  total_cost += response.usage["prompt_tokens"] * prices [0]
+  # also for output tokens
+  total_cost += response.usage["completion_tokens"] * prices [1]
+  # and return the cost and the total tokens
+  return total_cost, response.usage["total_tokens"]
+
+
+# function to use multimodal LLMs
+def chat (context: list, model: str, response_format="text", temp=1, stream=False, max_tokens=1024):
+  # use the API
+  return client.chat.completions.create(
+    # select the model
+    model=model,
+    # the context structure
+    messages=context,
+    # temperature
+    temperature=1,
+    # the response format
+    response_format={
+      "type": response_format
+    },
+    # max tokens output
+    max_tokens=max_tokens
+  )

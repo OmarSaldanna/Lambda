@@ -5,14 +5,14 @@ import asyncio
 from flask_cors import CORS
 from flask import Flask, request, jsonify
 # the lambda brain
-from core.brain import AI
+from core.brain import Brain
 
 # instance the flask app
 app = Flask(__name__)
 CORS(app)
 
 # and the lambda AI
-ai = AI()
+brain = Brain()
 
 # lambda requests for general usage
 @app.route('/lambda', methods=['GET'])
@@ -25,42 +25,42 @@ async def lambda_call():
 		author = data.get('author')
 		server = data.get('server')
 		# process the message
-		answer = ai(message, author, server)
+		answer = brain(message, author, server)
 		# and send the anser
 		return jsonify({'answer': answer})
 
 
-# lambda requests for chat
-@app.route('/lambda/chat', methods=['GET'])
-async def lambda_conversation():
-	# get the json content of the request
-	data = request.json
-	if request.method == 'GET':
-		# extract the message from the request
-		message = data.get('message')
-		author = data.get('author')
-		server = data.get('server')
-		# process the message
-		answer = ai.chat(message, author, server)
-		# and send the answer
-		return jsonify({'answer': answer})
+# # lambda requests for chat
+# @app.route('/lambda/chat', methods=['GET'])
+# async def lambda_conversation():
+# 	# get the json content of the request
+# 	data = request.json
+# 	if request.method == 'GET':
+# 		# extract the message from the request
+# 		message = data.get('message')
+# 		author = data.get('author')
+# 		server = data.get('server')
+# 		# process the message
+# 		answer = ai.chat(message, author, server)
+# 		# and send the answer
+# 		return jsonify({'answer': answer})
 
 
-# lambda requests for fast usage
-# this one doesn't save context
-@app.route('/lambda/fast', methods=['GET'])
-async def lambda_fast():
-	# get the json content of the request
-	data = request.json
-	if request.method == 'GET':
-		# extract the message from the request
-		message = data.get('message')
-		author = data.get('author')
-		server = data.get('server')
-		# process the message
-		answer = ai.fast(message, author, server)
-		# and send the answer
-		return jsonify({'answer': answer})
+# # lambda requests for fast usage
+# # this one doesn't save context
+# @app.route('/lambda/fast', methods=['GET'])
+# async def lambda_fast():
+# 	# get the json content of the request
+# 	data = request.json
+# 	if request.method == 'GET':
+# 		# extract the message from the request
+# 		message = data.get('message')
+# 		author = data.get('author')
+# 		server = data.get('server')
+# 		# process the message
+# 		answer = ai.fast(message, author, server)
+# 		# and send the answer
+# 		return jsonify({'answer': answer})
 
 
 # set the dev mode based on the .env variable

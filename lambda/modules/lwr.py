@@ -3,8 +3,8 @@
 # with other words given in a list, this list of known words will
 # be on the memory.
 # Now LWR includes numbers and doesn't throw error on symbols
-import numpy as np
 from unidecode import unidecode
+import numpy as np
 
 
 class Lambda_Word_Recognizer:

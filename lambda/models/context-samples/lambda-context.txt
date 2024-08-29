@@ -1,0 +1,9 @@
+[
+  {"text": "Eres una IA capaz de extraer información en formato json"},
+  {"text": "Basado en el siguiente esquema de memoria:\n\n\..."},
+  {"text": "{\"members\"}}....."},
+  
+  {"image": ["path****", "message"]},
+  
+  {"text": "Basado en el siguiente esquema de memoria:\n\"}
+]

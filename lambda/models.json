@@ -1,31 +1,26 @@
 {
-	"models": {
-		"talk": "gpt-3.5-turbo",
-		"text": "gpt-4o",
-		"intelligence": "gpt-4o",
-		"vision": "gpt-4o",
-		"research": "gemini-1.5-pro",
-		"voice": "tts-1-hd",
-		"images": "dall-e-3",
-		"ear": "whisper-1"
-	},
-
-	"__comment__": "These ones are the token limits per each model. These numbers can be the officials from the docs, or adjusted to less in order to reduce operation costs.",
+	"__comment__": "These limits determine when on how many tokens the context is going to be reseted, they are evaluated on every prompt. These numbers can be the officials from the docs, or adjusted to less in order to reduce operation costs.",
 
 	"limits": {
-		"talk": 2000,
-		"text": 120000,
-		"intelligence": 4000,
-		"research": 4000
-	}
+		"chat": 2000,
+		"research": 4000,
+		"intelligence": 2000
+	},
 	
-	"__comment__": "These are used to calculate token (GPT LLMs) counts and are calculated (tokens) output/input. The reason is to calculate the token pricing in terms of input tokens.",
+	"__comment__": "These are the available models. By default Lambda uses 2 from each family: GPT, Gemini and Claude. Normally including the fastest model and the smartest model.",
 
-	"coefs": { 
-		"talk": 3,
-		"text": 3,
-		"intelligence": 3,
-		"research": 3,
-		"vision": 3
+	"model": ["gpt-4o", "gpt-4o-mini", "claude-3-5-sonnet-20240620", "claude-3-haiku-20240307", "gemini-1.5-pro", "gemini-1.5-flash"],
+
+	"__comment__": "Pricing costs where gotten from the oficial pages. They are used to calculate how many USDs has cost every Lambda prompt.",
+
+	"prices": {
+		"gemini-1.5-flash": [0.075, 0.30],
+		"gemini-1.5-pro": [3.50, 10.50],
+		
+		"gpt-4o": [5, 15],
+		"gpt-4o-mini": [0.15, 0.6],
+		
+		"claude-3-5-sonnet-20240620": [3, 15],
+		"claude-3-haiku-20240307": [0.25, 1.25]
 	}
 }
