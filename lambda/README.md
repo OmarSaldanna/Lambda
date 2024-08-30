@@ -1,6 +1,8 @@
 # Lambda AI
 
 
+instruct mode estará por aparte, localizado en models bajo el nombre de instruct
+hay que probar aun que las imágenes sean todas procesables como png y no por diferente tipo como lo dice la api de claude
 
 incoming messages:
 

@@ -1,9 +1,18 @@
 [
-  {"text": "Eres una IA capaz de extraer información en formato json"},
-  {"text": "Basado en el siguiente esquema de memoria:\n\n\..."},
-  {"text": "{\"members\"}}....."},
+  {"text": "esta es la string de system"},
   
-  {"image": ["path****", "message"]},
+  {"text": "Primera pregunta"},
+  {"text": ">> Primera respuesta"},
   
-  {"text": "Basado en el siguiente esquema de memoria:\n\"}
+  {"image": ["primera imagen en base 64", "texto de la primera imagen"]},
+  {"text": ">> segunda respuesta, de la imagen"},
+
+  {"text": "tercera pregunta"},
+  {"text": ">> Tercera respuesta"},
+
+  {"image": ["Segunda imagen en base 64", "texto de la Segunda imagen"]},
+  {"text": ">> Cuarta respuesta, de la imagen"},
+
+  {"image": ["Tercera imagen en base 64", "texto de la Tercera imagen"]},
+  {"text": ">> Quinta respuesta, de la imagen"}
 ]
