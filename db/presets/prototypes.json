@@ -6,24 +6,17 @@
 			"budget": 1,
 			"images": 10
 		},
-		"file": "",
 		"voice": "echo",
+		"mode": "chat",
 		"memory": "",
-		"credentials": {
-			"hint": "",
-			"hash": ""
-		},
 		"models": {
 			"chat": "gpt-4o-mini",
 			"intelligence": "claude-3-5-sonnet-20240620",
-			"research": "gemini-1.5-flash",
-			"vision": "gemini-1.5-flash"
+			"research": "gemini-1.5-flash"
 		},
-		"devices": {},
 		"context": [
 			"Eres una IA asistente"
-		],
-		"mode": ""
+		]
 	},
 
 	"servers": {
