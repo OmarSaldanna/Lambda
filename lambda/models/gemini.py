@@ -1,98 +1,120 @@
 # https://ai.google.dev/gemini-api/docs/text-generation?lang=python
+import google.generativeai as genai
+import os # to load the gemini api key
 
-model = genai.GenerativeModel("gemini-1.5-flash")
-chat = model.start_chat(
-    history=[
-        {"role": "user", "parts": "Hello"},
-        {"role": "model", "parts": "Great to meet you. What would you like to know?"},
-    ]
-)
-response = chat.send_message("I have 2 dogs in my house.")
-print(response.text)
-response = chat.send_message("How many paws are in my house?")
-print(response.text)
-
-
-import gemini
-import base64
+# things to load the image
 import io
+import base64
+from PIL import Image
 
-# Initialize Gemini model
-model = gemini.load("gemini-1.5-flash")  # Adjust model name based on your setup
-
-def process_image(image_url):
-    # Replace with your actual image processing logic (e.g., using libraries like OpenCV)
-    # Simulate processing for now
-    return {"objects": ["unknown object"]}  # Placeholder result
-
-def chat_with_gemini(prompt, context):
-    if isinstance(prompt, dict) and prompt.get("type") == "image_url":
-        image_data = base64.b64decode(prompt["image_url"]["url"].split(",")[1])
-        image = io.BytesIO(image_data)
-        processed_image_data = process_image(image)
-        # Update context with processed image data (adapt based on your needs)
-        context.append({"processed_image": processed_image_data})
-        prompt = f"Image analysis suggests: {processed_image_data['objects']}. {messages[-1]['content'][1]['text']}"  # Combine image analysis and user text prompt
-    response = model.run(prompt, context=context)
-    messages.append({
-        "role": "assistant",
-        "content": [
-            {
-                "type": "text",
-                "text": response.text
-            }
-        ]
-    })
-    return response.text
-
-# Message list to store conversation history
-messages = []
-
-# Context management (assuming a context window of 120 messages)
-context = messages[-120:]
-
-# User interaction loop (replace with your UI integration)
-while True:
-    user_input = input("You: ")
-    if user_input.startswith("data:image/png;base64,"):
-        # Handle image URL input
-        prompt = {"type": "image_url", "image_url": {"url": user_input}}
-    else:
-        # Handle text input
-        prompt = user_input
-
-    response = chat_with_gemini(prompt, context)
-    print("Assistant:", response)
-
-    # Update context for subsequent interactions
-    context.append({"user_text": user_input})
-    context = context[-120:]  # Maintain sliding window
+# set the api key manually
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
 
+# special function to load images, special case for gemini api
+# receives the image encoded to base64
+def load_image (b64):
+    # Decode the base64 string to bytes
+    image_bytes = base64.b64decode(image_b64)
+    # Create a BytesIO object from the decoded bytes
+    image_stream = io.BytesIO(image_bytes)
+    # Open the image from the BytesIO stream using PIL
+    return Image.open(image_stream)
 
 
+# function to parse the current context to Gemini mode
+# note: ONLY ACCEPTS THE LAST IMAGE IN CASE OF BEEING
+# A NEW PROMT. PAST PROMTS IMAGES ARE SKIPPED
+def parse_context (context: list):
+    parsed_context = []
+    prompt = ""
+    image = None # by default
+    # the first row must be a system one, then:
+    for i, item in enumerate(context):
+        # extract the info
+        _type, _content = list(item.items())[0]
+        # basic presets
+        role = ""
+        content = ""
+
+        ######## System Message ###############################################
+
+        # gemini has no system message
+        if i == 0:
+            # then just skip it
+            continue
+
+        ######## Assistant Messages ############################################
+        
+        # for even i, it is an assitant message
+        elif i%2 == 0:
+            role = "model"
+            content = _content
+
+        ######## User Messages #########################################
+
+        # else is an user message, it can also contain images
+        else:
+            role = "user"
+            # if its the final message: check if its an image
+            if i == len(context)-1:
+
+                # if the content is a list: then IS AN IMAGE
+                if isinstance(_content, list):
+                    # load the image
+                    image = load_image(_content[0])
+                
+                # else: is just a message
+                # so, save the prompt
+                prompt = _content[1]
+                # end the for
+                break
+
+            # it just a normal message: images are going to be skipped
+            else:
+
+                # if the content is a list: then IS AN IMAGE
+                if isinstance(_content, list):
+                    # just save the text
+                    content = _content[1]
+                # else save the content
+                else:
+                    content = _content
+        
+        #################################################################
+
+        parsed_context.append({
+            "role": role,
+            "parts": content
+        })
+
+    return parsed_context, prompt, image
 
 
+# function to count tokens token counter, returns the amont of USDs
+# that the prompt has taken. receives the response object and also
+# the prices from the input and output tokens. Loaded on ai.py file.
+# https://ai.google.dev/gemini-api/docs/tokens?lang=python#multi-turn-tokens
+def discounter (response, prices: list):
+    total_cost = 0;
+    # calculate the price for input tokens
+    total_cost += response.usage_metadata["prompt_token_count"] * prices [0]
+    # also for output tokens
+    total_cost += response.usage_metadata["candidates_token_count"] * prices [1]
+    # and return the cost and the total tokens
+    return total_cost, response.usage_metadata["total_token_count"], response.text
 
-import gemini
 
-# Initialize Gemini model
-model = gemini.load("gemini-1.5-flash")  # Adjust model name based on your setup
-
-def chat_with_gemini(prompt, context):
-    response = model.run(prompt, context=context)
-    messages.append({
-        "role": "assistant",
-        "content": [
-            {
-                "type": "text",
-                "text": response.text
-            }
-        ]
-    })
-    return response.text
-
-# Generate response based on user prompt and context
-prompt = messages[-1]["content"][1]["text"]  # Get user's text prompt
-response = chat_with_gemini(prompt, context)
-print(response)
+# general function to use gemini
+def chat (context: list, model: str, temp: int, stream: bool, max_tokens: int):
+    # get the past context and the prompt, due to gemini rules
+    past_context, prompt, image = parse_context(context)
+    # load the model
+    model = genai.GenerativeModel(model)
+    # set the context
+    chat = model.start_chat(
+        # load the context
+        history=past_context
+    )
+    # use the chat and set the case when an image comes
+    return chat.send_message(prompt) if not image else chat.send_message([prompt, image])

@@ -6,7 +6,7 @@ client = anthropic.Anthropic()
 
 
 # function to parse the current context to Claude mode
-def parse_context (context: dict):
+def parse_context (context: list):
 	parsed_context = []
 	system = ""
 	# iterate every block of lambda context
@@ -70,11 +70,12 @@ def discounter (response, prices: list):
 	# also for output tokens
 	total_cost += response.usage.output_tokens * prices [1]
 	# and return the cost and the total tokens
-	return total_cost, response.usage.input_tokens + response.usage.input_tokens
+	total_tokens = response.usage.input_tokens + response.usage.input_tokens
+	return total_cost, total_tokens, response.content[0].text
 
 
 # context will receive the Lambda context (general)
-def chat (context: list, model: str, temp=1, stream=False, max_tokens=1024):
+def chat (context: list, model: str, temp: int, stream: bool, max_tokens: int):
 	# parse the context and in this case extract the system block
 	claude_context, system_block = parse_context(context)
 	# use the api

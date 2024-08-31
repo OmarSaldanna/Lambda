@@ -4,7 +4,8 @@
 	"limits": {
 		"chat": 2000,
 		"research": 4000,
-		"intelligence": 2000
+		"intelligence": 2000,
+		"instruct": 2000,
 	},
 	
 	"__comment__": "These are the available models. By default Lambda uses 2 from each family: GPT, Gemini and Claude. Normally including the fastest model and the smartest model.",
@@ -23,4 +24,5 @@
 		"claude-3-5-sonnet-20240620": [3, 15],
 		"claude-3-haiku-20240307": [0.25, 1.25]
 	}
+
 }

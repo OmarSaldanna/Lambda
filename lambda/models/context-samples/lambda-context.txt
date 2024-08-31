@@ -15,4 +15,5 @@
 
   {"image": ["Tercera imagen en base 64", "texto de la Tercera imagen"]},
   {"text": ">> Quinta respuesta, de la imagen"}
+
 ]

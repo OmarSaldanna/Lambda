@@ -6,7 +6,7 @@ client = OpenAI()
 
 
 # function to parse the current context to GPT mode
-def parse_context (context: dict): 
+def parse_context (context: list): 
   parsed_context = []
   # the first row must be a system one, then:
   for i, item in enumerate(context):
@@ -67,23 +67,19 @@ def discounter (response, prices: list):
   # also for output tokens
   total_cost += response.usage["completion_tokens"] * prices [1]
   # and return the cost and the total tokens
-  return total_cost, response.usage["total_tokens"]
+  return total_cost, response.usage["total_tokens"], response.choices[0].message
 
 
 # function to use multimodal LLMs
-def chat (context: list, model: str, response_format="text", temp=1, stream=False, max_tokens=1024):
+def chat (context: list, model: str, temp: int, stream: bool, max_tokens: int):
   # use the API
   return client.chat.completions.create(
     # select the model
     model=model,
     # the context structure
-    messages=context,
+    messages=parse_context(context),
     # temperature
     temperature=1,
-    # the response format
-    response_format={
-      "type": response_format
-    },
     # max tokens output
     max_tokens=max_tokens
   )
