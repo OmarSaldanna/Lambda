@@ -15,7 +15,7 @@
 			"research": "gemini-1.5-flash"
 		},
 		"context": [
-			"Eres una IA asistente"
+			{"text": "Eres una IA asistente"}
 		]
 	},
 

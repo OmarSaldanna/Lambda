@@ -63,11 +63,11 @@ def parse_context (context: list):
 def discounter (response, prices: list):
   total_cost = 0;
   # calculate the price for input tokens
-  total_cost += response.usage["prompt_tokens"] * prices [0]
+  total_cost += response.usage.prompt_tokens * prices[0] * 1/1e6
   # also for output tokens
-  total_cost += response.usage["completion_tokens"] * prices [1]
+  total_cost += response.usage.completion_tokens * prices[1] * 1/1e6
   # and return the cost and the total tokens
-  return total_cost, response.usage["total_tokens"], response.choices[0].message
+  return total_cost, response.usage.total_tokens, response.choices[0].message.content
 
 
 # function to use multimodal LLMs

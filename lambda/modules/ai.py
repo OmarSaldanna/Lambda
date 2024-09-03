@@ -21,9 +21,8 @@ from modules.context import clear_context
 
 class AI:
 
-
 	# this class is instanced in every skill
-	def __init__ (self, user_id: str):
+	def __init__ (self, user_id: str, server: str):
 		# instance the db
 		self.db = DB()
 		# the user id
@@ -69,7 +68,9 @@ class AI:
 		# use the model and pass the params
 		response = llm.chat(self.user_data["context"], model, temp, stream, max_tokens)
 		# get the prompt cost and make the discount
-		promt_cost, context_size, response_text = llm.discounter(response)
+		promt_cost, context_size, response_text = llm.discounter(
+			response, self.models_info["prices"][model]
+		)
 
 		# make the discount to the user budget
 		self.user_data["usage"]["budget"] -= promt_cost
@@ -79,6 +80,7 @@ class AI:
 		if context_size >= self.models_info["limits"][mode]:
 			# then clear context
 			self.user_data["context"] = clear_context(self.user_data["context"])
+		
 		# save changes on db
 		self.db.put('/members', {
 			"id": self.user_id,
@@ -93,4 +95,4 @@ class AI:
 		})
 
 		# return the answer
-		return text
+		return response_text

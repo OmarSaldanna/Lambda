@@ -2,7 +2,7 @@
 
 # function to clear context: only keep 3 messages:
 # first system message, last prompt, last answer
-def clear_context (context: lsit):
+def clear_context (context: list):
 	# create the Lambda context structure
 	new_context = []
 	# append the initial message

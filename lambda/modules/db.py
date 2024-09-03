@@ -5,7 +5,7 @@ import requests
 # db class to interact
 class DB:
 	
-	def __init__ (self, host=os.environ["DB_PORT"], port=os.environ["DB_HOST"]):
+	def __init__ (self, host=os.environ["DB_HOST"], port=os.environ["DB_PORT"]):
 		# define the api url
 		self.api = f'http://{host}:{port}'
 
@@ -13,7 +13,7 @@ class DB:
 	def __preprocess (self, headers: dict):
 		for key in headers.keys():
 			# if there's a dic in headers
-			if type(headers[key]) == dict:
+			if type(headers[key]) in [dict, list]:
 				# json dump
 				headers[key] = json.dumps(headers[key])
 		return headers

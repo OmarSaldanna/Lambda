@@ -98,11 +98,11 @@ def parse_context (context: list):
 def discounter (response, prices: list):
     total_cost = 0;
     # calculate the price for input tokens
-    total_cost += response.usage_metadata["prompt_token_count"] * prices [0]
+    total_cost += response.usage_metadata.prompt_token_count * prices [0] * 1/1e6
     # also for output tokens
-    total_cost += response.usage_metadata["candidates_token_count"] * prices [1]
+    total_cost += response.usage_metadata.candidates_token_count * prices [1] * 1/1e6
     # and return the cost and the total tokens
-    return total_cost, response.usage_metadata["total_token_count"], response.text
+    return total_cost, response.usage_metadata.total_token_count, response.text
 
 
 # general function to use gemini

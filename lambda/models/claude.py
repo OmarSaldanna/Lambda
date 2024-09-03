@@ -66,9 +66,9 @@ def parse_context (context: list):
 def discounter (response, prices: list):
 	total_cost = 0;
 	# calculate the price for input tokens
-	total_cost += response.usage.input_tokens * prices [0]
+	total_cost += response.usage.input_tokens * prices [0] * 1/1e6
 	# also for output tokens
-	total_cost += response.usage.output_tokens * prices [1]
+	total_cost += response.usage.output_tokens * prices [1] * 1/1e6
 	# and return the cost and the total tokens
 	total_tokens = response.usage.input_tokens + response.usage.input_tokens
 	return total_cost, total_tokens, response.content[0].text
