@@ -14,10 +14,7 @@ def parse_context (context: list):
     _type, _content = list(item.items())[0]
     # basic presets
     role = ""
-    content = [{
-      "type": "text",
-      "content": _content
-    }]
+    content = _content
 
     ######## System Message ###############################################
 
@@ -44,7 +41,7 @@ def parse_context (context: list):
           { "type": "text", "content": _content[1] }
         ]
       # else it is a text, but the same content format as before the ifs
-    
+
     #################################################################
     
     # finally append each message to the context
@@ -67,12 +64,13 @@ def discounter (response, prices: list):
   # also for output tokens
   total_cost += response.usage.completion_tokens * prices[1] * 1/1e6
   # and return the cost and the total tokens
-  return total_cost, response.usage.total_tokens, response.choices[0].message.content
+  return total_cost, response.usage.total_tokens, response.choices[0].message.content, (response.usage.prompt_tokens, response.usage.completion_tokens)
 
 
 # function to use multimodal LLMs
 def chat (context: list, model: str, temp: int, stream: bool, max_tokens: int):
   # use the API
+  print(parse_context(context))
   return client.chat.completions.create(
     # select the model
     model=model,

@@ -14,6 +14,7 @@
 			"intelligence": "claude-3-5-sonnet-20240620",
 			"research": "gemini-1.5-flash"
 		},
+		"context_size": 7,
 		"context": [
 			{"text": "Eres una IA asistente"}
 		]

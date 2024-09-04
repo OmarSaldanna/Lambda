@@ -56,19 +56,23 @@ def parse_context (context: list):
         # else is an user message, it can also contain images
         else:
             role = "user"
-            # if its the final message: check if its an image
+            # if its the final message:
             if i == len(context)-1:
 
                 # if the content is a list: then IS AN IMAGE
                 if isinstance(_content, list):
                     # load the image
                     image = load_image(_content[0])
-                
+                    # save the prompt
+                    prompt = _content[1]
+                    # and break
+
                 # else: is just a message
-                # so, save the prompt
-                prompt = _content[1]
-                # end the for
-                break
+                else:                
+                    # so, save the prompt
+                    prompt = _content
+                    # and break
+                    break
 
             # it just a normal message: images are going to be skipped
             else:
@@ -102,13 +106,14 @@ def discounter (response, prices: list):
     # also for output tokens
     total_cost += response.usage_metadata.candidates_token_count * prices [1] * 1/1e6
     # and return the cost and the total tokens
-    return total_cost, response.usage_metadata.total_token_count, response.text
+    return total_cost, response.usage_metadata.total_token_count, response.text, (response.usage_metadata.prompt_token_count, response.usage_metadata.candidates_token_count)
 
 
 # general function to use gemini
 def chat (context: list, model: str, temp: int, stream: bool, max_tokens: int):
     # get the past context and the prompt, due to gemini rules
     past_context, prompt, image = parse_context(context)
+    print(past_context, prompt, image)
     # load the model
     model = genai.GenerativeModel(model)
     # set the context

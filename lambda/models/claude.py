@@ -71,7 +71,7 @@ def discounter (response, prices: list):
 	total_cost += response.usage.output_tokens * prices [1] * 1/1e6
 	# and return the cost and the total tokens
 	total_tokens = response.usage.input_tokens + response.usage.input_tokens
-	return total_cost, total_tokens, response.content[0].text
+	return total_cost, total_tokens, response.content[0].text, (response.usage.input_tokens, response.usage.input_tokens)
 
 
 # context will receive the Lambda context (general)

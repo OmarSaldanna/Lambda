@@ -5,7 +5,7 @@
 echo -e "${START_COLOR}Starting DB...${NO_COLOR}"
 
 # load the global config and keys
-source .env
+source .keys
 source global.conf
 # load the config
 source db/local.conf

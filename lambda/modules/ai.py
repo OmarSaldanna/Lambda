@@ -46,12 +46,6 @@ class AI:
 		# 2.- if context len (counted after each answer) > limit. Applied
 		# after response clear context (auto and not manually): only keep
 		# 3 messages: first system message, last prompt, last answer
-		
-		# logs
-		# self.db.post("/logs", {
-			# "db": "tokens",
-			# "data": f"[{self.user_id}] {model} in: {tokens_in} out: {tokens_out} adjusted: {adjusted} total: {total_tokens}"
-		# })
 
 		# first rule then
 		if mode != self.user_data['mode']:
@@ -60,15 +54,35 @@ class AI:
 
 		# append prompt to context
 		self.user_data["context"].append(prompt)
-		# import the correct model functions based on mode model
-		model = self.user_data["models"][mode] # select the model
-		module_name = model.split('-')[0] # get the module name
-		llm = importlib.import_module(f"models.{module_name}")
+		# select the model
+		model = self.user_data["models"][mode]
+		# get the module name
+		module_name = model.split('-')[0]
 		
+		########################## Availability Check #######################
+
+		# if the prompt cost is higher than the remaining credits + (avg answer len price)
+		# then return a message that the user has no remaining budget to chat
+		# input price
+		est_cost = self.user_data["context_size"] * 1/1e6 * self.models_info["prices"][model][0]
+		# average output price
+		est_cost += int(os.environ["AVG_ANSWER_LEN"]) * 1/1e6 * self.models_info["prices"][model][1]
+		# then the if the estimated cost is higher than available funds
+		if est_cost > self.user_data["usage"]["budget"]:
+			# send an error message
+			return {
+				"type": "error",
+				"content": os.environ["NO_FUNDS_ERROR"]
+			}
+
+		#####################################################################
+
+		# import the correct model functions based on mode model
+		llm = importlib.import_module(f"models.{module_name}")
 		# use the model and pass the params
 		response = llm.chat(self.user_data["context"], model, temp, stream, max_tokens)
 		# get the prompt cost and make the discount
-		promt_cost, context_size, response_text = llm.discounter(
+		promt_cost, context_size, response_text, tokens = llm.discounter(
 			response, self.models_info["prices"][model]
 		)
 
@@ -81,12 +95,19 @@ class AI:
 			# then clear context
 			self.user_data["context"] = clear_context(self.user_data["context"])
 		
+		# save the log of the tokens
+		self.db.post("/logs", {
+			"db": "tokens",
+			"data": f"[{self.user_id}] {model} in: {tokens[0]} out: {tokens[1]}"
+		})
 		# save changes on db
 		self.db.put('/members', {
 			"id": self.user_id,
 			"data": {
 				# update the context
 				"context": self.user_data["context"],
+				# also context size
+				"context_size": context_size,
 				# the usage discount
 				"usage": self.user_data["usage"],
 				# and the current mode
@@ -95,4 +116,7 @@ class AI:
 		})
 
 		# return the answer
-		return response_text
+		return {
+			"type": "text",
+			"content": response_text
+		}
