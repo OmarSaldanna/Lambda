@@ -1,11 +1,11 @@
 {
-	"__comment__": "These limits determine when on how many tokens the context is going to be reseted, they are evaluated on every prompt. These numbers can be the officials from the docs, or adjusted to less in order to reduce operation costs.",
+	"__comment__": "These limits determine when on how many tokens the context is going to be reseted, they are evaluated on every prompt. These numbers can be the officials from the docs, or adjusted to less in order to reduce operation costs. FOR DEEPER CONVERSATIONS AND IMAGE KEEPING IN CONTEXT MOVE THEM TO MORE THAN 10,000",
 
 	"limits": {
-		"chat": 2000,
-		"research": 4000,
-		"intelligence": 2000,
-		"instruct": 2000
+		"chat": 5000,
+		"research": 5000,
+		"intelligence": 3000,
+		"instruct": 5000
 	},
 	
 	"__comment__": "These are the available models. By default Lambda uses 2 from each family: GPT, Gemini and Claude. Normally including the fastest model and the smartest model.",

@@ -49,8 +49,11 @@ class AI:
 
 		# first rule then
 		if mode != self.user_data['mode']:
-			# if so, clear the context
-			self.user_data["context"] = clear_context(self.user_data["context"])
+			# if so, clear the context, only if the context is longer than
+			# only one message
+			if len(self.user_data["context"]) > 1:
+				# clear context
+				self.user_data["context"] = clear_context(self.user_data["context"])
 
 		# append prompt to context
 		self.user_data["context"].append(prompt)

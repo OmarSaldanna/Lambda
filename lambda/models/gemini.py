@@ -7,15 +7,15 @@ import io
 import base64
 from PIL import Image
 
+
 # set the api key manually
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-
 
 # special function to load images, special case for gemini api
 # receives the image encoded to base64
 def load_image (b64):
     # Decode the base64 string to bytes
-    image_bytes = base64.b64decode(image_b64)
+    image_bytes = base64.b64decode(b64)
     # Create a BytesIO object from the decoded bytes
     image_stream = io.BytesIO(image_bytes)
     # Open the image from the BytesIO stream using PIL
@@ -113,7 +113,6 @@ def discounter (response, prices: list):
 def chat (context: list, model: str, temp: int, stream: bool, max_tokens: int):
     # get the past context and the prompt, due to gemini rules
     past_context, prompt, image = parse_context(context)
-    print(past_context, prompt, image)
     # load the model
     model = genai.GenerativeModel(model)
     # set the context

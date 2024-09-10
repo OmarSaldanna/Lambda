@@ -1,9 +1,11 @@
 # https://docs.anthropic.com/en/api/messages
 import anthropic
+# also the module to process images
+from modules.images import base64_to_png_base64
+
 
 # instance the API, the key is in the env
 client = anthropic.Anthropic()
-
 
 # function to parse the current context to Claude mode
 def parse_context (context: list):
@@ -44,7 +46,7 @@ def parse_context (context: list):
 					"source": {
 							"type": "base64",
 							"media_type": "image/png",
-							"data": _content[0]
+							"data": base64_to_png_base64(_content[0])
 					}},
 				{ "type": "text","text": _content[1] }]
 		

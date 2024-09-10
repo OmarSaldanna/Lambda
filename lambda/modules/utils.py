@@ -1,7 +1,6 @@
 import os
 import pydub
 
-
 # download images, linux only
 def download_image(img_link: str, name: str, extension='.png', where="lambdrive/images/", dalle_type= ""):
 	# Create the wget command

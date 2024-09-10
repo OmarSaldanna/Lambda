@@ -1,9 +1,11 @@
 # https://platform.openai.com/docs/api-reference/chat/create?lang=python
 from openai import OpenAI
+# also the module to process images
+from modules.images import base64_to_png_base64
+
 
 # instance the API, the key is in the env
 client = OpenAI()
-
 
 # function to parse the current context to GPT mode
 def parse_context (context: list): 
@@ -37,8 +39,8 @@ def parse_context (context: list):
       if _type == "image":
         # then item _content is a list: image url and message
         content = [
-          { "type": "image_url", "image_url": {"url": f"data:image/png;base64,{_content[0]}"} },
-          { "type": "text", "content": _content[1] }
+          { "type": "text", "text": _content[1] },
+          { "type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_to_png_base64(_content[0])}"} }
         ]
       # else it is a text, but the same content format as before the ifs
 
@@ -70,7 +72,6 @@ def discounter (response, prices: list):
 # function to use multimodal LLMs
 def chat (context: list, model: str, temp: int, stream: bool, max_tokens: int):
   # use the API
-  print(parse_context(context))
   return client.chat.completions.create(
     # select the model
     model=model,
