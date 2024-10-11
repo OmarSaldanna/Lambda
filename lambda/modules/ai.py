@@ -20,7 +20,7 @@ from modules.context import clear_context
 
 
 class AI:
-
+	
 	# this class is instanced in every skill
 	def __init__ (self, user_id: str, server: str):
 		# instance the db
