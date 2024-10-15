@@ -1,8 +1,4 @@
 {
-	"type": "multi",
-	"imagen": "images.gpt_vision",
-    "cuadro": "images.gpt_vision",
-    "diagrama": "images.gpt_vision",
-    "foto": "images.gpt_vision",
-    "video": "videos.youtube_reader"
+    "type": "multi",
+    "video": "video.youtube_reader"
 }

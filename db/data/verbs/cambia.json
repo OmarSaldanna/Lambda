@@ -1,6 +1,6 @@
 {
 	"type": "multi",
-	"personalidad": "info.personality_set",
+	"personalidad": "admin.personality_set",
 	"valor": "iot.iot_message",
 	"estado": "iot.iot_message",
 	"mensaje": "iot.iot_message",

@@ -1,15 +1,11 @@
 {
-	"type": "multi",
-	"pdf": "documents.pdf_reader",
-    "archivo": "documents.pdf_reader",
-	"documento": "documents.pdf_reader",
-	"valor": "iot.iot_read",
+    "type": "multi",
+    "pdf": "document.pdf_reader",
+    "archivo": "document.pdf_reader",
+    "documento": "document.pdf_reader",
+    "valor": "iot.iot_read",
     "humedad": "iot.iot_read",
     "temperatura": "iot.iot_read",
     "medida": "iot.iot_read",
-    "audio": "audios.audio_transcription",
-    "imagen": "images.gpt_vision",
-    "cuadro": "images.gpt_vision",
-    "diagrama": "images.gpt_vision",
-    "foto": "images.gpt_vision"
+    "audio": "audio.audio_transcription"
 }

@@ -1,4 +1,4 @@
 {
 	"type": "general",
-	"function": "info.skill_specific_question"
+	"function": "help.skill_specific_question"
 }

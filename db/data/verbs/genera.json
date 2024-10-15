@@ -1,11 +1,11 @@
 {
     "type": "multi",
-    "imagen": "images.generate_dalle",
-    "qr": "images.generate_qr",
+    "imagen": "image.generate_dalle",
+    "qr": "image.generate_qr",
     "codigo": "text.programmer",
     "script": "text.programmer",
     "funcion": "text.programmer",
     "programa": "text.programmer",
     "algoritmo": "text.programmer",
-    "audio": "audios.generate_tts"
+    "audio": "audio.generate_tts"
 }

@@ -1,7 +1,0 @@
-{
-	"type": "multi",
-	"uso": "info.show_usage",
-    "recursos": "info.show_usage",
-    "disponibilidad": "info.show_usage",
-    "id": "info.get_id"
-}

@@ -1,9 +1,5 @@
 {
-	"type": "multi",
-	"imagen": "images.gpt_vision",
-    "cuadro": "images.gpt_vision",
-    "diagrama": "images.gpt_vision",
-    "foto": "images.gpt_vision",
-    "audio": "audios.audio_question",
-    "video": "videos.youtube_reader"
+    "type": "multi",
+    "audio": "audio.audio_question",
+    "video": "video.youtube_reader"
 }
