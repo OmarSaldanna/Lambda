@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify
 
 # db controllers
-from controllers import member, server, image, verb, error, userlist as ulist
+from controllers import member, server, image, verb, error, file, userlist as ulist
 # functions to send notifications and the function for logs
 from modules import telegram_alert, app_to_log
 
@@ -29,7 +29,7 @@ CORS(app)
 # Note: the server ins't receipt in PUT requests since those requests
 # are made by the Lambda modules, after the GET requests.
 @app.route('/members', methods=['GET','PUT'])
-async def members():
+async def members ():
 	# get the json content
 	data = request.json
 	# extract the message from the request
@@ -65,7 +65,7 @@ async def members():
 #	*"data": {data} *only for PUT requests
 # }
 @app.route('/servers', methods=['GET', 'PUT'])
-async def servers():
+async def servers ():
 	# get the json content
 	data = request.json
 	# extract the message from the request
@@ -100,7 +100,7 @@ async def servers():
 #   "prompt": "[image prompt]"
 # }
 @app.route('/images', methods=['POST'])
-async def images():
+async def images ():
 	# get the json content
 	data = request.json
 	
@@ -121,7 +121,7 @@ async def images():
 
 # put, delete and patch have special cases
 @app.route('/verbs', methods=['GET','POST','DELETE','PATCH'])
-async def verbs():
+async def verbs ():
 	# get the json content
 	data = request.json
 
@@ -197,7 +197,7 @@ async def verbs():
 #	"data": "message to add"
 # }
 @app.route('/logs', methods=['POST']) # this one has no controllers
-async def log():
+async def log ():
 	# get the json content
 	data = request.json
 	# extract the message from the request
@@ -227,7 +227,7 @@ async def log():
 # 	}
 # }
 @app.route('/errors', methods=['POST'])
-async def errors():
+async def errors ():
 	# get the json content
 	data = request.json
 	# extract the message from the request
@@ -257,7 +257,7 @@ async def errors():
 #   "role": "{role}"
 # }
 @app.route('/userlist', methods=['GET','POST','PUT', 'PATCH'])
-async def userlists():	
+async def userlists ():	
 	# get is to read data
 	if request.method == 'GET':
 		# use the controller
@@ -293,6 +293,47 @@ async def userlists():
 		# and return the answer
 		return jsonify({"answer": 'ok'})
 
+
+# user db for files uploaded
+@app.route('/files', methods=['GET', 'POST','DELETE'])
+async def files ():
+	# cath the params
+	user_id = request.json.get('id')
+
+	# see all the user files
+	# {
+	#	"id": "user id"
+	# }
+	if request.method == 'GET':
+		# use the controller
+		ans = file.get_user_files(user_id)
+		# and return the answer
+		return jsonify({"answer": ans})
+
+	# add a file
+	# {
+	#	"id": "user id",
+	#	"filename": "..."
+	# }
+	elif request.method == "POST":
+		filename = request.json.get('filename')
+		# use the controller
+		ans = file.post_user_file(user_id, filename)
+		# and return the answer
+		return jsonify({"answer": ans})
+
+	# remove a file
+	# {
+	#	"id": "user id",
+	#	"filename": "..."
+	# }
+	elif request.method == "DELETE":
+		filename = request.json.get('filename')
+		# use the controller
+		ans = file.delete_user_file(user_id, filename)
+		# and return the answer
+		return jsonify({"answer": ans})
+		
 
 # run the app, on localhost only
 app.run(port=int(os.environ["DB_PORT"]), host=os.environ["DB_HOST"], debug=dev)
