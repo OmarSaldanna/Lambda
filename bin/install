@@ -22,6 +22,7 @@ mkdir db/data/errors
 mkdir db/data/images
 mkdir db/data/log
 mkdir db/data/members
+mkdir db/data/files
 mkdir db/data/servers
 mkdir db/data/userlist
 # other folders: backups and lambdrive
