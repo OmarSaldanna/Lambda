@@ -1,8 +1,22 @@
+import os
 # import the memory files handlers
 from modules import *
-
 # this just imports a needed function
 from controllers.userlist import get_userlist
+
+# extra funcion to create lambdrive dir tree for the users
+def set_lambdrive (user_id: str):
+	# main dir
+	os.makedirs(f"lambdrive/{user_id}")
+	# and others
+	os.makedirs(f"lambdrive/{user_id}/images")
+	os.makedirs(f"lambdrive/{user_id}/documents")
+	os.makedirs(f"lambdrive/{user_id}/audios")
+	os.makedirs(f"lambdrive/{user_id}/videos")
+	os.makedirs(f"lambdrive/{user_id}/code")
+	os.makedirs(f"lambdrive/{user_id}/data")
+	os.makedirs(f"lambdrive/{user_id}/generated")
+
 
 def get_user_data(user_id: str, server: str):
 	# try to open the user file
@@ -29,6 +43,8 @@ def get_user_data(user_id: str, server: str):
 			new_data.write()
 		# also append the new user to the userslist as a free user
 		post_users("free", [user_id], new_user=True)
+		# and create the lambdrive folder
+		set_lambdrive(user_id)
 		# once created the memory, return the new data
 		return new_data.dic
 
@@ -52,6 +68,8 @@ def update_user_data(user_id: str, update: dict, userlist_update=False):
 		# only if the update doesnt become from userlist functions
 		if not userlist_update:
 			post_users("free", [user_id], new_user=True)
+		# also create the lambdrive folder
+		set_lambdrive(user_id)
 		# once created the memory, return the new data
 		return 'ok'
 
