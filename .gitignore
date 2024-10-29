@@ -25,11 +25,7 @@ db/data/files/*
 db/data/servers/*
 db/data/userlist/*
 # lambdrive and backups
-lambdrive/audios
-lambdrive/images
-lambdrive/documents
-lambdrive/dalle
-lambdrive/qrs
+lambdrive/*
 # other folders
 backups
 daily/data
