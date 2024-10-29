@@ -1,5 +1,7 @@
 # import the memory files handlers
 from modules import *
+# import from members to create the member
+from controllers.member import get_user_data
 
 
 def get_user_files (user_id: str):
@@ -11,6 +13,8 @@ def get_user_files (user_id: str):
 		return mem.dic
 	# the user has no file
 	except:
+		# create the user also
+		get_user_data(user_id, "files")
 		# then create one
 		new_data = make_memory(user_id, "files")
 		# once created the memory, return the new data
@@ -34,6 +38,8 @@ def post_user_file (user_id: str, filename: str):
 
 	# the user has no file
 	except:
+		# create the user also
+		get_user_data(user_id, "files")
 		# then create one
 		mem = make_memory(user_id, "files")
 		# create the file object
@@ -62,6 +68,8 @@ def delete_user_file (user_id: str, filename: str):
 
 	# the user has no file
 	except:
+		# create the user also
+		get_user_data(user_id, "files")
 		# then create one
 		mem = make_memory(user_id, "files")
 		# just return, there are no files to remove
