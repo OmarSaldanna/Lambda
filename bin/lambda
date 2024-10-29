@@ -27,7 +27,7 @@ case $1 in
 	# this new command runs the main systems based on the run.sh files
 	run)
 		# append to log
-		echo $(date +"[%Y-%m-%d - %T]") system $2 started >> $BIN_LOG
+		echo $(date +"[%Y-%m-%d - %T]") independent system $2 started >> $BIN_LOG
 		# and run the sistem
 		eval "$(cat $2/run.sh)"
 	;;
