@@ -199,7 +199,6 @@ case $1 in
 
 	*)
 		echo Unknown Command λ
-		echo lambda "[start|stop|update|restart|rupdate|reqinstall|backup|app|app-kill]"
 	;;
 esac
 
