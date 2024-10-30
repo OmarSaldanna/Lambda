@@ -107,24 +107,3 @@ class Brain:
     else:
       # this is a clear error on db
       raise ValueError(f"Error on database, verb: {verb}, type unknown")
-      
-  # # this is a fast function, independent. This is a simple
-  # # function for fast usage, like: Lambda, ...
-  # def chat(self, message: str, author: str, server: str):
-  #   # instance openai module
-  #   openai = OpenAI(author, server)
-  #   # try to make the answer shorter as possible
-  #   message += ". Responde en 1 párrafo o menos."
-  #   # now call gpt
-  #   return openai.gpt(message, context=True)
-
-
-  # # this is also a fast function, the thing is that this
-  # # one doesn't save context, so it is faster and cheaper
-  # def fast(self, message: str, author: str, server: str):
-  #   # instance openai module
-  #   openai = OpenAI(author, server)
-  #   # try to make the answer shorter as possible
-  #   message += ". Que tu respuesta sea breve y concisa."
-  #   # now call fast usage
-  #   return openai.gpt(message, context=False, system="")

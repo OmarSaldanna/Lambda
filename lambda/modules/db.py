@@ -38,3 +38,10 @@ class DB:
 		headers = self.__preprocess(headers)
 		# send the request
 		return requests.put(self.api + api, json=headers).json()
+
+	# delete request
+	def delete (self, api: str, headers: dict):
+		# preprocess the headers
+		headers = self.__preprocess(headers)
+		# send the request
+		return requests.delete(self.api + api, json=headers).json()

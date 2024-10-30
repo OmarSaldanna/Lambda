@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Formulario con Tabla</title>
+</head>
+<body>
+
+<form id="miFormulario">
+  Texto: <input type="text" name="texto"><br>
+  Email: <input type="email" name="email"><br>
+  Checkbox:
+  <input type="checkbox" name="checkbox" value="Opción 1">Opción 1
+  <input type="checkbox" name="checkbox" value="Opción 2">Opción 2
+  <input type="checkbox" name="checkbox" value="Opción 3">Opción 3<br>
+  Radio:
+  <input type="radio" name="radio" value="Radio 1">Radio 1
+  <input type="radio" name="radio" value="Radio 2">Radio 2
+  <input type="radio" name="radio" value="Radio 3">Radio 3<br>
+  Fecha y Hora: <input type="datetime-local" name="datetime-local"><br>
+  Color: <input type="color" name="color"><br>
+  Rango: <input type="range" name="range" min="0" max="100"><br>
+  <button type="button" onclick="leerValores()">Enviar</button>
+</form>
+
+<script>
+function leerValores() {
+  let formulario = document.getElementById('miFormulario');
+  let formData = new FormData(formulario);
+  let valores = {};
+
+  for (let [key, value] of formData.entries()) {
+    if (key === 'checkbox' && formData.getAll(key).length > 0) {
+      // Para checkboxes, obtenemos todos los valores seleccionados
+      valores[key] = formData.getAll(key);
+    } else {
+      // Para los demás campos
+      valores[key] = value;
+    }
+  }
+
+  console.log(valores);
+  return Object.values(valores); // Retorna un array con los valores
+}
+</script>
+
+</body>
+</html>

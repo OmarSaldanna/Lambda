@@ -59,13 +59,18 @@ def delete_user_file (user_id: str, filename: str):
 		mem = get_memory_by_id("files", user_id)
 		# get the name
 		name = filename.split('/')[-1]
-		# try to remove file from the dict
-		del(mem.dic[name])
-		# write changes
-		mem.write()
+		# also try to remove file from the dict
+		try:
+			del(mem.dic[name])
+			# write changes
+			mem.write()
+		# file not found error
+		except:
+			# then just ignore it
+			pass
 		# return the memory file data
 		return mem.dic
-
+		
 	# the user has no file
 	except:
 		# create the user also

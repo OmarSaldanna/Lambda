@@ -103,3 +103,7 @@ class Auth:
 	# extra function to detect null params
 	def has_nulls (self, params: list):
 		return True in [p in [None, ""] for p in params]
+
+	# other extra function to prevent file saving on other locations
+	def secure_filename (self, filename: str):
+		return False if ".." in filename or "/" in filename else True;
