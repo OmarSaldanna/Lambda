@@ -70,7 +70,7 @@ def delete_user_file (user_id: str, filename: str):
 			pass
 		# return the memory file data
 		return mem.dic
-		
+
 	# the user has no file
 	except:
 		# create the user also
