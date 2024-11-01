@@ -6,16 +6,20 @@ from controllers.userlist import get_userlist
 
 # extra funcion to create lambdrive dir tree for the users
 def set_lambdrive (user_id: str):
-	# main dir
-	os.makedirs(f"lambdrive/{user_id}")
-	# and others
-	os.makedirs(f"lambdrive/{user_id}/images")
-	os.makedirs(f"lambdrive/{user_id}/documents")
-	os.makedirs(f"lambdrive/{user_id}/audios")
-	os.makedirs(f"lambdrive/{user_id}/videos")
-	os.makedirs(f"lambdrive/{user_id}/code")
-	os.makedirs(f"lambdrive/{user_id}/data")
-	os.makedirs(f"lambdrive/{user_id}/generated")
+	# try since if the dirs already exist, then it will be an error
+	try:		
+		# main dir
+		os.makedirs(f"lambdrive/{user_id}")
+		# and others
+		os.makedirs(f"lambdrive/{user_id}/images")
+		os.makedirs(f"lambdrive/{user_id}/documents")
+		os.makedirs(f"lambdrive/{user_id}/audios")
+		os.makedirs(f"lambdrive/{user_id}/videos")
+		os.makedirs(f"lambdrive/{user_id}/code")
+		os.makedirs(f"lambdrive/{user_id}/data")
+		os.makedirs(f"lambdrive/{user_id}/generated")
+	except:
+		pass
 
 
 def get_user_data(user_id: str, server: str):
