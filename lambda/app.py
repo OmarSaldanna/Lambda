@@ -49,11 +49,11 @@ async def lambda_special ():
 
 	if request.method == 'GET':
 		# extract the message from the request
-		message = json.loads(data.get('message'))
+		message = data.get('message')
 		server = data.get('server')
 		# check null params
 		if secure.has_nulls([api_key, message, server]):
-			return jsonify({'answer': err("MISSING_PARAMS_ERROR")})
+			return jsonify(err("MISSING_PARAMS_ERROR"))
 
 		# look for the user api_key and the user id
 		found_user_id = secure.look_for(api_key)
@@ -61,10 +61,10 @@ async def lambda_special ():
 			# process the message
 			answer = brain(message, found_user_id, server)
 			# and send the anser
-			return jsonify({'answer': answer})
+			return jsonify(answer)
 		# there were an error in the api key
 		else:
-			return jsonify({'answer': api_key_err})
+			return jsonify(err("BAD_API_KEY_ERROR"))
 
 
 # Lambda requests: for chat, also admits images
