@@ -2,16 +2,14 @@
 import os
 import json
 import asyncio
+
 # flask stuff
 from flask_cors import CORS
 from flask import Flask, request, jsonify
-# the lambda brain
+
+# the Lambda Brain and AI
 from core.brain import Brain
-from modules.ai import AI
-# the file functions
-from modules import files
-# and the security module
-from auth import Auth
+from core.ai import AI
 
 
 # instance the flask app
@@ -21,11 +19,6 @@ CORS(app)
 dev = True if os.getenv("dev") == 'yes' else False
 # the Lambda's Brain
 brain = Brain()
-# the security module
-secure = Auth()
-# Default error answer for chat functions
-api_key_err = { "type": "error", "content": os.environ["BAD_API_KEY_ERROR"] }
-
 
 # simple function used to parse errors
 def err (error_env):
@@ -34,12 +27,9 @@ def err (error_env):
 
 # Lambda requests: special functions
 # {
-#   "user": "user id"
+#   "user": "user id",
 # 	"server": "web | api",
-# 	"message": {
-# 		"text": "promt to process"
-# 		"files": [filenames to use or empty]
-# 	}
+# 	"prompt": "promt to process"
 # }
 @app.route('/', methods=['GET'])
 async def lambda_special ():
@@ -48,7 +38,7 @@ async def lambda_special ():
 	# 
 	if request.method == 'GET':
 		# extract the message from the request
-		message = data.get('message')
+		message = data.get('prompt')
 		server = data.get('server')
 		user_id = data.get('user')
 		# check params

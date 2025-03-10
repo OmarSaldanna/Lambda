@@ -5,7 +5,7 @@
 # returns an answer. As easy as that. 
 
 # import the Lambda Word Recognizer
-from modules.lwr import Lambda_Word_Recognizer
+from core.lwr import Lambda_Word_Recognizer
 # import the DB handler
 from modules.db import DB
 # also libraries

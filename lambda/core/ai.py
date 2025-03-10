@@ -47,13 +47,13 @@ class AI:
 		# after response clear context (auto and not manually): only keep
 		# 3 messages: first system message, last prompt, last answer
 
-		# first rule then
-		if mode != self.user_data['mode']:
-			# if so, clear the context, only if the context is longer than
-			# only one message
-			if len(self.user_data["context"]) > 1:
-				# clear context
-				self.user_data["context"] = clear_context(self.user_data["context"])
+		# # first rule then
+		# if mode != self.user_data['mode']:
+		# 	# if so, clear the context, only if the context is longer than
+		# 	# only one message
+		# 	if len(self.user_data["context"]) > 1:
+		# 		# clear context
+		# 		self.user_data["context"] = clear_context(self.user_data["context"])
 
 		# append prompt to context
 		self.user_data["context"].append(prompt)
@@ -93,10 +93,12 @@ class AI:
 		self.user_data["usage"]["budget"] -= promt_cost
 		# append the answer to context
 		self.user_data["context"].append({ "text": response_text })
-		# check context rule 2
+		
+		################# check context rule 2 #############################
 		if context_size >= self.models_info["limits"][mode]:
 			# then clear context
 			self.user_data["context"] = clear_context(self.user_data["context"])
+		################################## #################################
 		
 		# save the log of the tokens
 		self.db.post("/logs", {

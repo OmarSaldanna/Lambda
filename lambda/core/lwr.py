@@ -40,7 +40,7 @@ class Lambda_Word_Recognizer:
     # each dimension is for each letter
     word_vector = np.zeros((len(self.ord_values.keys())))
     # and add the letters in the word
-    for letter in word:
+    for i,letter in enumerate(word):
       # this try is in case of symbols
       try:
         # get the idx

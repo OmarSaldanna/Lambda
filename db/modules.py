@@ -136,7 +136,7 @@ def generate_hash(string: str):
 # controller to send alerts to telegram
 def telegram_alert(content: str):
   # send telegram messages to the chat using system
-  command = f"""curl -X POST "https://api.telegram.org/bot$TELEGRAM/sendMessage" -d "chat_id=$alert_chat&text={message}" """
+  command = f"""curl -X POST "https://api.telegram.org/bot$TELEGRAM/sendMessage" -d "chat_id=$alert_chat&text={content}" """
   # print(command)
   os.system(command)
   # save a log

@@ -1,12 +1,12 @@
 # to handle the db
 from modules.db import DB
-
+from modules.context import clear_context
 
 # Lambda limpia mi contexto
 # Lambda borra mi contexto
 # Lambda resetea mi contexto
 # Lambda vacia mi contexto
-def main(params: tuple):
+def main (params: tuple):
 	# extract the params
 	message, member, server = params
 	# instance the db
@@ -14,19 +14,16 @@ def main(params: tuple):
 	# get the user data
 	user_data = db.get('/members', {
 			"id": member,
-			"db": "members",
 			"server": server
 	})['answer']
-	# clear the context and only keep the first message
-	user_data["context"] = 
-	# also reset the context len
-	user_data["context_len"] = 0
+	# clear the context
+	new_context = clear_context(user_data["context"])
 	# save the changes
 	db.put('/members', {
 		"id": member,
 		"data": {
 			# update the context
-			"context": [user_data["context"][0]],
+			"context": new_context,
 			# and the context size
 			"context_size": 0
 		}
