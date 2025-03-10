@@ -1,6 +1,5 @@
 {
     "type": "multi",
-    "imagen": "image.generate_dalle",
     "qr": "image.generate_qr",
     "traduccion": "text.translate",
     "codigo": "text.programmer",
@@ -12,7 +11,6 @@
     "humedad": "iot.iot_read",
     "temperatura": "iot.iot_read",
     "medida": "iot.iot_read",
-    "audio": "audio.generate_tts",
     "informacion": "admin.skill_specific_question",
     "detalles": "admin.skill_specific_question",
     "info": "admin.skill_specific_question",

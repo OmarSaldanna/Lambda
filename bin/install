@@ -18,23 +18,23 @@ source venv/bin/activate
 # download the python libraries
 pip3 install -r requirements.txt
 # create the db folders
-mkdir db/data/errors
-mkdir db/data/images
-mkdir db/data/log
-mkdir db/data/members
-mkdir db/data/files
-mkdir db/data/servers
-mkdir db/data/userlist
+mkdir -p db/data/errors
+mkdir -p db/data/images
+mkdir -p db/data/log
+mkdir -p db/data/members
+mkdir -p db/data/files
+mkdir -p db/data/servers
+mkdir -p db/data/userlist
 # other folders: backups and lambdrive
-mkdir lambdrive
-mkdir lambdrive/audios
-mkdir lambdrive/qrs
-mkdir lambdrive/images
-mkdir lambdrive/documents
-mkdir lambdrive/dalle
+mkdir -p lambdrive
+mkdir -p lambdrive/audios
+mkdir -p lambdrive/qrs
+mkdir -p lambdrive/images
+mkdir -p lambdrive/documents
+mkdir -p lambdrive/dalle
 # other folders
-mkdir backups
-mkdir daily/data
+mkdir -p backups
+mkdir -p daily/data
 
 # append Lambda/bin to path
 echo "Adding Lambda bin to PATH..."

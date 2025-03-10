@@ -77,7 +77,7 @@ def discounter (response, prices: list):
 
 
 # context will receive the Lambda context (general)
-def chat (context: list, model: str, temp: int, stream: bool, max_tokens: int):
+def chat (context: list, model: str, max_tokens: int):
 	# parse the context and in this case extract the system block
 	claude_context, system_block = parse_context(context)
 	# use the api
@@ -86,8 +86,6 @@ def chat (context: list, model: str, temp: int, stream: bool, max_tokens: int):
 		model=model,
 		# the token limit
 		max_tokens=max_tokens,
-		# also the temp
-		temperature=temp,
 		# and the 
 		system=system_block,
 		messages=claude_context

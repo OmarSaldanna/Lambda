@@ -6,6 +6,5 @@
     "valor": "iot.iot_read",
     "humedad": "iot.iot_read",
     "temperatura": "iot.iot_read",
-    "medida": "iot.iot_read",
-    "audio": "audio.audio_transcription"
+    "medida": "iot.iot_read"
 }

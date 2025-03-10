@@ -24,10 +24,11 @@ db/data/members/*
 db/data/files/*
 db/data/servers/*
 db/data/userlist/*
+
 # lambdrive and backups
 lambdrive/*
+backups/*
 # other folders
-backups
 daily/data
 
 # Ignore Mac system files
@@ -39,5 +40,4 @@ __init__.py
 __init__.pyc
 
 # the tester file
-test.py
 test.py

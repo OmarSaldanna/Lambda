@@ -1,4 +1,4 @@
-# https://platform.openai.com/docs/api-reference/chat/create?lang=python
+# https://platform.openai.com/docs/guides/reasoning/advice-on-prompting
 from openai import OpenAI
 # also the module to process images
 from modules.images import base64_to_png_base64
@@ -70,11 +70,13 @@ def discounter (response, prices: list):
 
 
 # function to use multimodal LLMs
-def chat (context: list, model: str, max_tokens: int):
+def chat (context: list, model: str, max_tokens: int, reasoning_effort="medium"):
   # use the API
   return client.chat.completions.create(
     # select the model
     model=model,
+    # the reasoning effort
+    reasoning_effort=reasoning_effort,
     # the context structure
     messages=parse_context(context),
     # max tokens output

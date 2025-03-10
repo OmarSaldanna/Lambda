@@ -11,8 +11,9 @@
 		"memory": "",
 		"models": {
 			"chat": "gpt-4o-mini",
-			"intelligence": "claude-3-5-sonnet-20240620",
-			"research": "gemini-1.5-flash"
+			"code": "claude-3-5-haiku-latest",
+			"reasoning": "o3-mini",
+			"vision": "gpt-4o-mini"
 		},
 		"context_size": 7,
 		"context": [

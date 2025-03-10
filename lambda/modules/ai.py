@@ -39,7 +39,7 @@ class AI:
 
 
 	# Main function, receibes a block of message in form of Lambda context
-	def __call__ (self, prompt: dict, mode="chat", temp=1, stream=False, max_tokens=1024):
+	def __call__ (self, prompt: dict, mode="chat", max_tokens=1024):
 
 		########################## CONTEXT RULES ############################
 		# 1.- if mode != db.mode then clear context. Applied before response
@@ -83,7 +83,7 @@ class AI:
 		# import the correct model functions based on mode model
 		llm = importlib.import_module(f"models.{module_name}")
 		# use the model and pass the params
-		response = llm.chat(self.user_data["context"], model, temp, stream, max_tokens)
+		response = llm.chat(self.user_data["context"], model, max_tokens)
 		# get the prompt cost and make the discount
 		promt_cost, context_size, response_text, tokens = llm.discounter(
 			response, self.models_info["prices"][model]

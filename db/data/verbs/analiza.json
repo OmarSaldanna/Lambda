@@ -1,5 +1,4 @@
 {
     "type": "multi",
-    "audio": "audio.audio_question",
     "video": "video.youtube_reader"
 }

@@ -1,5 +1,4 @@
 {
-	"type": "multi",
-	"texto": "text.translate",
-	"audio": "audio.audio_translation"
+    "type": "multi",
+    "texto": "text.translate"
 }

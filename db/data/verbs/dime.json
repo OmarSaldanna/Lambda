@@ -1,22 +1,10 @@
 {
     "type": "multi",
-    "sobre": "text.conversation",
-    "acerca": "text.conversation",
     "traduccion": "text.translate",
     "valor": "iot.iot_read",
     "humedad": "iot.iot_read",
     "temperatura": "iot.iot_read",
     "medida": "iot.iot_read",
-    "sabes": "help.skill_global_question",
-    "puedes": "help.skill_global_question",
-    "funcion": "help.skill_specific_question",
-    "que": "help.skill_specific_question",
-    "informacion": "help.skill_specific_question",
-    "detalles": "help.skill_specific_question",
-    "info": "help.skill_specific_question",
-    "ejemplo": "help.skill_specific_question",
-    "lista": "help.skill_global_question",
-    "usar": "help.skill_specific_question",
     "pesos": "text.exchange_trade",
     "dolares": "text.exchange_trade"
 }
