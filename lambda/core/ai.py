@@ -67,9 +67,9 @@ class AI:
 		# if the prompt cost is higher than the remaining credits + (avg answer len price)
 		# then return a message that the user has no remaining budget to chat
 		# input price
-		est_cost = self.user_data["context_size"] * 1/1e6 * self.models_info["prices"][model][0]
+		est_cost = self.user_data["context_size"] * 1/1e6 * self.models_info["models"][model][0]
 		# average output price
-		est_cost += int(os.environ["AVG_ANSWER_LEN"]) * 1/1e6 * self.models_info["prices"][model][1]
+		est_cost += int(os.environ["AVG_ANSWER_LEN"]) * 1/1e6 * self.models_info["models"][model][1]
 		# then the if the estimated cost is higher than available funds
 		if est_cost > self.user_data["usage"]["budget"]:
 			# send an error message
@@ -86,7 +86,7 @@ class AI:
 		response = llm.chat(self.user_data["context"], model, max_tokens)
 		# get the prompt cost and make the discount
 		promt_cost, context_size, response_text, tokens = llm.discounter(
-			response, self.models_info["prices"][model]
+			response, self.models_info["models"][model]
 		)
 
 		# make the discount to the user budget

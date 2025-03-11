@@ -42,7 +42,7 @@ async def lambda_special ():
 		server = data.get('server')
 		user_id = data.get('user')
 		# check params
-		if "" in [message, server, user_id]:
+		if None in [message, server, user_id] or "" in [message, server, user_id]:
 			return jsonify(err("MISSING_PARAMS_ERROR"))
 		# then
 		# process the message
@@ -74,7 +74,7 @@ async def lambda_simple ():
 		server = data.get('server')
 		user_id = data.get('user')
 		# check params
-		if "" in [message, server, user_id]:
+		if None in [message, server, user_id] or "" in [message, server, user_id]:
 			return jsonify(err("MISSING_PARAMS_ERROR"))
 		# else: run the prompt
 		# instance the AI

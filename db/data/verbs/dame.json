@@ -15,5 +15,8 @@
     "detalles": "admin.skill_specific_question",
     "info": "admin.skill_specific_question",
     "ejemplo": "admin.skill_specific_question",
-    "lista": "admin.skill_global_question"
+    "lista": "admin.skill_global_question",
+    "llms": "admin.list_models",
+    "modelos": "admin.list_models",
+    "ias": "admin.list_models"
 }

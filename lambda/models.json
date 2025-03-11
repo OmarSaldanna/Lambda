@@ -8,13 +8,9 @@
 		"vision": 5000
 	},
 	
-	"__comment__": "These are the available models. By default Lambda uses 2 from each family: GPT, Gemini and Claude. Normally including the fastest model and the smartest model.",
-
-	"models": ["gpt-4o", "gpt-4o-mini", "o3-mini", "claude-3-7-sonnet-latest", "claude-3-5-haiku-latest"],
-
 	"__comment__": "Pricing costs where gotten from the oficial pages, they are Million tokens. They are used to calculate how many USDs has cost every Lambda prompt.",
 
-	"prices": {
+	"models": {
 		"gpt-4o": [2.5, 10],
 		"gpt-4o-mini": [0.15, 0.6],
 	

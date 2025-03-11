@@ -26,7 +26,7 @@ def main(params: tuple):
 	# and send an advice
 	return [{
 		"type": "advice",
-		"content": f"Nueva Personalidad"
+		"content": f"Nueva Personalidad Guardada"
 	}]
 
 

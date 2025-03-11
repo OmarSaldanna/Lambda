@@ -1,0 +1,6 @@
+{
+    "llms": "admin.list_models",
+    "modelos": "admin.list_models",
+    "ias": "admin.list_models",
+    "type": "multi"
+}

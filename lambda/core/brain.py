@@ -75,6 +75,7 @@ class Brain:
     first_word = message.split(' ')[0]
     # correct the first word
     verb = self.word_recognizer(first_word)
+    print(verb, ":", first_word)
     # now load the verb data from the db
     verb_data = self.db.get('/verbs', {
       'verb': verb
