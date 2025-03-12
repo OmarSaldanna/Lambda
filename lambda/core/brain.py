@@ -16,7 +16,7 @@ import os
 class Brain:
 
   # instance DB handler, and a LWR to correct verbs
-  def __init__ (self):
+  def __init__ (self, db=DB()):
     # create a list of all the verbs
     known_words = os.listdir(os.environ["MEMORY_PATH"] + "verbs")
     # remove the "".json"
@@ -26,7 +26,7 @@ class Brain:
     # train the model with the knwon words
     self.word_recognizer.train(known_words)
     # instance the db
-    self.db = DB()
+    self.db = db
 
   # function used to report errors on lambda skills, it will be saved on
   # the db on errors and also a report will be sent to the admin via telegram.

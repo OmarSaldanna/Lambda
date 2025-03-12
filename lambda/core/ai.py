@@ -22,9 +22,9 @@ from modules.context import clear_context
 class AI:
 	
 	# this class is instanced in every skill
-	def __init__ (self, user_id: str, server: str):
+	def __init__ (self, user_id: str, server: str, db=DB()):
 		# instance the db
-		self.db = DB()
+		self.db = db
 		# the user id
 		self.user_id = user_id
 		# first load the user data
@@ -39,7 +39,7 @@ class AI:
 
 
 	# Main function, receibes a block of message in form of Lambda context
-	def __call__ (self, prompt: dict, mode="chat", max_tokens=1024):
+	def __call__ (self, prompt: dict, mode="chat", max_tokens=1024*2):
 
 		########################## CONTEXT RULES ############################
 		# 1.- if mode != db.mode then clear context. Applied before response
@@ -47,13 +47,16 @@ class AI:
 		# after response clear context (auto and not manually): only keep
 		# 3 messages: first system message, last prompt, last answer
 
-		# # first rule then
-		# if mode != self.user_data['mode']:
-		# 	# if so, clear the context, only if the context is longer than
-		# 	# only one message
-		# 	if len(self.user_data["context"]) > 1:
-		# 		# clear context
-		# 		self.user_data["context"] = clear_context(self.user_data["context"])
+		# NOTE: 1st rule implemented to save tokens and to automatically
+		# change the conversation topic
+
+		# first rule then
+		if mode != self.user_data['mode']:
+			# if so, clear the context, only if the context is longer than
+			# only one message
+			if len(self.user_data["context"]) > 1:
+				# clear context
+				self.user_data["context"] = clear_context(self.user_data["context"])
 
 		# append prompt to context
 		self.user_data["context"].append(prompt)
