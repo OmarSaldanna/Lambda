@@ -5,7 +5,8 @@
 		"chat": 5000,
 		"code": 5000,
 		"reasoning": 5000,
-		"vision": 5000
+		"vision": 5000,
+		"large": 32000
 	},
 	
 	"__comment__": "Pricing costs where gotten from the oficial pages, they are Million tokens. They are used to calculate how many USDs has cost every Lambda prompt.",

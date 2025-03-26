@@ -1,5 +1,5 @@
 import qrcode
-from core.modules import generate_hash
+from modules.utils import generate_hash
 
 # 
 # crea|genera un qr de|con www.google.com
@@ -19,11 +19,11 @@ def main(params: tuple):
 	# create a hash to save the file
 	h = generate_hash(data)
 	# save image on lambdrive/qrs
-	img.save(f"lambdrive/qrs/{h}.png")
+	img.save(f"lambdrive/{author}/generated/{h}.png")
 	# and return the messages
 	return [{
 		"type": "file",
-		"content": f"lambdrive/qrs/{h}.png"
+		"content": f"lambdrive/{author}/generated/{h}.png"
 	}]
 
 

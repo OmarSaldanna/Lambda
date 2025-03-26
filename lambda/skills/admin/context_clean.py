@@ -1,11 +1,15 @@
 # to handle the db
 from modules.db import DB
-from modules.context import clear_context
 
 # Lambda limpia mi contexto
 # Lambda borra mi contexto
 # Lambda resetea mi contexto
 # Lambda vacia mi contexto
+# ---------------------------
+# Lambda cambia la conversación
+# Lambda cambia la plática
+# Lambda cambia el tema
+# asunto
 def main (params: tuple):
 	# extract the params
 	message, member, server = params
@@ -16,8 +20,8 @@ def main (params: tuple):
 			"id": member,
 			"server": server
 	})['answer']
-	# clear the context
-	new_context = clear_context(user_data["context"])
+	# clear the context: only keep personality
+	new_context = user_data["context"][0]
 	# save the changes
 	db.put('/members', {
 		"id": member,
