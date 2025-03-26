@@ -1,8 +1,12 @@
 {
-	"type": "multi",
-	"personalidad": "admin.personality_set",
-	"valor": "iot.iot_message",
-	"estado": "iot.iot_message",
-	"mensaje": "iot.iot_message",
-	"brillo": "iot.iot_message"
+    "type": "multi",
+    "personalidad": "admin.personality_set",
+    "valor": "iot.iot_message",
+    "estado": "iot.iot_message",
+    "mensaje": "iot.iot_message",
+    "brillo": "iot.iot_message",
+    "tema": "admin.context_clean",
+    "platica": "admin.context_clean",
+    "conversacion": "admin.context_clean",
+    "asunto": "admin.context_clean"
 }

@@ -13,7 +13,8 @@
 			"chat": "gpt-4o-mini",
 			"code": "claude-3-5-haiku-latest",
 			"reasoning": "o3-mini",
-			"vision": "gpt-4o-mini"
+			"vision": "gpt-4o-mini",
+			"large": "gpt-4o-mini"
 		},
 		"file": "",
 		"context_size": 7,
